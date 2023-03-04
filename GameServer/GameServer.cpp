@@ -5,13 +5,12 @@
 #include "Service.h"
 #include "Session.h"
 #include "GameSession.h"
-
 #include "GameSessionManager.h"
 #include "BufferWriter.h"
+#include "ServerPacketHandler.h"
 
 int main()
 {
-	
 	//TODO
 	const ServerServiceRef service = MakeShared<ServerService>(
 		NetAddress(L"127.0.0.1", 7777),
@@ -34,24 +33,12 @@ int main()
 				}
 			});
 	}
-	constexpr char sendData[] = "Hello World!";
 	while (true)
 	{
-		const SendBufferRef sendBuffer = g_SendBufferManager->Open(4096);
+		vector<BuffData> buffs{ {100,1.5f}, {200,2.3f}, {300,0.7f} };
 
-		BufferWriter writer(sendBuffer->Buffer(), 4096);
+		const SendBufferRef sendBuffer = ServerPacketHandler::Make_SC_TEST(101, 102, 103, buffs);
 
-		auto* header = writer.Reserve<PacketHeader>();
-
-		//id(uint64), 체력 uint32, 공격력 uint16
-		writer << static_cast<uint64>(1001) << static_cast<uint32>(100) << static_cast<uint16>(10);
-		writer.Write(sendData, sizeof(sendData));
-
-		header->size = writer.WriteSize();
-		header->id = 1;
-
-
-		sendBuffer->Close(writer.WriteSize());
 		GameSessionManager::Instance()->Broadcast(sendBuffer);
 
 		this_thread::sleep_for(250ms);
