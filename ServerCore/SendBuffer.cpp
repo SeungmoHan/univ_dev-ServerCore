@@ -27,7 +27,6 @@ void SendBuffer::Close(uint32 writeSize)
 /*----------------------
 	 SendBufferChunk
 ----------------------*/
-
 SendBufferChunk::SendBufferChunk()
 {
 }
@@ -63,8 +62,6 @@ void SendBufferChunk::Close(uint32 writeSize)
 }
 
 
-
-
 /*------------------------
 	 SendBufferManager
 ------------------------*/
@@ -92,6 +89,7 @@ SendBufferRef SendBufferManager::Open(uint32 size)
 
 SendBufferChunkRef SendBufferManager::Pop()
 {
+	//cout << "Pop SendBuffer Chunk" << endl;
 	{
 		WRITE_LOCK;
 		if (m_SendBufferChunks.empty() == false)
@@ -101,19 +99,20 @@ SendBufferChunkRef SendBufferManager::Pop()
 			return sendBufferChunk;
 		}
 	}
-
-
 	return SendBufferChunkRef(xnew<SendBufferChunk>(), PushGlobal);
 }
 
 void SendBufferManager::Push(SendBufferChunkRef buffer)
 {
 	WRITE_LOCK;
+	//cout << "Push SendBuffer Chunk" << endl;
 	m_SendBufferChunks.push_back(buffer);
 }
 
 void SendBufferManager::PushGlobal(SendBufferChunk* buffer)
 {
+	
+	//cout << "Push Global SendBuffer Chunk" << endl;
 	g_SendBufferManager->Push(SendBufferChunkRef(buffer, PushGlobal));
 }
 

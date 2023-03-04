@@ -17,6 +17,7 @@ Session::Session() : m_RecvBuffer(BUFFER_SIZE)
 
 Session::~Session()
 {
+	cout << "~Session" << endl;
 	SocketUtils::Close(m_Socket);
 }
 
@@ -54,9 +55,6 @@ void Session::Disconnect(const WCHAR* reason)
 
 	//   [2/25/2023 SeungmoHan] temp
 	wcout << L"Disconnect " << reason << endl;
-
-	OnDisconnected();
-	GetService()->ReleaseSession(GetSessionRef());
 
 	RegisterDisconnect();
 }
@@ -225,7 +223,10 @@ void Session::ProcessConnect()
 
 void Session::ProcessDisconnect()
 {
-	m_DisconnectEvent.owner = nullptr;
+	m_DisconnectEvent.owner = nullptr;	
+
+	OnDisconnected();
+	GetService()->ReleaseSession(GetSessionRef());
 }
 
 void Session::ProcessRecv(int32 numOfBytes)
