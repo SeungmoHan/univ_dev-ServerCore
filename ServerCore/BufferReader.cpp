@@ -7,7 +7,8 @@
  --------------*/
 BufferReader::BufferReader() = default;
 
-BufferReader::BufferReader(BYTE* buffer, uint32 size, uint32 pos)
+BufferReader::BufferReader(BYTE* buffer, const uint32 size, const uint32 pos)
+	: m_Buffer(buffer), m_Size(size) , m_Pos(pos)
 {
 }
 
