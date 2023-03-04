@@ -23,7 +23,7 @@ public:
 	template<typename T>
 	bool Read(T* dest);
 
-	bool Peek(void* dest, const uint32 len) const;
+	bool Peek(const void* dest, const uint32 len) const;
 	bool Read(void* dest, const uint32 len);
 
 	template<typename T>
