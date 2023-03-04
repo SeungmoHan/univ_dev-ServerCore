@@ -24,7 +24,7 @@ public:
 	bool Read(T* dest);
 
 	bool Peek(const void* dest, const uint32 len) const;
-	bool Read(void* dest, const uint32 len);
+	bool Read(const void* dest, const uint32 len);
 
 	template<typename T>
 	BufferReader& operator>>(OUT T& dest);

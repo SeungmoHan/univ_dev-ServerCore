@@ -29,7 +29,7 @@ bool BufferReader::Peek(const void* dest, const uint32 len) const
 	return true;
 }
 
-bool BufferReader::Read(void* dest, const uint32 len)
+bool BufferReader::Read(const void* dest, const uint32 len)
 {
 	if (Peek(dest, len) == false)
 		return false;
