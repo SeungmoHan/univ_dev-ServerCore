@@ -33,7 +33,7 @@ class SendBufferChunk : public enable_shared_from_this<SendBufferChunk>
 private:
 	enum 
 	{
-		SEND_BUFFER_CHUNK_SIZE = 6000,
+		SEND_BUFFER_CHUNK_SIZE = 0x10000,
 	};
 
 public:
