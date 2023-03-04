@@ -6,26 +6,8 @@
 #include "Session.h"
 #include "GameSession.h"
 
-class GameSession1 : public Session
-{
-public:
-	~GameSession1() { cout << "~GameSession1" << endl; }
-	virtual void	OnConnect() {};
-	virtual int32	OnRecv(BYTE* buffer, int32 len) override
-	{
-		cout << "OnRecv Len =" << len << "  : " << (char*)buffer <<  endl;
-		SendBufferRef sendBuffer = g_SendBufferManager->Open(4096);
-		memcpy_s(sendBuffer->Buffer(), len, buffer, len);
-		sendBuffer->Close(len);
-		Send(sendBuffer);
-		return len; 
-	}
-	virtual void	OnSend(int32 len) override 
-	{
-		cout << "OnSend Len =" << len << endl;
-	};
-	virtual void	OnDisconnected() {};
-};
+#include "GameSessionManager.h"
+
 
 int main()
 {
@@ -35,8 +17,7 @@ int main()
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),
 		MakeShared<GameSession>,// Session Factory TODO : SessionManager
-		100
-		);
+		100);
 
 	ASSERT_CRASH(service->Start());
 
@@ -52,6 +33,21 @@ int main()
 					service->GetIocpCore()->Dispatch();
 				}
 			});
+	}
+	char sendData[] = "Hello World!";
+	while (true)
+	{
+		SendBufferRef sendBuffer = g_SendBufferManager->Open(4096);
+
+		BYTE* buffer = sendBuffer->Buffer();
+		((PacketHeader*)buffer)->size = sizeof(sendData) + sizeof(PacketHeader);
+		((PacketHeader*)buffer)->id = 1;
+
+		memcpy_s(buffer + 4, sizeof(sendData), sendData, sizeof(sendData));
+		sendBuffer->Close(sizeof(sendData) + sizeof(PacketHeader));
+		GameSessionManager::Instance()->Broadcast(sendBuffer);
+
+		this_thread::sleep_for(250ms);
 	}
 	g_ThreadManager->Join();
 }

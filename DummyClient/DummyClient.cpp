@@ -7,25 +7,22 @@
 
 
 char sendData[] = "Hello World!";
-class ServerSession : public Session
+class ServerSession : public PacketSession
 {
 public:
 	virtual void	OnConnect() 
 	{
-		cout << "Connect To Server" << endl;
-		SendBufferRef sendBuffer = g_SendBufferManager->Open(4096);
-		memcpy_s(sendBuffer->Buffer(), sizeof(sendData), sendData, sizeof(sendData));
-		sendBuffer->Close(sizeof(sendData));
-
-		Send(sendBuffer);
+		
 	};
-	virtual int32	OnRecv(BYTE* buffer, int32 len) override
+	virtual int32	OnRecvPacket(BYTE* buffer, int32 len) override
 	{
-		SendBufferRef sendBuffer = g_SendBufferManager->Open(4096);
-		memcpy_s(sendBuffer->Buffer(), sizeof(sendData), sendData, sizeof(sendData));
-		sendBuffer->Close(sizeof(sendData));
+		PacketHeader header = *(PacketHeader*)buffer;
+		cout << "Packet ID : " << header.id << " Size : " << header.size << endl;
 
-		Send(sendBuffer);
+		char recvBuffer[4096];
+		memcpy_s(recvBuffer, header.size - sizeof(PacketHeader), buffer + 4, header.size - sizeof(PacketHeader));
+
+		cout << recvBuffer << endl;
 
 		return len;
 	}
@@ -44,7 +41,7 @@ int main()
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),
 		MakeShared<ServerSession>,// Session Factory TODO : SessionManager
-		5);
+		1000);
 
 	ASSERT_CRASH(service->Start());
 
