@@ -5,7 +5,7 @@
 /*---------------
 	RecvBuffer
 ---------------*/
-RecvBuffer::RecvBuffer(uint32 bufferSize) : m_BufferSize(bufferSize), m_Capacity(bufferSize* BUFFER_COUNT)
+RecvBuffer::RecvBuffer(const uint32 bufferSize) : m_BufferSize(bufferSize), m_Capacity(bufferSize* BUFFER_COUNT)
 {
 	m_Buffer.resize(m_Capacity);
 }
@@ -30,7 +30,7 @@ void RecvBuffer::Clean()
 	}
 }
 
-bool RecvBuffer::OnWrite(uint32 numOfBytes)
+bool RecvBuffer::OnWrite(const uint32 numOfBytes)
 {
 	if (numOfBytes > FreeSize())
 		return false;
@@ -40,7 +40,7 @@ bool RecvBuffer::OnWrite(uint32 numOfBytes)
 	return true;
 }
 
-bool RecvBuffer::OnRead(uint32 numOfBytes)
+bool RecvBuffer::OnRead(const uint32 numOfBytes)
 {
 	if (numOfBytes > DataSize())
 		return false;

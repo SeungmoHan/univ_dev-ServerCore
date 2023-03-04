@@ -13,7 +13,7 @@ Memory::Memory()
 
 	for (size = 32; size <= 1024; size += 32)
 	{
-		MemoryPool* pool = new MemoryPool(size);
+		auto* pool = new MemoryPool(size);
 		_pool.push_back(pool);
 
 		while (tableIndex <= size)
@@ -25,7 +25,7 @@ Memory::Memory()
 
 	for (; size <= 2048; size += 128)
 	{
-		MemoryPool* pool = new MemoryPool(size);
+		auto* pool = new MemoryPool(size);
 		_pool.push_back(pool);
 
 		while (tableIndex <= size)
@@ -37,7 +37,7 @@ Memory::Memory()
 
 	for (; size <= 4096; size += 256)
 	{
-		MemoryPool* pool = new MemoryPool(size);
+		auto* pool = new MemoryPool(size);
 		_pool.push_back(pool);
 
 		while (tableIndex <= size)
@@ -50,14 +50,14 @@ Memory::Memory()
 
 Memory::~Memory()
 {
-	for (MemoryPool* pool : _pool)
+	for (const MemoryPool* pool : _pool)
 	{
 		delete pool;
 	}
 	_pool.clear();
 }
 
-void* Memory::Allocate(int32 size)
+void* Memory::Allocate(const int32 size) const
 {
 	MemoryHeader* header = nullptr;
 
@@ -67,7 +67,7 @@ void* Memory::Allocate(int32 size)
 #else
 	if (allocSize > MAX_ALLOC_SIZE)
 	{
-		header = reinterpret_cast<MemoryHeader*>(_aligned_malloc(allocSize, SLIST_ALIGNMENT));
+		header = static_cast<MemoryHeader*>(_aligned_malloc(allocSize, SLIST_ALIGNMENT));
 	}
 	else
 	{
@@ -78,7 +78,7 @@ void* Memory::Allocate(int32 size)
 	return MemoryHeader::AttachHeader(header, allocSize);
 }
 
-void Memory::Release(void* ptr)
+void Memory::Release(void* ptr) const
 {
 	MemoryHeader* header = MemoryHeader::DetatchHeader(ptr);
 

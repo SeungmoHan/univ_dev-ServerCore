@@ -13,16 +13,16 @@ ThreadManager::~ThreadManager()
 	Join();
 }
 
-void ThreadManager::Launch(function<void(void)> callback)
+void ThreadManager::Launch(const function<void(void)>& callback)
 {
 	LockGuard guard(m_Lock);
 
-	m_Threads.push_back(std::thread([=]()
+	m_Threads.emplace_back([=]()
 		{
 			InitTLS();
 			callback();
 			DestroyTLS();
-		}));
+		});
 }
 
 void ThreadManager::Join()

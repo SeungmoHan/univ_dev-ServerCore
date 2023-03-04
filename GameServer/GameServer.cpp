@@ -7,13 +7,13 @@
 #include "GameSession.h"
 
 #include "GameSessionManager.h"
-
+#include "BufferWriter.h"
 
 int main()
 {
 	
 	//TODO
-	ServerServiceRef service = MakeShared<ServerService>(
+	const ServerServiceRef service = MakeShared<ServerService>(
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),
 		MakeShared<GameSession>,// Session Factory TODO : SessionManager
@@ -34,17 +34,24 @@ int main()
 				}
 			});
 	}
-	char sendData[] = "Hello World!";
+	constexpr char sendData[] = "Hello World!";
 	while (true)
 	{
-		SendBufferRef sendBuffer = g_SendBufferManager->Open(4096);
+		const SendBufferRef sendBuffer = g_SendBufferManager->Open(4096);
 
-		BYTE* buffer = sendBuffer->Buffer();
-		((PacketHeader*)buffer)->size = sizeof(sendData) + sizeof(PacketHeader);
-		((PacketHeader*)buffer)->id = 1;
+		BufferWriter writer(sendBuffer->Buffer(), 4096);
 
-		memcpy_s(buffer + 4, sizeof(sendData), sendData, sizeof(sendData));
-		sendBuffer->Close(sizeof(sendData) + sizeof(PacketHeader));
+		auto* header = writer.Reserve<PacketHeader>();
+
+		//id(uint64), 체력 uint32, 공격력 uint16
+		writer << static_cast<uint64>(1001) << static_cast<uint32>(100) << static_cast<uint16>(10);
+		writer.Write(sendData, sizeof(sendData));
+
+		header->size = writer.WriteSize();
+		header->id = 1;
+
+
+		sendBuffer->Close(writer.WriteSize());
 		GameSessionManager::Instance()->Broadcast(sendBuffer);
 
 		this_thread::sleep_for(250ms);

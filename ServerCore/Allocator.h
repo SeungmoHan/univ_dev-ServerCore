@@ -1,3 +1,4 @@
+// ReSharper disable CppMemberFunctionMayBeStatic
 #pragma once
 
 /*--------------------
@@ -51,14 +52,21 @@ public:
 	template<typename Other>
 	_xallocator(const _xallocator<Other>&) {};
 
-	T* allocate(size_t count)
-	{
-		const int32 size = static_cast<int32>(count * sizeof(T));
+	T* allocate(const size_t count);
 
-		return static_cast<T*>(PoolAllocator::Alloc(size));
-	}
-	void deallocate(T* ptr, size_t count)
-	{
-		PoolAllocator::Release(ptr);
-	}
+	void deallocate(T* ptr, size_t count);
 };
+
+template <typename T>
+T* _xallocator<T>::allocate(const size_t count)
+{
+	const int32 size = static_cast<int32>(count * sizeof(T));
+
+	return static_cast<T*>(PoolAllocator::Alloc(size));
+}
+
+template <typename T>
+void _xallocator<T>::deallocate(T* ptr, size_t count)
+{
+	PoolAllocator::Release(ptr);
+}

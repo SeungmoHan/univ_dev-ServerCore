@@ -28,7 +28,7 @@ void SocketUtils::Clear()
 	WSACleanup();
 }
 
-bool SocketUtils::BindWindowsFunction(SOCKET sock, GUID guid, LPVOID* fn)
+bool SocketUtils::BindWindowsFunction(const SOCKET sock, GUID guid, LPVOID* fn)
 {
 	DWORD bytes = 0;
 	return SOCKET_ERROR != ::WSAIoctl(sock, SIO_GET_EXTENSION_FUNCTION_POINTER, &guid, sizeof(guid), fn, sizeof(*fn), OUT & bytes, nullptr, nullptr);
@@ -40,7 +40,7 @@ SOCKET SocketUtils::CreateSocket()
 	return ::WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, nullptr, 0, WSA_FLAG_OVERLAPPED);
 }
 
-bool SocketUtils::SetLinger(SOCKET sock, uint16 onoff, uint16 linger)
+bool SocketUtils::SetLinger(const SOCKET sock, const uint16 onoff, const uint16 linger)
 {
 	LINGER l;
 	l.l_onoff = onoff;
@@ -48,37 +48,37 @@ bool SocketUtils::SetLinger(SOCKET sock, uint16 onoff, uint16 linger)
 	return SetSockOpt(sock, SOL_SOCKET, SO_LINGER, l);
 }
 
-bool SocketUtils::SetReuseAddress(SOCKET sock, bool flag)
+bool SocketUtils::SetReuseAddress(const SOCKET sock, const bool flag)
 {
 	return SetSockOpt(sock, SOL_SOCKET, SO_REUSEADDR, flag);
 }
 
-bool SocketUtils::SetRecvBufferSize(SOCKET sock, int32 size)
+bool SocketUtils::SetRecvBufferSize(const SOCKET sock, const int32 size)
 {
 	return SetSockOpt(sock, SOL_SOCKET, SO_RCVBUF, size);
 }
 
-bool SocketUtils::SetSendBufferSize(SOCKET sock, int32 size)
+bool SocketUtils::SetSendBufferSize(const SOCKET sock, const int32 size)
 {
 	return SetSockOpt(sock, SOL_SOCKET, SO_SNDBUF, size);
 }
 
-bool SocketUtils::SetTcpNoDelay(SOCKET sock, bool flag)
+bool SocketUtils::SetTcpNoDelay(const SOCKET sock, const bool flag)
 {
 	return SetSockOpt(sock, SOL_SOCKET, TCP_NODELAY, flag);
 }
 
-bool SocketUtils::SetUpdateAcceptSocket(SOCKET sock, SOCKET listenSocket)
+bool SocketUtils::SetUpdateAcceptSocket(const SOCKET sock, const SOCKET listenSocket)
 {
 	return SetSockOpt(sock, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, listenSocket);
 }
 
-bool SocketUtils::Bind(SOCKET socket, NetAddress& netAddr)
+bool SocketUtils::Bind(const SOCKET socket, NetAddress& netAddr)
 {
 	return SOCKET_ERROR != bind(socket, reinterpret_cast<const sockaddr*>(&netAddr.GetSockAddr()), sizeof(sockaddr_in));
 }
 
-bool SocketUtils::BindAnyAddress(SOCKET socket, uint16 port)
+bool SocketUtils::BindAnyAddress(const SOCKET socket, const uint16 port)
 {
 	sockaddr_in addr;
 	addr.sin_family = AF_INET;
@@ -89,7 +89,7 @@ bool SocketUtils::BindAnyAddress(SOCKET socket, uint16 port)
 	return false;
 }
 
-bool SocketUtils::Listen(SOCKET sock, int32 backLog)
+bool SocketUtils::Listen(const SOCKET sock, const int32 backLog)
 {
 	return SOCKET_ERROR != listen(sock, backLog);
 }

@@ -70,7 +70,7 @@ struct SListHeader
 			uint64 sequence : 48;
 			uint64 reserved : 4;
 			uint64 next : 60;
-		}HeaderX64;
+		}HeaderX64{};
 	};
 };
 

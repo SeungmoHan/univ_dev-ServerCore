@@ -26,10 +26,10 @@ public:
 	IocpCore();
 	~IocpCore();
 
-	HANDLE		GetHande() { return m_IocpHandle; }
+	HANDLE		GetHande() const { return m_IocpHandle; }
 
-	bool		Register(IocpObjectRef iocpObject);
-	bool		Dispatch(uint32 timeOutMs = INFINITE);
+	bool		Register(IocpObjectRef iocpObject) const;
+	bool		Dispatch(uint32 timeOutMs = INFINITE) const;
 
 private:
 	HANDLE m_IocpHandle;

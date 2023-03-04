@@ -27,7 +27,7 @@ public:
 	virtual bool	Start() abstract;
 	bool			CanStart() { return m_SessionFactory != nullptr; }
 	virtual void	CloseService();
-	void			SetSessionFactory(SessionFactory factory) { m_SessionFactory = factory; }
+	void			SetSessionFactory(const SessionFactory factory) { m_SessionFactory = factory; }
 
 	SessionRef		CreateSession();
 	void			AddSession(SessionRef session);

@@ -14,7 +14,7 @@ public:
 	ThreadManager();
 	~ThreadManager();
 
-	void		Launch(function<void(void)> callback);
+	void		Launch(const function<void(void)>& callback);
 	void		Join();
 
 	static void InitTLS();

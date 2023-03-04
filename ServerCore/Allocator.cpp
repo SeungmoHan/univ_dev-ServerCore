@@ -9,7 +9,7 @@
 	Base Allocator
 --------------------*/
 
-void* BaseAllocator::Alloc(int32 size)
+void* BaseAllocator::Alloc(const int32 size)
 {
 	return malloc(size);
 }
@@ -24,7 +24,7 @@ void BaseAllocator::Release(void* ptr)
 	Stomp Allocator
 --------------------*/
 
-void* StompAllocator::Alloc(int32 size)
+void* StompAllocator::Alloc(const int32 size)
 {
 	const int64 pageCount = (size + PAGE_SIZE - 1) / PAGE_SIZE;
 	const int64 dataOffset = pageCount * PAGE_SIZE - size;
@@ -35,7 +35,7 @@ void* StompAllocator::Alloc(int32 size)
 
 void StompAllocator::Release(void* ptr)
 {
-	const int64 address = reinterpret_cast<int64>(ptr);
+	const auto address = reinterpret_cast<int64>(ptr);
 	const int64 baseAddress = address - (address % PAGE_SIZE);
 
 	::VirtualFree(reinterpret_cast<void*>(baseAddress), 0, MEM_RELEASE);
@@ -46,7 +46,7 @@ void StompAllocator::Release(void* ptr)
 	Pool Allocator
 --------------------*/
 
-void* PoolAllocator::Alloc(int32 size)
+void* PoolAllocator::Alloc(const int32 size)
 {
 	return g_Memory->Allocate(size);
 }

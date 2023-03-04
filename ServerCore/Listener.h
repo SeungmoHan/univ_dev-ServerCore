@@ -16,7 +16,7 @@ public:
 	~Listener();
 
 public:
-	bool StartAccept(ServerServiceRef service);
+	bool StartAccept(const ServerServiceRef& service);
 	void CloseSocket();
 
 

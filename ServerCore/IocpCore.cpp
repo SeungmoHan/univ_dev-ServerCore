@@ -19,12 +19,12 @@ IocpCore::~IocpCore()
 	CloseHandle(m_IocpHandle);
 }
 
-bool IocpCore::Register(IocpObjectRef iocpObject)
+bool IocpCore::Register(const IocpObjectRef iocpObject) const
 {
 	return ::CreateIoCompletionPort(iocpObject->GetHandle(), m_IocpHandle, /*key*/ 0, 0);
 }
 
-bool IocpCore::Dispatch(uint32 timeOutMs)
+bool IocpCore::Dispatch(const uint32 timeOutMs) const
 {
 	DWORD numOfBytes = 0;
 	ULONG_PTR key = 0;
@@ -34,19 +34,18 @@ bool IocpCore::Dispatch(uint32 timeOutMs)
 		OUT &key,
 		OUT reinterpret_cast<LPOVERLAPPED*>(&iocpEvent), timeOutMs))
 	{
-		IocpObjectRef iocpObject = iocpEvent->owner;
+		const IocpObjectRef iocpObject = iocpEvent->owner;
 		iocpObject->Dispatch(iocpEvent, numOfBytes);
 	}
 	else
 	{
-		int32 errCode = ::WSAGetLastError();
-		switch (errCode)
+		switch (int32 errCode = ::WSAGetLastError())
 		{
 		case WAIT_TIMEOUT:
 			return false;
 		default:
 			// TODO Log
-			IocpObjectRef iocpObject = iocpEvent->owner;
+			const IocpObjectRef iocpObject = iocpEvent->owner;
 			iocpObject->Dispatch(iocpEvent, numOfBytes);
 			break;
 		}

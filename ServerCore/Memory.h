@@ -22,13 +22,13 @@ public:
 	Memory();
 	~Memory();
 
-	void*	Allocate(int32 size);
-	void	Release(void* ptr);
+	[[nodiscard]] void*	Allocate(int32 size) const;
+	void	Release(void* ptr) const;
 
 private:
 	vector<MemoryPool*> _pool;
 
-	MemoryPool* _poolTable[MAX_ALLOC_SIZE + 1];
+	MemoryPool* _poolTable[MAX_ALLOC_SIZE + 1]{};
 };
 
 

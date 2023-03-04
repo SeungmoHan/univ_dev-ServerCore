@@ -6,8 +6,8 @@
 	 SendBuffer
 ------------------*/
 
-SendBuffer::SendBuffer(SendBufferChunkRef owner, BYTE* buffer, uint32 allocSize)
-	: m_Buffer(buffer), m_Owner(owner), m_AllocSize(allocSize)
+SendBuffer::SendBuffer(const SendBufferChunkRef owner, BYTE* buffer, const uint32 allocSize)
+	: m_Buffer(buffer), m_AllocSize(allocSize), m_Owner(owner)
 {
 }
 
@@ -15,7 +15,16 @@ SendBuffer::~SendBuffer()
 {
 }
 
-void SendBuffer::Close(uint32 writeSize)
+BYTE* SendBuffer::Buffer() const { return m_Buffer; }
+
+uint32 SendBuffer::AllocSize() const
+{
+	return m_AllocSize;
+}
+
+uint32 SendBuffer::WriteSize() const { return m_WriteSize; }
+
+void SendBuffer::Close(const uint32 writeSize)
 {
 	ASSERT_CRASH(m_AllocSize >= writeSize);
 
@@ -53,7 +62,7 @@ SendBufferRef SendBufferChunk::Open(uint32 allocSize)
 	return ObjectPool<SendBuffer>::MakeShared(shared_from_this(), Buffer(), allocSize);
 }
 
-void SendBufferChunk::Close(uint32 writeSize)
+void SendBufferChunk::Close(const uint32 writeSize)
 {
 	ASSERT_CRASH(m_Open == true);
 
@@ -61,12 +70,18 @@ void SendBufferChunk::Close(uint32 writeSize)
 	m_UsedSize += writeSize;
 }
 
+bool SendBufferChunk::IsOpen() const { return m_Open; }
+
+BYTE* SendBufferChunk::Buffer() { return &m_Buffer[m_UsedSize]; }
+
+uint32 SendBufferChunk::FreeSize() const { return static_cast<uint32>(m_Buffer.size()) - m_UsedSize; }
+
 
 /*------------------------
 	 SendBufferManager
 ------------------------*/
 
-SendBufferRef SendBufferManager::Open(uint32 size)
+SendBufferRef SendBufferManager::Open(const uint32 size)
 {
 	if (LSendBufferChunk == nullptr)
 	{
@@ -102,7 +117,7 @@ SendBufferChunkRef SendBufferManager::Pop()
 	return SendBufferChunkRef(xnew<SendBufferChunk>(), PushGlobal);
 }
 
-void SendBufferManager::Push(SendBufferChunkRef buffer)
+void SendBufferManager::Push(const SendBufferChunkRef buffer)
 {
 	WRITE_LOCK;
 	//cout << "Push SendBuffer Chunk" << endl;

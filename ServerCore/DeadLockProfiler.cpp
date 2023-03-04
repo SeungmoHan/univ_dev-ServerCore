@@ -11,8 +11,7 @@ void DeadLockProfiler::PushLock(const char* name)
 	LockGuard guard(_lock);
 	int32 lockId = 0;
 
-	auto itr = m_NameToId.find(name);
-	if (itr == m_NameToId.end())
+	if (const auto itr = m_NameToId.find(name); itr == m_NameToId.end())
 	{
 		lockId = static_cast<int32>(m_NameToId.size());
 		m_NameToId[name] = lockId;
@@ -47,8 +46,7 @@ void DeadLockProfiler::PopLock(const char* name)
 	if (LLockStack.empty())
 		CRASH("MULTIPLE_UNLOCK");
 
-	int32 lockId = m_NameToId[name];
-	if (LLockStack.top() != lockId)
+	if (const int32 lockId = m_NameToId[name]; LLockStack.top() != lockId)
 		CRASH("INVALID_UNLOCK");
 
 	LLockStack.pop();
@@ -56,7 +54,7 @@ void DeadLockProfiler::PopLock(const char* name)
 
 void DeadLockProfiler::CheckCycle()
 {
-	const int32 lockCount = static_cast<int32>(m_NameToId.size());
+	const auto lockCount = static_cast<int32>(m_NameToId.size());
 	m_DiscoveredOrder = vector<int32>(lockCount, -1);
 	m_DiscoveredCount = 0;
 	m_Finished = vector<bool>(lockCount, false);
@@ -70,42 +68,42 @@ void DeadLockProfiler::CheckCycle()
 	m_Parent.clear();
 }
 
-void DeadLockProfiler::Dfs(int32 here)
+void DeadLockProfiler::Dfs(const int32 index)
 {
-	if (m_DiscoveredOrder[here] != -1)
+	if (m_DiscoveredOrder[index] != -1)
 		return;
 
-	m_DiscoveredOrder[here] = m_DiscoveredCount++;
+	m_DiscoveredOrder[index] = m_DiscoveredCount++;
 
 	// 모든 인접한 정점을 순회한다.
-	auto itr = m_LockHistory.find(here);
+	const auto itr = m_LockHistory.find(index);
 	if (itr == m_LockHistory.end())
 	{
-		m_Finished[here] = true;
+		m_Finished[index] = true;
 		return;
 	}
 
-	set<int32>& nextSet = itr->second;
+	const set<int32>& nextSet = itr->second;
 	for (int32 there : nextSet)
 	{
 		//아직 방문한 적이 없다면 방문한다.
 		if (m_DiscoveredOrder[there] == -1)
 		{
-			m_Parent[there] = here;
+			m_Parent[there] = index;
 			Dfs(there);
 			continue;
 		}
 
 		//here가 there보다 먼저 발견되었다면, there는 here의 후손이다. (순방향간선)
-		if (m_DiscoveredOrder[here] < m_DiscoveredOrder[there])
+		if (m_DiscoveredOrder[index] < m_DiscoveredOrder[there])
 			continue;
 
 		// 순방향이 아니고, Dfs(there)가 아직 종료하지 않았다면, there는 here의 선조다. (역방향 간선)
 		if (m_Finished[there] == false)
 		{
-			printf("%s -> %s\n", m_IdToName[here], m_IdToName[there]);
+			printf("%s -> %s\n", m_IdToName[index], m_IdToName[there]);
 
-			int32 now = here;
+			int32 now = index;
 			while (true)
 			{
 				printf("%s -> %s\n", m_IdToName[m_Parent[now]], m_IdToName[now]);
@@ -117,5 +115,5 @@ void DeadLockProfiler::Dfs(int32 here)
 		}
 	}
 
-	m_Finished[here] = true;
+	m_Finished[index] = true;
 }

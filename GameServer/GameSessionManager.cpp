@@ -10,16 +10,16 @@ void GameSessionManager::Add(GameSessionRef session)
 	m_Sessions.emplace(session);
 }
 
-void GameSessionManager::Remove(GameSessionRef session)
+void GameSessionManager::Remove(const GameSessionRef session)
 {
 	WRITE_LOCK;
 	m_Sessions.erase(session);
 }
 
-void GameSessionManager::Broadcast(SendBufferRef sendBuffer)
+void GameSessionManager::Broadcast(const SendBufferRef sendBuffer)
 {
 	WRITE_LOCK;
-	for (GameSessionRef session : m_Sessions)
+	for (const GameSessionRef session : m_Sessions)
 	{
 		session->Send(sendBuffer);
 	}
