@@ -1,3 +1,4 @@
+// ReSharper disable All
 #include "pch.h"
 #include "Session.h"
 #include "SocketUtils.h"
@@ -125,7 +126,7 @@ bool Session::RegisterDisconnect()
 
 	if (false == SocketUtils::DisconnectEx(m_Socket, &m_DisconnectEvent, TF_REUSE_SOCKET, 0))
 	{
-		int32 errCode = WSAGetLastError();
+		const int32 errCode = WSAGetLastError();
 		if (errCode != WSA_IO_PENDING)
 		{
 			m_DisconnectEvent.owner = nullptr; // Release Ref
@@ -153,7 +154,7 @@ void Session::RegisterRecv()
 
 	if (SOCKET_ERROR == ::WSARecv(m_Socket, &buf, 1, OUT &numOfBytes, OUT &flag, &m_RecvEvent, nullptr))
 	{
-		int32 errCode = WSAGetLastError();
+		const int32 errCode = WSAGetLastError();
 		if (errCode != WSA_IO_PENDING)
 		{
 			// TODO Log추가 + 에러 처리
