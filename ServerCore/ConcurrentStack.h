@@ -8,41 +8,17 @@ template<typename T>
 class LockStack
 {
 public:
-	LockStack() {};
+	LockStack();;
 	LockStack(const LockStack&) = delete;
 	LockStack& operator= (const LockStack&) = delete;
 
-	void Push(T value)
-	{
-		lock_guard<mutex> lock(m_Mutex);
-		m_Stack.push(std::move(value));
-		m_ConditionVar.notify_one();
-	}
+	void Push(T value);
 
-	bool Empty()
-	{
-		lock_guard<mutex> lock(m_Mutex);
-		return m_Stack.empty();
-	}
+	bool Empty();
 
-	bool TryPop(T& ret)
-	{
-		lock_guard<mutex> lock(m_Mutex);
-		if (m_Stack.empty())
-			return false;
+	bool TryPop(T& ret);
 
-		ret = std::move(m_Stack.top());
-		m_Stack.pop();
-		return true;
-	}
-
-	void WaitPop(T& ret)
-	{
-		unique_lock<mutex> lock(m_Mutex);
-		m_ConditionVar.wait(lock, [this] {return m_Stack.empty() == false; });
-		ret = std::move(m_Stack.top());
-		m_Stack.pop();
-	}
+	void WaitPop(T& ret);
 
 private:
 	std::stack<T> m_Stack;
@@ -91,6 +67,46 @@ private:
 //private:
 //	shared_ptr<Node> _head;
 //};
+
+template <typename T>
+LockStack<T>::LockStack()
+{}
+
+template <typename T>
+void LockStack<T>::Push(T value)
+{
+	lock_guard<mutex> lock(m_Mutex);
+	m_Stack.push(std::move(value));
+	m_ConditionVar.notify_one();
+}
+
+template <typename T>
+bool LockStack<T>::Empty()
+{
+	lock_guard<mutex> lock(m_Mutex);
+	return m_Stack.empty();
+}
+
+template <typename T>
+bool LockStack<T>::TryPop(T& ret)
+{
+	lock_guard<mutex> lock(m_Mutex);
+	if (m_Stack.empty())
+		return false;
+
+	ret = std::move(m_Stack.top());
+	m_Stack.pop();
+	return true;
+}
+
+template <typename T>
+void LockStack<T>::WaitPop(T& ret)
+{
+	unique_lock<mutex> lock(m_Mutex);
+	m_ConditionVar.wait(lock, [this] {return m_Stack.empty() == false; });
+	ret = std::move(m_Stack.top());
+	m_Stack.pop();
+}
 
 template<typename T>
 class lockfree_stack
@@ -163,7 +179,7 @@ private:
 		while (true)
 		{
 			CountedNodePtr newCounter = oldCounter;
-			newCounter.externalCount++;
+			++newCounter.externalCount;
 
 			if (m_Head.compare_exchange_strong(oldCounter, newCounter))
 			{

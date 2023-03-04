@@ -20,7 +20,7 @@ Listener::~Listener()
 	}
 }
 
-bool Listener::StartAccept(ServerServiceRef service)
+bool Listener::StartAccept(const ServerServiceRef& service)
 {
 	m_Service = service;
 	if (m_Service == nullptr)
@@ -46,16 +46,14 @@ bool Listener::StartAccept(ServerServiceRef service)
 		return false;
 
 	//const int32 acceptCount = _service->GetMaxSessionCount();
-	const int32 acceptCount = 1;
+	constexpr int32 acceptCount = 1;
 	for (int32 i = 0; i < acceptCount; i++)
 	{
-		AcceptEvent* acceptEvent = xnew<AcceptEvent>();
+		auto* acceptEvent = xnew<AcceptEvent>();
 		acceptEvent->owner = shared_from_this();
 		m_AcceptEvents.push_back(acceptEvent);
 		RegisterAccept(acceptEvent);
 	}
-
-
 	return true;
 }
 
@@ -73,13 +71,13 @@ void Listener::Dispatch(IocpEvent* iocpEvent, int32 numberOfBytes)
 {
 	ASSERT_CRASH(iocpEvent->eventType == EventType::Accept);
 
-	AcceptEvent* acceptEvent = static_cast<AcceptEvent*>(iocpEvent);
+	const auto acceptEvent = static_cast<AcceptEvent*>(iocpEvent);
 	ProcessAccept(acceptEvent);
 }
 
 void Listener::RegisterAccept(AcceptEvent* acceptEvent)
 {
-	SessionRef session = m_Service->CreateSession();
+	const SessionRef session = m_Service->CreateSession();
 
 	acceptEvent->Init();
 	acceptEvent->session = session;
@@ -101,7 +99,7 @@ void Listener::RegisterAccept(AcceptEvent* acceptEvent)
 
 void Listener::ProcessAccept(AcceptEvent* acceptEvent)
 {
-	SessionRef session = acceptEvent->session;
+	const SessionRef session = acceptEvent->session;
 
 	if (!SocketUtils::SetUpdateAcceptSocket(session->GetSocket(), m_Socket))
 	{
@@ -110,7 +108,7 @@ void Listener::ProcessAccept(AcceptEvent* acceptEvent)
 	}
 
 
-	sockaddr_in addr;
+	sockaddr_in addr{};
 	int32 addrSize = sizeof(addr);
 
 	if (SOCKET_ERROR == getpeername(session->GetSocket(), OUT reinterpret_cast<sockaddr*>(&addr), &addrSize))

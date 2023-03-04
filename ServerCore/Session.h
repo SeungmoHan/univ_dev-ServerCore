@@ -27,25 +27,25 @@ public:
 	bool				Connect();
 	void				Disconnect(const WCHAR* reason);
 
-	shared_ptr<Service> GetService() { return m_Service.lock(); }
-	void				SetService(shared_ptr<Service> service) { m_Service = service; }
+	shared_ptr<Service> GetService() const { return m_Service.lock(); }
+	void				SetService(const shared_ptr<Service> service) { m_Service = service; }
 
 
 public:
 	Session();
 	virtual ~Session();
 
-	void			SetNetAddress(NetAddress addr) { m_NetAddr = addr; }
-	NetAddress		GetAddress() { return m_NetAddr; }
-	SOCKET			GetSocket() { return m_Socket; }
-	bool			IsConnected() { return m_Connected.load(); }
+	void			SetNetAddress(const NetAddress addr) { m_NetAddr = addr; }
+	NetAddress		GetAddress() const { return m_NetAddr; }
+	SOCKET			GetSocket() const { return m_Socket; }
+	bool			IsConnected() const { return m_Connected.load(); }
 	SessionRef		GetSessionRef() { return static_pointer_cast<Session>(shared_from_this()); }
 
 
 private:
 	/* Interface Impl*/
 	virtual HANDLE	GetHandle() override;
-	virtual void	Dispatch(class IocpEvent* iocpEvent, int32 numberOfBytes);
+	virtual void	Dispatch(class IocpEvent* iocpEvent, int32 numberOfBytes) override;
 
 private:
 	/*Send...*/
@@ -65,7 +65,7 @@ private:
 protected:
 
 	virtual void	OnConnect() {};
-	virtual int32	OnRecv(BYTE* buffer, int32 len) { return len; }
+	virtual int32	OnRecv(BYTE* buffer, const int32 len) { return len; }
 	virtual void	OnSend(int32 len) {};
 	virtual void	OnDisconnected() {};
 

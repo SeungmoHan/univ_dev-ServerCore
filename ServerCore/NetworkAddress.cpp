@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "NetworkAddress.h"
 
-NetAddress::NetAddress(sockaddr_in addr) : m_Addr(addr)
+NetAddress::NetAddress(const sockaddr_in addr) : m_Addr(addr)
 {
 
 }
 
-NetAddress::NetAddress(wstring ip, uint16 port)
+NetAddress::NetAddress(const wstring ip, const uint16 port)
 {
 	::memset(&m_Addr, 0, sizeof(m_Addr));
 	m_Addr.sin_family = AF_INET;

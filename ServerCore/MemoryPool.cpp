@@ -6,7 +6,7 @@
 	Memory Pool
 -------------------*/
 
-MemoryPool::MemoryPool(int32 allocSize) :_allocSize(allocSize)
+MemoryPool::MemoryPool(const int32 allocSize) :_allocSize(allocSize)
 {
 	InitializeSListHead(&_header);
 }
@@ -31,11 +31,11 @@ void MemoryPool::Push(MemoryHeader* ptr)
 
 MemoryHeader* MemoryPool::Pop()
 {
-	MemoryHeader* memory = static_cast<MemoryHeader*>(InterlockedPopEntrySList(&_header));
+	auto* memory = static_cast<MemoryHeader*>(InterlockedPopEntrySList(&_header));
 
 	if (memory == nullptr)
 	{
-		memory = reinterpret_cast<MemoryHeader*>(_aligned_malloc(_allocSize, SLIST_ALIGNMENT));
+		memory = static_cast<MemoryHeader*>(_aligned_malloc(_allocSize, SLIST_ALIGNMENT));
 	}
 	else
 	{

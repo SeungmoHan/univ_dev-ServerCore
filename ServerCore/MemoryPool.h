@@ -11,9 +11,9 @@ enum
 DECLSPEC_ALIGN(SLIST_ALIGNMENT)
 struct MemoryHeader : public SLIST_ENTRY
 {
-	MemoryHeader(int32 size) : allocSize(size){}
+	explicit MemoryHeader(const int32 size) : _SLIST_ENTRY(), allocSize(size){}
 
-	static void* AttachHeader(MemoryHeader* header, int32 size)
+	static void* AttachHeader(MemoryHeader* header, const int32 size)
 	{
 		new(header)MemoryHeader(size);
 		return reinterpret_cast<void*>(++header);
@@ -21,7 +21,7 @@ struct MemoryHeader : public SLIST_ENTRY
 
 	static MemoryHeader* DetatchHeader(void* ptr)
 	{
-		MemoryHeader* header = reinterpret_cast<MemoryHeader*>(ptr) - 1;
+		MemoryHeader* header = static_cast<MemoryHeader*>(ptr) - 1;
 		return header;
 	}
 
@@ -36,7 +36,7 @@ DECLSPEC_ALIGN(SLIST_ALIGNMENT)
 class MemoryPool
 {
 public:
-	MemoryPool(int32 allocSize);
+	explicit MemoryPool(int32 allocSize);
 	~MemoryPool();
 
 	void			Push(MemoryHeader* ptr);

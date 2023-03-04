@@ -13,8 +13,11 @@ public:
 	SendBuffer(SendBufferChunkRef owner, BYTE* buffer, uint32 bufferSize);
 	~SendBuffer();
 
-	BYTE*		Buffer() { return m_Buffer; }
-	uint32		WriteSize() const { return m_WriteSize; }
+	BYTE*		Buffer() const;
+
+	uint32		AllocSize() const;
+
+	uint32		WriteSize() const;
 	void		Close(uint32 writeSize);
 private:
 	BYTE* m_Buffer;
@@ -44,9 +47,9 @@ public:
 	SendBufferRef	Open(uint32 allocSize);
 	void			Close(uint32 writeSize);
 
-	bool			IsOpen() { return m_Open; };
-	BYTE*			Buffer() { return &m_Buffer[m_UsedSize]; }
-	uint32			FreeSize() { return static_cast<uint32>(m_Buffer.size()) - m_UsedSize; }
+	bool			IsOpen() const;;
+	BYTE*			Buffer();
+	uint32			FreeSize() const;
 
 private:
 	Array<BYTE, SEND_BUFFER_CHUNK_SIZE> m_Buffer = {};

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "IocpEvent.h"
 
-IocpEvent::IocpEvent(EventType type) : eventType(type)
+IocpEvent::IocpEvent(const EventType type) : _OVERLAPPED(), eventType(type)
 {
 	Init();
 }

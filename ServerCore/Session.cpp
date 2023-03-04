@@ -21,7 +21,7 @@ Session::~Session()
 }
 
 
-void Session::Send(SendBufferRef buffer)
+void Session::Send(const SendBufferRef buffer)
 {
 	if (IsConnected() == false)
 		return;
@@ -62,7 +62,7 @@ HANDLE Session::GetHandle()
 	return reinterpret_cast<HANDLE>(m_Socket);
 }
 
-void Session::Dispatch(IocpEvent* iocpEvent, int32 numberOfBytes)
+void Session::Dispatch(IocpEvent* iocpEvent, const int32 numberOfBytes)
 {
 	//TODO
 	switch (iocpEvent->eventType)
@@ -228,7 +228,7 @@ void Session::ProcessDisconnect()
 	GetService()->ReleaseSession(GetSessionRef());
 }
 
-void Session::ProcessRecv(int32 numOfBytes)
+void Session::ProcessRecv(const int32 numOfBytes)
 {
 	m_RecvEvent.owner = nullptr; // Release Ref
 	if (numOfBytes == 0)
@@ -242,10 +242,10 @@ void Session::ProcessRecv(int32 numOfBytes)
 		return;
 	}
 
-	uint32 dataSize = m_RecvBuffer.DataSize();
+	const uint32 dataSize = m_RecvBuffer.DataSize();
 
-	int32 processLen = OnRecv(m_RecvBuffer.ReadPos(), dataSize);
-	if (processLen < 0 || dataSize < processLen || m_RecvBuffer.OnRead(processLen) == false)
+	if (const int32 processLen = OnRecv(m_RecvBuffer.ReadPos(), dataSize); 
+		processLen < 0 || dataSize < processLen || m_RecvBuffer.OnRead(processLen) == false)
 	{
 		Disconnect(L"OnRead Error");
 		return;
@@ -256,7 +256,7 @@ void Session::ProcessRecv(int32 numOfBytes)
 	RegisterRecv();
 }
 
-void Session::ProcessSend(int32 numOfBytes)
+void Session::ProcessSend(const int32 numOfBytes)
 {
 	m_SendEvent.owner = nullptr; // Release Ref
 	m_SendEvent.sendBuffers.clear(); // Release Ref
@@ -274,7 +274,7 @@ void Session::ProcessSend(int32 numOfBytes)
 		RegisterSend();
 }
 
-void Session::ErrorHandler(int32 errCode)
+void Session::ErrorHandler(const int32 errCode)
 {
 	switch (errCode)
 	{
@@ -295,31 +295,31 @@ void Session::ErrorHandler(int32 errCode)
 
 PacketSession::PacketSession()
 {
-
+	// TODO
 }
 
 PacketSession::~PacketSession()
 {
-
+	// TODO
 }
 
-int32 PacketSession::OnRecv(BYTE* buffer, int32 len)
+int32 PacketSession::OnRecv(BYTE* buffer, const int32 len)
 {
 	int totalProcessedByte = 0;
 	for (;;)
 	{
-		int32 dataSize = len - totalProcessedByte;
+		const int32 dataSize = len - totalProcessedByte;
 		if (dataSize < sizeof(PacketHeader))
 			break;
-		PacketHeader header = *reinterpret_cast<PacketHeader*>(buffer + totalProcessedByte);
+		const auto [size, id] = *reinterpret_cast<PacketHeader*>(buffer + totalProcessedByte);
 		// header->size == dataSize + headerSize
-		if (dataSize < header.size)
+		if (dataSize < size)
 			break;
 
 		//PacketProcess
-		OnRecvPacket(buffer + totalProcessedByte, header.size);
+		OnRecvPacket(buffer + totalProcessedByte, size);
 		
-		totalProcessedByte += header.size;
+		totalProcessedByte += size;
 	}
 	return totalProcessedByte;
 }

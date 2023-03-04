@@ -7,11 +7,11 @@ void	GameSession::OnConnect()
 	GameSessionManager::Instance()->Add(static_pointer_cast<GameSession>(shared_from_this()));
 };
 
-int32	GameSession::OnRecvPacket(BYTE* buffer, int32 len)
+int32	GameSession::OnRecvPacket(BYTE* buffer, const int32 len)
 {
-	PacketHeader header = *(PacketHeader*)buffer;
+	const auto [size, id] = *reinterpret_cast<PacketHeader*>(buffer);
 
-	cout << "Packet ID : " << header.id << " Size : " << header.size << endl;
+	cout << "Packet ID : " << id << " Size : " << size << endl;
 	//cout << "OnRecv Len =" << len << "  : " << (char*)buffer << endl;
 
 
