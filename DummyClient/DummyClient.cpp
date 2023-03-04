@@ -6,19 +6,34 @@
 #include "Service.h"
 #include "Session.h"
 
-#include "ClientPacketHandler.h"
-
-
-
 char sendData[] = "Hello World!";
 class ServerSession : public PacketSession
 {
 public:
 	virtual void	OnConnect() override { }
 
-	virtual void	OnRecvPacket(BYTE* buffer, const int32 len) override
+	virtual int32	OnRecvPacket(BYTE* buffer, const int32 len) override
 	{
-		ClientPacketHandler::HandlePacket(buffer, len);
+
+		BufferReader reader(buffer, len);
+
+		PacketHeader header{};
+		reader >> header;
+
+		uint64 id;
+		uint32 hp;
+		uint16 attack;
+
+		reader >> id >> hp >> attack;
+
+		cout << "ID : " << id << " HP : " << hp << " ATTACK : " << attack << endl;
+
+		char recvBuffer[4096];
+		const auto size = static_cast<uint32>(header.size - sizeof(PacketHeader) - 8 - 4 - 2);
+		reader.Read(recvBuffer, size);
+		cout << recvBuffer << endl;
+
+		return len;
 	}
 	virtual void	OnSend(int32 len) override
 	{
@@ -35,7 +50,7 @@ int main()
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),
 		MakeShared<ServerSession>,// Session Factory TODO : SessionManager
-		1);
+		1000);
 
 	ASSERT_CRASH(service->Start());
 

@@ -1,17 +1,23 @@
 #include "pch.h"
 #include "GameSession.h"
 #include "GameSessionManager.h"
-#include "ServerPacketHandler.h"
 
 void	GameSession::OnConnect() 
 {
 	GameSessionManager::Instance()->Add(static_pointer_cast<GameSession>(shared_from_this()));
 };
 
-void	GameSession::OnRecvPacket(BYTE* buffer, const int32 len)
+int32	GameSession::OnRecvPacket(BYTE* buffer, const int32 len)
 {
-	ServerPacketHandler::HandlePacket(buffer, len);
+	const auto [size, id] = *reinterpret_cast<PacketHeader*>(buffer);
 
+	cout << "Packet ID : " << id << " Size : " << size << endl;
+	//cout << "OnRecv Len =" << len << "  : " << (char*)buffer << endl;
+
+
+	//GameSessionManager::Instance()->Broadcast(buffer);
+
+	return len;
 }
 
 void	GameSession::OnSend(int32 len)
