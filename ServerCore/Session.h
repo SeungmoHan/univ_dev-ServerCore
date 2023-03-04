@@ -99,5 +99,17 @@ private:
 struct PacketHeader
 {
 	uint16 size;
-	uint16 id; // protocol (ex 1 ë¡œê·¸ì¸ ,2 ì´ë™ìš”ì²­ë“±...)
+	uint16 id; // protocol (ex 1 ·Î±×ÀÎ ,2 ÀÌµ¿¿äÃ»µî...)
+};
+
+class PacketSession : public Session
+{
+public:
+	PacketSession();
+	virtual ~PacketSession();
+	
+	PacketSessionRef GetPacketSessionRef() { return static_pointer_cast<PacketSession>(shared_from_this()); }
+protected:
+	virtual int32 OnRecv(BYTE* buffer, int32 len) sealed;
+	virtual int32 OnRecvPacket(BYTE* buffer, int32 len) abstract;
 };

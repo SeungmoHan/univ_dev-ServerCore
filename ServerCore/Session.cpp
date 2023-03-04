@@ -28,11 +28,11 @@ void Session::Send(SendBufferRef buffer)
 	bool registerSend = false;
 
 	{
-	WRITE_LOCK;
+		WRITE_LOCK;
 
-	m_SendQueue.push(buffer);
+		m_SendQueue.push(buffer);
 
-	if (m_SendRegistered.exchange(true) == false)
+		if (m_SendRegistered.exchange(true) == false)
 			registerSend = true;
 	}
 
@@ -285,4 +285,40 @@ void Session::ErrorHandler(int32 errCode)
 		// TODO Log
 		std::cout << "Handle Error : " << errCode << endl;
 	}
+}
+
+
+/*-----------------------
+	Packet	Session
+-----------------------*/
+
+PacketSession::PacketSession()
+{
+
+}
+
+PacketSession::~PacketSession()
+{
+
+}
+
+int32 PacketSession::OnRecv(BYTE* buffer, int32 len)
+{
+	int totalProcessedByte = 0;
+	for (;;)
+	{
+		int32 dataSize = len - totalProcessedByte;
+		if (dataSize < sizeof(PacketHeader))
+			break;
+		PacketHeader header = *reinterpret_cast<PacketHeader*>(buffer + totalProcessedByte);
+		// header->size == dataSize + headerSize
+		if (dataSize < header.size)
+			break;
+
+		//PacketProcess
+		OnRecvPacket(buffer + totalProcessedByte, header.size);
+		
+		totalProcessedByte += header.size;
+	}
+	return totalProcessedByte;
 }
