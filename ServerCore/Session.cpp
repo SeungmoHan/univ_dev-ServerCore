@@ -22,14 +22,22 @@ Session::~Session()
 
 void Session::Send(SendBufferRef buffer)
 {
+	if (IsConnected() == false)
+		return;
+
+	bool registerSend = false;
+
+	{
 	WRITE_LOCK;
 
 	m_SendQueue.push(buffer);
 
 	if (m_SendRegistered.exchange(true) == false)
-	{
-		RegisterSend();
+			registerSend = true;
 	}
+
+	if(registerSend)
+		RegisterSend();
 	
 }
 

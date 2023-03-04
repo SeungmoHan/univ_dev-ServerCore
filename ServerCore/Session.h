@@ -92,3 +92,12 @@ private:
 	SendEvent m_SendEvent;
 };
 
+
+/*-----------------------
+	Packet	Session
+-----------------------*/
+struct PacketHeader
+{
+	uint16 size;
+	uint16 id; // protocol (ex 1 로그인 ,2 이동요청등...)
+};
