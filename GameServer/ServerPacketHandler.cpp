@@ -28,7 +28,7 @@ void ServerPacketHandler::Handle_CS_TEST(BYTE* buffer, const uint32 len)
 	
 }
 
-SendBufferRef ServerPacketHandler::Make_SC_TEST(const uint64 id, const uint32 hp, const uint16 attack, const vector<BuffData>& datas)
+SendBufferRef ServerPacketHandler::Make_SC_TEST(const uint64 id, const uint32 hp, const uint16 attack, const vector<BuffData>& buffs, std::wstring name)
 {
 	SendBufferRef sendBuffer = g_SendBufferManager->Open(4096);
 
@@ -38,14 +38,19 @@ SendBufferRef ServerPacketHandler::Make_SC_TEST(const uint64 id, const uint32 hp
 
 	//id(uint64), 체력 uint32, 공격력 uint16
 	writer << id << hp << attack;
-
-
-	// variable length data...
-	writer << static_cast<uint16>(datas.size());
-	for(const auto [buffId, remainTime] : datas)
+#pragma pack(1)
+	struct ListHeader
 	{
+		uint16 offSet;
+		uint16 count;
+	};
+#pragma pack()
+
+	const auto buffHeader = writer.Reserve<ListHeader>();
+	buffHeader->count = static_cast<uint16>(buffs.size());
+	buffHeader->offSet = static_cast<uint16>(writer.WriteSize());
+	for(const auto [buffId, remainTime] : buffs)
 		writer << buffId << remainTime;
-	}
 
 	header->size = static_cast<uint16>(writer.WriteSize());
 	header->id = SC_TEST;
