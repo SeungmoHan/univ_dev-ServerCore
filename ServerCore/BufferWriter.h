@@ -27,7 +27,7 @@ public:
 	BufferWriter& operator<<(IN const T&& src);
 
 	template<typename T>
-	T* Reserve();
+	T* Reserve(const uint32 count = 1);
 
 private:
 
@@ -55,12 +55,12 @@ BufferWriter& BufferWriter::operator<<(const T&& src)
 }
 
 template <typename T>
-T* BufferWriter::Reserve()
+T* BufferWriter::Reserve(const uint32 count)
 {
-	if (FreeSize() < sizeof(T))
+	if (FreeSize() < (sizeof(T)) * count)
 		return nullptr;
 
 	T* ret = reinterpret_cast<T*>(&m_Buffer[m_Pos]);
-	m_Pos += sizeof(T);
+	m_Pos += sizeof(T) * count;
 	return ret;
 }
