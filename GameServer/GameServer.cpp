@@ -33,25 +33,33 @@ int main()
 
 	while (true)
 	{
-		vector<BuffData> buffs;
-
 		const uint64 id = (rand() % 50) + 51;
 		const uint32 hp = (rand() % 50) + 150 + 1;
 		const uint16 attack = (rand() % 50) + 250 + 1;
+		PKT_SC_TEST_WRITE pktWriter(id, hp, attack);
 
 		const uint32 buffSize = (rand() % 10) + 1;
-		buffs.resize(buffSize);
-		for(uint32 i = 0; i<buffSize ; i++)
+		PKT_SC_TEST_WRITE::BuffList buffList = pktWriter.ReserveBuffList(buffSize);
+
+		for(uint32 i = 0; i < buffSize ; i++)
 		{
 			const uint32 buffId = rand() % 10000 + 1;
 			const auto up = static_cast<float>((rand() % 5) + 10);
 			const auto down = static_cast<float>((rand() % 5) + 1);
 			const auto remainTime = up / down;
-			buffs[i] = { buffId,remainTime };
+			buffList[i] = { buffId,remainTime };
+		}
+		for (uint32 i = 0; i < buffSize; i++)
+		{
+			const uint32 buffVictimCount = (rand() % 3) + 1;
+			PKT_SC_TEST_WRITE::BuffVictimList victim = pktWriter.ReserveBuffVictimList(&buffList[i], buffVictimCount);
+			for (uint32 j = 0; j < buffVictimCount; j++)
+			{
+				victim[j] = (1000 * (j + 1)) + i;
+			}
 		}
 
-		const SendBufferRef sendBuffer = ServerPacketHandler::Make_SC_TEST(id, hp, attack, buffs, L"안녕하세요");
-
+		const SendBufferRef sendBuffer = pktWriter.CloseAndReturn();
 		GameSessionManager::Instance()->Broadcast(sendBuffer);
 
 		this_thread::sleep_for(1000ms);

@@ -11,11 +11,6 @@ enum
 };
 
 
-struct BuffData
-{
-	uint64 buffId;
-	float remainTime;
-};
 class ClientPacketHandler
 {
 public:
@@ -42,7 +37,6 @@ public:
 private:
 	C& m_Container;
 	uint32 m_Index;
-
 };
 
 template <typename T>
@@ -65,3 +59,78 @@ private:
 	T*		m_Data		= nullptr;
 	uint16	m_Count		= 0;
 };
+
+#pragma pack(1)
+struct PKT_SC_TEST
+{
+	struct BuffListItem
+	{
+		uint64 buffId;
+		float remainTime;
+
+		uint16 victimeOffset;
+		uint16 victimCount;
+
+		bool Validate(BYTE* packetStart, uint16 packetSize, OUT uint32& size) const
+		{
+			if (victimeOffset + victimCount * sizeof(uint64) > packetSize)
+				return false;
+
+			size += victimCount * sizeof(uint64);
+			return true;
+		}
+	};
+
+
+	uint16 packetSize;
+	uint16 packetId;
+
+	uint64 id;
+	uint32 hp;
+	uint16 attack;
+
+	uint16 buffOffset;
+	uint16 buffCount;
+
+	bool Validate() 
+	{
+		uint32 size = 0;
+		size += sizeof(PKT_SC_TEST);
+		if (packetSize < size)
+			return false;
+
+		if (buffOffset + buffCount * sizeof(BuffListItem) > packetSize)
+			return false;
+
+		size += buffCount * sizeof(BuffListItem);
+
+		BuffList buffList = GetBuffList();
+		for(uint32 i =0; i< buffList.GetCount(); i++)
+		{
+			if (false == buffList[i].Validate(reinterpret_cast<BYTE*>(this), packetSize, OUT size))
+				return false;
+		}
+
+		if (size != packetSize)
+			return false;
+
+		return true;
+	}
+	using BuffList = PacketList<BuffListItem>;
+	using BuffVictimList = PacketList<uint64>;
+
+	BuffList GetBuffList()
+	{
+		auto data = reinterpret_cast<BYTE*>(this);
+		data += buffOffset;
+		return BuffList(reinterpret_cast<BuffListItem*>(data), buffCount);
+	}
+
+	BuffVictimList GetBuffVictimList(const BuffListItem* buffItem)
+	{
+		auto data = reinterpret_cast<BYTE*>(this);
+		data += buffItem->victimeOffset;
+		return BuffVictimList(reinterpret_cast<uint64*>(data), buffItem->victimCount);
+	}
+};
+#pragma pack()
