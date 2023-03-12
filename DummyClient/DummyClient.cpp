@@ -30,7 +30,7 @@ public:
 
 int main()
 {
-	this_thread::sleep_for(5000ms);
+	this_thread::sleep_for(2000ms);
 	const ClientServiceRef service = MakeShared<ClientService>(
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),

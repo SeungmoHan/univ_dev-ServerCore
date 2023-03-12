@@ -25,5 +25,5 @@ public:
 
 
 
-	static SendBufferRef Make_SC_TEST(const uint64 id, const uint32 hp, const uint16 attack, const vector<BuffData>& datas);
+	static SendBufferRef Make_SC_TEST(const uint64 id, const uint32 hp, const uint16 attack, const vector<BuffData>& buffs, std::wstring name);
 };
