@@ -23,8 +23,11 @@ void ServerPacketHandler::Handle_CS_TEST(BYTE* buffer, const uint32 len)
 	BufferReader reader(buffer, len);
 	PacketHeader header{};
 	reader.Peek(&header);
+}
 
-	
+SendBufferRef ServerPacketHandler::MakeSendBuffer(const Protocol::SC_TEST& pkt)
+{
+	return _MakeSendBuffer(pkt, SC_TEST);
 }
 
 //SendBufferRef ServerPacketHandler::Make_SC_TEST(const uint64 id, const uint32 hp, const uint16 attack, const vector<BuffData>& buffs, std::wstring name)

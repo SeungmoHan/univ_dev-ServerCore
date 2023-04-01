@@ -6,6 +6,7 @@
 #include "GameSession.h"
 #include "GameSessionManager.h"
 #include "ServerPacketHandler.h"
+#include "Protocol.pb.h"
 
 
 int main()
@@ -33,33 +34,32 @@ int main()
 
 	while (true)
 	{
-		const uint64 id = (rand() % 50) + 51;
-		const uint32 hp = (rand() % 50) + 150 + 1;
-		const uint16 attack = (rand() % 50) + 250 + 1;
-		PKT_SC_TEST_WRITE pktWriter(id, hp, attack);
+		Protocol::SC_TEST pkt;
+		pkt.set_id(1000);
+		pkt.set_hp(100);
+		pkt.set_attack(10);
 
-		const uint32 buffSize = (rand() % 10) + 1;
-		PKT_SC_TEST_WRITE::BuffList buffList = pktWriter.ReserveBuffList(buffSize);
-
-		for(uint32 i = 0; i < buffSize ; i++)
+		
 		{
-			const uint32 buffId = rand() % 10000 + 1;
-			const auto up = static_cast<float>((rand() % 5) + 10);
-			const auto down = static_cast<float>((rand() % 5) + 1);
-			const auto remainTime = up / down;
-			buffList[i] = { buffId,remainTime };
+			Protocol::BuffData* data = pkt.add_buff();
+			data->set_buffid(100);
+			data->set_remaintime(1.2f);
+			data->add_victims(4000);
 		}
-		for (uint32 i = 0; i < buffSize; i++)
 		{
-			const uint32 buffVictimCount = (rand() % 3) + 1;
-			PKT_SC_TEST_WRITE::BuffVictimList victim = pktWriter.ReserveBuffVictimList(&buffList[i], buffVictimCount);
-			for (uint32 j = 0; j < buffVictimCount; j++)
-			{
-				victim[j] = (1000 * (j + 1)) + i;
-			}
+			Protocol::BuffData* data = pkt.add_buff();
+			data->set_buffid(200);
+			data->set_remaintime(2.4f);
+			data->add_victims(3000);
+		}
+		{
+			Protocol::BuffData* data = pkt.add_buff();
+			data->set_buffid(300);
+			data->set_remaintime(3.6f);
+			data->add_victims(12000);
 		}
 
-		const SendBufferRef sendBuffer = pktWriter.CloseAndReturn();
+		const SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		GameSessionManager::Instance()->Broadcast(sendBuffer);
 
 		this_thread::sleep_for(1000ms);

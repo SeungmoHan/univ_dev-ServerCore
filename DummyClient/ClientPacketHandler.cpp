@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ClientPacketHandler.h"
 #include "BufferReader.h"
+#include "Protocol.pb.h"
 
 
 void ClientPacketHandler::HandlePacket(BYTE* buffer, const uint32 len)
@@ -20,34 +21,23 @@ void ClientPacketHandler::HandlePacket(BYTE* buffer, const uint32 len)
 }
 
 
-void ClientPacketHandler::Handle_SC_TEST(BYTE* buffer, const uint32 len)
+void ClientPacketHandler::Handle_SC_TEST(const BYTE* buffer, const uint32 len)
 {
-	BufferReader reader(buffer, len);
-
-	if (len < sizeof(PKT_SC_TEST))
-		return;
-
-	const auto pkt = reinterpret_cast<PKT_SC_TEST*>(buffer);
-
-	if (pkt->Validate() == false)
-		return;
-
-	auto list = pkt->GetBuffList();
+	Protocol::SC_TEST pkt;
 	
-	const uint32 listCount = list.GetCount();
-	cout << "ID : " << pkt->id << " HP : " << pkt->hp << " ATTACK : " << pkt->attack << endl;
-	cout << "Buff count : " << listCount << endl;
+	ASSERT_CRASH(pkt.ParseFromArray(buffer + sizeof(PacketHeader), len - sizeof(PacketHeader)));
 
-	for(auto& buff : list)
+	cout << "pktId : " << pkt.id() << " pktHP : " << pkt.hp() << " pktAttack : " << pkt.attack() << endl;
+	cout << "buffSize : " << pkt.buff_size() << endl;
+
+	for(auto& buff : pkt.buff())
 	{
-		cout << "BuffInfo : " << buff.buffId << " RemainTime : " << buff.remainTime << endl;
-
-		PKT_SC_TEST::BuffVictimList victims = pkt->GetBuffVictimList(&buff);
-
-		cout << "	Victim Count : " << victims.GetCount() << endl;
-		for(const auto& victim : victims)
+		cout << "buffId : " << buff.buffid() << " remianTime : " << buff.remaintime() << endl;
+		cout << "victimsSize : " << buff.victims_size() << endl;
+		for(auto& victim : buff.victims())
 		{
-			cout << "		Victime ID : " << victim << endl;
+			cout << "victim : " << victim << endl;
 		}
 	}
+
 }
