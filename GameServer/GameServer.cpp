@@ -5,12 +5,13 @@
 #include "Service.h"
 #include "GameSession.h"
 #include "GameSessionManager.h"
-#include "ServerPacketHandler.h"
+#include "ClientPacketHandler.h"
 #include "Protocol.pb.h"
 
 
 int main()
 {
+	ClientPacketHandler::Init();
 	//TODO
 	const ServerServiceRef service = MakeShared<ServerService>(
 		NetAddress(L"127.0.0.1", 7777),
@@ -32,37 +33,5 @@ int main()
 			});
 	}
 
-	while (true)
-	{
-		Protocol::SC_TEST pkt;
-		pkt.set_id(1000);
-		pkt.set_hp(100);
-		pkt.set_attack(10);
-
-		
-		{
-			Protocol::BuffData* data = pkt.add_buff();
-			data->set_buffid(100);
-			data->set_remaintime(1.2f);
-			data->add_victims(4000);
-		}
-		{
-			Protocol::BuffData* data = pkt.add_buff();
-			data->set_buffid(200);
-			data->set_remaintime(2.4f);
-			data->add_victims(3000);
-		}
-		{
-			Protocol::BuffData* data = pkt.add_buff();
-			data->set_buffid(300);
-			data->set_remaintime(3.6f);
-			data->add_victims(12000);
-		}
-
-		const SendBufferRef sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		GameSessionManager::Instance()->Broadcast(sendBuffer);
-
-		this_thread::sleep_for(1000ms);
-	}
 	g_ThreadManager->Join();
 }
