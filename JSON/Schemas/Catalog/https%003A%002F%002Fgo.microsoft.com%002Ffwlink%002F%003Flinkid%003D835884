@@ -81,7 +81,7 @@
       "name": "Airplane task",
       "description": "Schema for building Airplane tasks",
       "fileMatch": ["*.task.json", "*.task.yaml", "*.task.yml"],
-      "url": "https://raw.githubusercontent.com/airplanedev/lib/main/pkg/deploy/taskdir/definitions/schema_0_3.json"
+      "url": "https://api.airplane.dev/v0/schemas/task.json"
     },
     {
       "name": "angular.json",
@@ -786,6 +786,12 @@
       "description": "Schema for Dein.vim, a Vim/Neovim plugin manager",
       "fileMatch": ["dein.toml"],
       "url": "https://json.schemastore.org/dein.json"
+    },
+    {
+      "name": "Deta Spacefile Schema",
+      "description": "Configuration file for Space Apps",
+      "fileMatch": ["Spacefile"],
+      "url": "https://deta.space/assets/spacefile.schema.json"
     },
     {
       "name": "Drupal Breakpoints Schema",
@@ -1885,6 +1891,18 @@
       "url": "https://raw.githubusercontent.com/ory/hydra/master/.schema/version.schema.json"
     },
     {
+      "name": "IBM Zapp document",
+      "description": "IBM Z APPlication configuration file for IBM zDevOps development tools such as Z Open Editor.",
+      "fileMatch": ["zapp.yaml", "zapp.json"],
+      "url": "https://raw.githubusercontent.com/IBM/zopeneditor-about/main/zapp/zapp-schema-1.0.0.json"
+    },
+    {
+      "name": "IBM zCodeFormatSettings",
+      "description": "IBM Enterprise languages code formatter settings file for IBM zDevOps development tools such as Z Open Editor.",
+      "fileMatch": ["zcodeformat.yaml", "zcodeformat.json"],
+      "url": "https://raw.githubusercontent.com/IBM/zopeneditor-about/main/zcodeformat/zcodeformat-schema-0.0.1.json"
+    },
+    {
       "name": "ide.host.json",
       "description": "JSON schema for IDE template host file",
       "fileMatch": ["ide.host.json"],
@@ -2074,6 +2092,11 @@
         "*.k3d.yml"
       ],
       "url": "https://raw.githubusercontent.com/rancher/k3d/main/pkg/config/config.versions.schema.json"
+    },
+    {
+      "name": "Kas",
+      "description": "Configuration for the Kas setup tool",
+      "url": "https://raw.githubusercontent.com/siemens/kas/master/kas/schema-kas.json"
     },
     {
       "name": "KrakenD",
@@ -2935,7 +2958,7 @@
     {
       "name": "Ruff",
       "description": "JSON schema for Ruff, a fast Python linter",
-      "fileMatch": ["ruff.toml"],
+      "fileMatch": ["ruff.toml", ".ruff.toml"],
       "url": "https://json.schemastore.org/ruff.json"
     },
     {
@@ -2982,7 +3005,8 @@
       "fileMatch": [".rr*.yml", ".rr*.yaml"],
       "versions": {
         "1.0": "https://cdn.jsdelivr.net/gh/roadrunner-server/roadrunner@latest/schemas/config/1.0.schema.json",
-        "2.0": "https://cdn.jsdelivr.net/gh/roadrunner-server/roadrunner@latest/schemas/config/2.0.schema.json"
+        "2.0": "https://cdn.jsdelivr.net/gh/roadrunner-server/roadrunner@latest/schemas/config/2.0.schema.json",
+        "3.0": "https://cdn.jsdelivr.net/gh/roadrunner-server/roadrunner@latest/schemas/config/3.0.schema.json"
       }
     },
     {
@@ -3304,6 +3328,12 @@
       "description": "Swagger API 2.0 schema",
       "fileMatch": ["swagger.json"],
       "url": "https://json.schemastore.org/swagger-2.0.json"
+    },
+    {
+      "name": "task.json",
+      "description": "VSCode Task file",
+      "fileMatch": ["task.json"],
+      "url": "https://json.schemastore.org/task.json"
     },
     {
       "name": "Talisman configuration",
@@ -4273,6 +4303,12 @@
       "url": "https://json.schemastore.org/markdown-lint-check.json"
     },
     {
+      "name": "Mason Registry",
+      "description": "JSON schema for Mason, a package manager for Neovim.",
+      "fileMatch": ["**/packages/*/package.yaml"],
+      "url": "https://json.schemastore.org/mason-registry.json"
+    },
+    {
       "name": "SauceCTL Configuration",
       "description": "JSON Schema for SauceCTL configuration files.",
       "fileMatch": ["**/.sauce/*.yml"],
@@ -4391,7 +4427,7 @@
     {
       "name": "Hugo",
       "description": "Hugo static site generator config file schema",
-      "fileMatch": [],
+      "fileMatch": ["hugo.toml", "hugo.json", "hugo.yaml"],
       "url": "https://json.schemastore.org/hugo.json"
     },
     {

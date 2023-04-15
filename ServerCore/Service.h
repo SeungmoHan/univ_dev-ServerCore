@@ -29,6 +29,8 @@ public:
 	virtual void	CloseService();
 	void			SetSessionFactory(const SessionFactory factory) { m_SessionFactory = factory; }
 
+
+	void			Broadcast(const SendBufferRef sendBuffer);
 	SessionRef		CreateSession();
 	void			AddSession(SessionRef session);
 	void			ReleaseSession(SessionRef session);

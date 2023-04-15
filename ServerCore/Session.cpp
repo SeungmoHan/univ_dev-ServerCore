@@ -246,7 +246,7 @@ void Session::ProcessRecv(const int32 numOfBytes)
 	const uint32 dataSize = m_RecvBuffer.DataSize();
 
 	if (const int32 processLen = OnRecv(m_RecvBuffer.ReadPos(), dataSize); 
-		processLen < 0 || dataSize < processLen || m_RecvBuffer.OnRead(processLen) == false)
+		processLen < 0 || static_cast<int32>(dataSize) < processLen || m_RecvBuffer.OnRead(processLen) == false)
 	{
 		Disconnect(L"OnRead Error");
 		return;

@@ -21,6 +21,7 @@ using namespace std;
 #include <MSWSock.h>
 #include <WS2tcpip.h>
 
+#include "Logger.h"
 #include "Memory.h"
 
 #include "SendBuffer.h"

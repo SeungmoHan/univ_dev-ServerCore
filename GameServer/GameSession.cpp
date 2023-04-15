@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "GameSession.h"
 #include "GameSessionManager.h"
-#include "ServerPacketHandler.h"
+#include "ClientPacketHandler.h"
 
 void	GameSession::OnConnect() 
 {
@@ -10,8 +10,11 @@ void	GameSession::OnConnect()
 
 void	GameSession::OnRecvPacket(BYTE* buffer, const int32 len)
 {
-	ServerPacketHandler::HandlePacket(buffer, len);
+	auto session = GetPacketSessionRef();
+	auto header = reinterpret_cast<PacketHeader*>(buffer);
 
+	//TODO PacketID 대역 체크
+	ClientPacketHandler::HandlePacket(session, buffer, len);
 }
 
 void	GameSession::OnSend(int32 len)

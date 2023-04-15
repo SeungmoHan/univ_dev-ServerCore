@@ -5,6 +5,7 @@
 #include "Memory.h"
 #include "SendBuffer.h"
 #include "SocketUtils.h"
+#include "Logger.h"
 
 ThreadManager*			g_ThreadManager = nullptr;
 DeadLockProfiler*		g_DeadlockProfiler = nullptr;
