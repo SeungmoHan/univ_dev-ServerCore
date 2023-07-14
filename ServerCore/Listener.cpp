@@ -77,20 +77,24 @@ void Listener::Dispatch(IocpEvent* iocpEvent, int32 numberOfBytes)
 
 void Listener::RegisterAccept(AcceptEvent* acceptEvent)
 {
+	if (m_Socket == INVALID_SOCKET)
+	{
+		cout << "ListenSocket Closed" << endl;
+		return;
+	}
 	const SessionRef session = m_Service->CreateSession();
 
 	acceptEvent->Init();
 	acceptEvent->session = session;
-
-	SOCKET clientSocket = SocketUtils::CreateSocket();
 
 	DWORD bytesRecieved = 0;
 	if (false == SocketUtils::AcceptEx(m_Socket, session->GetSocket(), session->m_RecvBuffer.WritePos(), 0,
 		sizeof(sockaddr_in) + 16, sizeof(sockaddr_in) + 16,
 		OUT &bytesRecieved, static_cast<LPOVERLAPPED>(acceptEvent)))
 	{
-		const int32 errCode = WSAGetLastError();
-		if (errCode != WSA_IO_PENDING)
+		// IO Pending이 아니면 실패,
+		// 실패하면 RegisterAccept가 끊키니까 다시한번 호출해줌
+		if (const int32 errCode = WSAGetLastError(); errCode != WSA_IO_PENDING)
 		{
 			RegisterAccept(acceptEvent);
 		}

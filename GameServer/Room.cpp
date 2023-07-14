@@ -5,28 +5,31 @@
 #include "Player.h"
 Room g_Room;
 
-void Room::Enter(const PlayerRef& player)
+void Room::Enter(PlayerRef player)
 {
-	WRITE_LOCK;
-
 	m_PlayerMap[player->m_PlayerId] = player;
 }
 
-void Room::Leave(const PlayerRef& player)
+void Room::Leave(PlayerRef player)
 {
-	WRITE_LOCK;
-
 	m_PlayerMap.erase(player->m_PlayerId);
 }
 
-void Room::Broadcast(const SendBufferRef& sendBuffer)
+void Room::Broadcast(SendBufferRef sendBuffer)
 {
-	WRITE_LOCK;
-
 	for(const auto& [playerId, player] : m_PlayerMap)
 	{
 		player->m_OwnerSession->Send(sendBuffer);
 	}
 }
 
-
+void Room::FlushJob()
+{
+	while (true)
+	{
+		const auto job = m_Jobs.Pop();
+		if (job == nullptr)
+			break;
+		job->Execute();
+	}
+}

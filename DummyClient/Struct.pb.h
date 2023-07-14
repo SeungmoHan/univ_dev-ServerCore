@@ -47,7 +47,7 @@ struct TableStruct_Struct_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[2]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[1]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -55,188 +55,16 @@ struct TableStruct_Struct_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Struct_2eproto;
 namespace Protocol {
-class BuffData;
-struct BuffDataDefaultTypeInternal;
-extern BuffDataDefaultTypeInternal _BuffData_default_instance_;
 class Player;
 struct PlayerDefaultTypeInternal;
 extern PlayerDefaultTypeInternal _Player_default_instance_;
 }  // namespace Protocol
 PROTOBUF_NAMESPACE_OPEN
-template<> ::Protocol::BuffData* Arena::CreateMaybeMessage<::Protocol::BuffData>(Arena*);
 template<> ::Protocol::Player* Arena::CreateMaybeMessage<::Protocol::Player>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace Protocol {
 
 // ===================================================================
-
-class BuffData final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.BuffData) */ {
- public:
-  inline BuffData() : BuffData(nullptr) {}
-  ~BuffData() override;
-  explicit constexpr BuffData(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
-
-  BuffData(const BuffData& from);
-  BuffData(BuffData&& from) noexcept
-    : BuffData() {
-    *this = ::std::move(from);
-  }
-
-  inline BuffData& operator=(const BuffData& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  inline BuffData& operator=(BuffData&& from) noexcept {
-    if (this == &from) return *this;
-    if (GetOwningArena() == from.GetOwningArena()) {
-      InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
-    return GetDescriptor();
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
-    return default_instance().GetMetadata().descriptor;
-  }
-  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
-    return default_instance().GetMetadata().reflection;
-  }
-  static const BuffData& default_instance() {
-    return *internal_default_instance();
-  }
-  static inline const BuffData* internal_default_instance() {
-    return reinterpret_cast<const BuffData*>(
-               &_BuffData_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    0;
-
-  friend void swap(BuffData& a, BuffData& b) {
-    a.Swap(&b);
-  }
-  inline void Swap(BuffData* other) {
-    if (other == this) return;
-    if (GetOwningArena() == other->GetOwningArena()) {
-      InternalSwap(other);
-    } else {
-      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
-    }
-  }
-  void UnsafeArenaSwap(BuffData* other) {
-    if (other == this) return;
-    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
-    InternalSwap(other);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline BuffData* New() const final {
-    return new BuffData();
-  }
-
-  BuffData* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<BuffData>(arena);
-  }
-  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const BuffData& from);
-  void MergeFrom(const BuffData& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
-  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
-      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(BuffData* other);
-  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
-  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Protocol.BuffData";
-  }
-  protected:
-  explicit BuffData(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  private:
-  static void ArenaDtor(void* object);
-  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
-  public:
-
-  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  enum : int {
-    kVictimsFieldNumber = 3,
-    kBuffIdFieldNumber = 1,
-    kRemainTimeFieldNumber = 2,
-  };
-  // repeated uint64 victims = 3;
-  int victims_size() const;
-  private:
-  int _internal_victims_size() const;
-  public:
-  void clear_victims();
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_victims(int index) const;
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint64 >&
-      _internal_victims() const;
-  void _internal_add_victims(::PROTOBUF_NAMESPACE_ID::uint64 value);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint64 >*
-      _internal_mutable_victims();
-  public:
-  ::PROTOBUF_NAMESPACE_ID::uint64 victims(int index) const;
-  void set_victims(int index, ::PROTOBUF_NAMESPACE_ID::uint64 value);
-  void add_victims(::PROTOBUF_NAMESPACE_ID::uint64 value);
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint64 >&
-      victims() const;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint64 >*
-      mutable_victims();
-
-  // uint64 buffId = 1;
-  void clear_buffid();
-  ::PROTOBUF_NAMESPACE_ID::uint64 buffid() const;
-  void set_buffid(::PROTOBUF_NAMESPACE_ID::uint64 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_buffid() const;
-  void _internal_set_buffid(::PROTOBUF_NAMESPACE_ID::uint64 value);
-  public:
-
-  // float remainTime = 2;
-  void clear_remaintime();
-  float remaintime() const;
-  void set_remaintime(float value);
-  private:
-  float _internal_remaintime() const;
-  void _internal_set_remaintime(float value);
-  public:
-
-  // @@protoc_insertion_point(class_scope:Protocol.BuffData)
- private:
-  class _Internal;
-
-  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
-  typedef void InternalArenaConstructable_;
-  typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint64 > victims_;
-  mutable std::atomic<int> _victims_cached_byte_size_;
-  ::PROTOBUF_NAMESPACE_ID::uint64 buffid_;
-  float remaintime_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_Struct_2eproto;
-};
-// -------------------------------------------------------------------
 
 class Player final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.Player) */ {
@@ -282,7 +110,7 @@ class Player final :
                &_Player_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    0;
 
   friend void swap(Player& a, Player& b) {
     a.Swap(&b);
@@ -347,7 +175,7 @@ class Player final :
 
   enum : int {
     kNameFieldNumber = 2,
-    kObjectIdFieldNumber = 1,
+    kIdFieldNumber = 1,
     kPlayerTypeFieldNumber = 3,
   };
   // string name = 2;
@@ -364,13 +192,13 @@ class Player final :
   std::string* _internal_mutable_name();
   public:
 
-  // uint64 objectId = 1;
-  void clear_objectid();
-  ::PROTOBUF_NAMESPACE_ID::uint64 objectid() const;
-  void set_objectid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  // uint64 id = 1;
+  void clear_id();
+  ::PROTOBUF_NAMESPACE_ID::uint64 id() const;
+  void set_id(::PROTOBUF_NAMESPACE_ID::uint64 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_objectid() const;
-  void _internal_set_objectid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_id() const;
+  void _internal_set_id(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
   // .Protocol.PlayerType playerType = 3;
@@ -390,7 +218,7 @@ class Player final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
-  ::PROTOBUF_NAMESPACE_ID::uint64 objectid_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 id_;
   int playertype_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
@@ -404,117 +232,26 @@ class Player final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// BuffData
-
-// uint64 buffId = 1;
-inline void BuffData::clear_buffid() {
-  buffid_ = uint64_t{0u};
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint64 BuffData::_internal_buffid() const {
-  return buffid_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint64 BuffData::buffid() const {
-  // @@protoc_insertion_point(field_get:Protocol.BuffData.buffId)
-  return _internal_buffid();
-}
-inline void BuffData::_internal_set_buffid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  
-  buffid_ = value;
-}
-inline void BuffData::set_buffid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  _internal_set_buffid(value);
-  // @@protoc_insertion_point(field_set:Protocol.BuffData.buffId)
-}
-
-// float remainTime = 2;
-inline void BuffData::clear_remaintime() {
-  remaintime_ = 0;
-}
-inline float BuffData::_internal_remaintime() const {
-  return remaintime_;
-}
-inline float BuffData::remaintime() const {
-  // @@protoc_insertion_point(field_get:Protocol.BuffData.remainTime)
-  return _internal_remaintime();
-}
-inline void BuffData::_internal_set_remaintime(float value) {
-  
-  remaintime_ = value;
-}
-inline void BuffData::set_remaintime(float value) {
-  _internal_set_remaintime(value);
-  // @@protoc_insertion_point(field_set:Protocol.BuffData.remainTime)
-}
-
-// repeated uint64 victims = 3;
-inline int BuffData::_internal_victims_size() const {
-  return victims_.size();
-}
-inline int BuffData::victims_size() const {
-  return _internal_victims_size();
-}
-inline void BuffData::clear_victims() {
-  victims_.Clear();
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint64 BuffData::_internal_victims(int index) const {
-  return victims_.Get(index);
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint64 BuffData::victims(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.BuffData.victims)
-  return _internal_victims(index);
-}
-inline void BuffData::set_victims(int index, ::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  victims_.Set(index, value);
-  // @@protoc_insertion_point(field_set:Protocol.BuffData.victims)
-}
-inline void BuffData::_internal_add_victims(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  victims_.Add(value);
-}
-inline void BuffData::add_victims(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  _internal_add_victims(value);
-  // @@protoc_insertion_point(field_add:Protocol.BuffData.victims)
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint64 >&
-BuffData::_internal_victims() const {
-  return victims_;
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint64 >&
-BuffData::victims() const {
-  // @@protoc_insertion_point(field_list:Protocol.BuffData.victims)
-  return _internal_victims();
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint64 >*
-BuffData::_internal_mutable_victims() {
-  return &victims_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::uint64 >*
-BuffData::mutable_victims() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.BuffData.victims)
-  return _internal_mutable_victims();
-}
-
-// -------------------------------------------------------------------
-
 // Player
 
-// uint64 objectId = 1;
-inline void Player::clear_objectid() {
-  objectid_ = uint64_t{0u};
+// uint64 id = 1;
+inline void Player::clear_id() {
+  id_ = uint64_t{0u};
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint64 Player::_internal_objectid() const {
-  return objectid_;
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Player::_internal_id() const {
+  return id_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint64 Player::objectid() const {
-  // @@protoc_insertion_point(field_get:Protocol.Player.objectId)
-  return _internal_objectid();
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Player::id() const {
+  // @@protoc_insertion_point(field_get:Protocol.Player.id)
+  return _internal_id();
 }
-inline void Player::_internal_set_objectid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+inline void Player::_internal_set_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   
-  objectid_ = value;
+  id_ = value;
 }
-inline void Player::set_objectid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  _internal_set_objectid(value);
-  // @@protoc_insertion_point(field_set:Protocol.Player.objectId)
+inline void Player::set_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_id(value);
+  // @@protoc_insertion_point(field_set:Protocol.Player.id)
 }
 
 // string name = 2;
@@ -585,8 +322,6 @@ inline void Player::set_playertype(::Protocol::PlayerType value) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
 
 // @@protoc_insertion_point(namespace_scope)
 
