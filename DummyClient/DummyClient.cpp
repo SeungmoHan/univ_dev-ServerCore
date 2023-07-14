@@ -2,7 +2,6 @@
 #include "ThreadManager.h"
 #include "Service.h"
 #include "Session.h"
-
 #include "ServerPacketHandler.h"
 
 
@@ -31,7 +30,6 @@ public:
 	};
 	virtual void	OnDisconnected() override {};
 };
-
 
 int main()
 {
@@ -65,7 +63,6 @@ int main()
 	{
 		service->Broadcast(sendBuffer);
 		this_thread::sleep_for(1s);
-
 	}
 	g_ThreadManager->Join();
 }
