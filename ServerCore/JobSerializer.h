@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Job.h"
-#include "JobQueue.h"
+#include "LockQueue.h"
 
 
 /*---------------
@@ -10,22 +10,26 @@
 class JobSerializer : public enable_shared_from_this<JobSerializer>
 {
 public:
-	void PushJob(CallbackType&& callback)
+	void DoAsync(CallbackType&& callback)
 	{
-		auto job = ObjectPool<Job>::MakeShared(std::move(callback));
-		m_JobQueue.Push(job);
+		Push(ObjectPool<Job>::MakeShared(std::move(callback)));
 	}
 
 	template<typename T, typename Ret, typename... Args>
-	void PushJob(Ret(T::*memFunc)(Args...), Args... args)
+	void DoAsync(Ret(T::*memFunc)(Args...), Args... args)
 	{
 		shared_ptr<T> owner = static_pointer_cast<T>(shared_from_this());
-		auto job = ObjectPool<Job>::MakeShared(owner, memFunc, std::forward<Args>(args)...);
-		m_JobQueue.Push(job);
+		Push(ObjectPool<Job>::MakeShared(owner, memFunc, std::forward<Args>(args)...));
 	}
 
-	virtual void FlushJob() abstract;
+
+	//혹시나 모를 잡shared_ptr 사이클 방지를 위한 안전책
+	void ClearJob() { m_Jobs.ClearJob(); }
 
 protected:
-	JobQueue m_JobQueue;
+	LockQueue<JobRef>	m_Jobs;
+	Atomic<int32>		m_JobCounts = 0;
+private:
+	void Push(JobRef&& job);
+	void Execute();
 };

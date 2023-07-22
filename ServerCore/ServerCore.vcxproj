@@ -160,8 +160,18 @@
     <ClInclude Include="Allocator.h" />
     <ClInclude Include="BufferReader.h" />
     <ClInclude Include="BufferWriter.h" />
-    <ClInclude Include="ConcurrentQueue.h" />
-    <ClInclude Include="ConcurrentStack.h" />
+    <ClInclude Include="ConcurrentQueue.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ConcurrentStack.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Container.h" />
     <ClInclude Include="CoreGlobal.h" />
     <ClInclude Include="CoreMacro.h" />
@@ -171,7 +181,7 @@
     <ClInclude Include="IocpCore.h" />
     <ClInclude Include="IocpEvent.h" />
     <ClInclude Include="Job.h" />
-    <ClInclude Include="JobQueue.h" />
+    <ClInclude Include="LockQueue.h" />
     <ClInclude Include="JobSerializer.h" />
     <ClInclude Include="Listener.h" />
     <ClInclude Include="Lock.h" />
@@ -192,6 +202,7 @@
     <ClInclude Include="SendBuffer.h" />
     <ClInclude Include="Service.h" />
     <ClInclude Include="Session.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="SocketUtils.h" />
     <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="TypeCast.h" />
@@ -209,7 +220,7 @@
     <ClCompile Include="IocpCore.cpp" />
     <ClCompile Include="IocpEvent.cpp" />
     <ClCompile Include="Job.cpp" />
-    <ClCompile Include="JobQueue.cpp" />
+    <ClCompile Include="LockQueue.cpp" />
     <ClCompile Include="JobSerializer.cpp" />
     <ClCompile Include="Listener.cpp" />
     <ClCompile Include="Lock.cpp" />
@@ -234,6 +245,7 @@
     <ClCompile Include="SendBuffer.cpp" />
     <ClCompile Include="Service.cpp" />
     <ClCompile Include="Session.cpp" />
+    <ClCompile Include="Singleton.cpp" />
     <ClCompile Include="SocketUtils.cpp" />
     <ClCompile Include="ThreadManager.cpp" />
   </ItemGroup>

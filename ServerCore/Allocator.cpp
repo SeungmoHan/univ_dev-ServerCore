@@ -48,10 +48,12 @@ void StompAllocator::Release(void* ptr)
 
 void* PoolAllocator::Alloc(const int32 size)
 {
-	return g_Memory->Allocate(size);
+	//TempCode
+	return Memory::Instance()->Allocate(size);
 }
 
 void PoolAllocator::Release(void* ptr)
 {
-	g_Memory->Release(ptr);
+	//TempCode
+	return Memory::Instance()->Release(ptr);
 }

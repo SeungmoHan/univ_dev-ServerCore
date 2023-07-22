@@ -183,7 +183,7 @@ void Session::RegisterSend()
 
 	Vector<WSABUF> bufs;
 	bufs.reserve(m_SendEvent.sendBuffers.size());
-	for (auto sendBuffer : m_SendEvent.sendBuffers)
+	for (const auto sendBuffer : m_SendEvent.sendBuffers)
 	{
 		WSABUF buf;
 		buf.buf = reinterpret_cast<char*>(sendBuffer->Buffer());
