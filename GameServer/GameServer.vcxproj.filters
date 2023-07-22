@@ -45,7 +45,7 @@
     <ClCompile Include="Player.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
-    <ClCompile Include="Job.cpp">
+    <ClCompile Include="Job_Temp.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,7 +77,7 @@
     <ClInclude Include="Player.h">
       <Filter>GameContents</Filter>
     </ClInclude>
-    <ClInclude Include="Job.h">
+    <ClInclude Include="Job_Temp.h">
       <Filter>GameContents</Filter>
     </ClInclude>
   </ItemGroup>

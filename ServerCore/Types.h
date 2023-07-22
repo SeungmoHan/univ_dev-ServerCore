@@ -31,6 +31,8 @@ using ClientServiceRef		= std::shared_ptr<class ClientService>;
 using SendBufferRef			= std::shared_ptr<class SendBuffer>;
 using SendBufferChunkRef	= std::shared_ptr<class SendBufferChunk>;
 
+using JobRef				= std::shared_ptr<class Job>;
+
 
 #define size16(val)		static_cast<int16>(sizeof(val))
 #define size32(val)		static_cast<int32>(sizeof(val))

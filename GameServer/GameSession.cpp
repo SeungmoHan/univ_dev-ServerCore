@@ -19,7 +19,7 @@ void	GameSession::OnRecvPacket(BYTE* buffer, const int32 len)
 
 void	GameSession::OnSend(int32 len)
 {
-	//cout << "OnSend Len =" << len << endl;
+
 };
 
 void	GameSession::OnDisconnected() 

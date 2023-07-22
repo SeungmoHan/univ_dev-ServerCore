@@ -9,35 +9,10 @@
 #include "Job.h"
 #include "Room.h"
 
-
-void HealByValue(const uint64 target, const int32 value)
-{
-	cout << target << "에게 " << value << " 만큼 회복" << endl;
-}
-
-class Knight
-{
-public:
-	void HealMe(int32 value)
-	{
-		cout << "HealMe! : " << value << endl;
-	}
-};
+#include <functional>
 
 int main()
 {
-	// TEST Job
-	//{
-	//	FuncJob job(HealByValue, 100, 10);
-	//	job.Execute();
-	//}
-	//{
-	//	Knight n1;
-	//	MemberJob job(&n1, &Knight::HealMe, 100);
-	//	job.Execute();
-	//}
-	// Job
-
 	ClientPacketHandler::Init();
 	//TODO
 	const ServerServiceRef service = MakeShared<ServerService>(
@@ -62,7 +37,7 @@ int main()
 
 	while(true)
 	{
-		g_Room.FlushJob();
+		g_Room->FlushJob();
 		this_thread::sleep_for(10ms);
 	}
 

@@ -26,7 +26,6 @@ public:
 	}
 	virtual void	OnSend(int32 len) override
 	{
-		//cout << "OnSend Len = " << len <<  endl;
 	};
 	virtual void	OnDisconnected() override {};
 };
