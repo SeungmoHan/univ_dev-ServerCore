@@ -3,7 +3,7 @@
 
 #include "GameSession.h"
 #include "Player.h"
-shared_ptr<Room> g_Room = make_shared<Room>();
+shared_ptr<Room> g_Room = MakeShared<Room>();
 
 void Room::Enter(PlayerRef player)
 {
@@ -20,16 +20,5 @@ void Room::Broadcast(SendBufferRef sendBuffer)
 	for(const auto& [playerId, player] : m_PlayerMap)
 	{
 		player->m_OwnerSession->Send(sendBuffer);
-	}
-}
-
-void Room::FlushJob()
-{
-	while (true)
-	{
-		const auto job = m_JobQueue.Pop();
-		if (job == nullptr)
-			break;
-		job->Execute();
 	}
 }

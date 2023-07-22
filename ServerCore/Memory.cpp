@@ -11,7 +11,7 @@ Memory::Memory()
 	int32 size = 0;
 	int32 tableIndex = 0;
 
-	for (size = 32; size <= 1024; size += 32)
+	for (size = 32; size <= 1024; )
 	{
 		auto* pool = new MemoryPool(size);
 		_pool.push_back(pool);
@@ -21,9 +21,10 @@ Memory::Memory()
 			_poolTable[tableIndex] = pool;
 			tableIndex++;
 		}
+		size += 32;
 	}
-
-	for (; size <= 2048; size += 128)
+	size = 1024 + 128;
+	for (; size <= 2048; )
 	{
 		auto* pool = new MemoryPool(size);
 		_pool.push_back(pool);
@@ -33,9 +34,10 @@ Memory::Memory()
 			_poolTable[tableIndex] = pool;
 			tableIndex++;
 		}
+		size += 128;
 	}
-
-	for (; size <= 4096; size += 256)
+	size = 2048 + 256;
+	for (; size <= 4096; )
 	{
 		auto* pool = new MemoryPool(size);
 		_pool.push_back(pool);
@@ -45,6 +47,7 @@ Memory::Memory()
 			_poolTable[tableIndex] = pool;
 			tableIndex++;
 		}
+		size += 256;
 	}
 }
 
@@ -65,7 +68,7 @@ void* Memory::Allocate(const int32 size) const
 #ifdef _STOMP
 	header = reinterpret_cast<MemoryHeader*>(StompAllocator::Alloc(allocSize));
 #else
-	if (allocSize > MAX_ALLOC_SIZE)
+	if (allocSize >= MAX_ALLOC_SIZE)
 	{
 		header = static_cast<MemoryHeader*>(_aligned_malloc(allocSize, SLIST_ALIGNMENT));
 	}

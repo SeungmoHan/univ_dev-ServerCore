@@ -1,6 +1,6 @@
 #pragma once
 #include "Allocator.h"
-
+#include "Singleton.h"
 
 
 class MemoryPool;
@@ -9,18 +9,18 @@ class MemoryPool;
 		Memory 
 -------------------*/
 
-class Memory
+class Memory : public Singleton<Memory>
 {
+	friend class Singleton;
 	enum
 	{
 		// -1024byte까지 32단위로 -2048까지 128단위, -4096까지 256단위
 		POOL_COUNT = (1024/32) + (1024/128) + (2048/256),
 		MAX_ALLOC_SIZE = 4096
 	};
-public:
-
 	Memory();
 	~Memory();
+public:
 
 	[[nodiscard]] void*	Allocate(int32 size) const;
 	void	Release(void* ptr) const;

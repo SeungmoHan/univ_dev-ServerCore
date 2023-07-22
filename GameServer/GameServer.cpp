@@ -37,8 +37,7 @@ int main()
 
 	while(true)
 	{
-		g_Room->FlushJob();
-		this_thread::sleep_for(10ms);
+		this_thread::sleep_for(1000ms);
 	}
 
 	g_ThreadManager->Join();

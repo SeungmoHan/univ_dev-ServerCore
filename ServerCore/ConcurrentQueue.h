@@ -2,13 +2,14 @@
 #include <mutex>
 
 
+
 template<typename T>
-class LockQueue
+class LockQueue_Test
 {
 public:
-	LockQueue();;
-	LockQueue(const LockQueue&) = delete;
-	LockQueue& operator= (const LockQueue&) = delete;
+	LockQueue_Test();;
+	LockQueue_Test(const LockQueue_Test&) = delete;
+	LockQueue_Test& operator= (const LockQueue_Test&) = delete;
 
 	void Push(T val);
 
@@ -72,11 +73,11 @@ private:
 };
 
 template <typename T>
-LockQueue<T>::LockQueue()
+LockQueue_Test<T>::LockQueue_Test()
 {}
 
 template <typename T>
-void LockQueue<T>::Push(T val)
+void LockQueue_Test<T>::Push(T val)
 {
 	lock_guard<mutex> lock(m_Mutex);
 	m_Queue.push(std::move(val));
@@ -84,7 +85,7 @@ void LockQueue<T>::Push(T val)
 }
 
 template <typename T>
-bool LockQueue<T>::TryPop(T& ret)
+bool LockQueue_Test<T>::TryPop(T& ret)
 {
 	lock_guard<mutex> lock(m_Mutex);
 	if (m_Queue.empty())
@@ -96,7 +97,7 @@ bool LockQueue<T>::TryPop(T& ret)
 }
 
 template <typename T>
-void LockQueue<T>::WaitPop(T& ret)
+void LockQueue_Test<T>::WaitPop(T& ret)
 {
 	unique_lock<mutex> lock(m_Mutex);
 	m_ConditionVar.wait(lock, [this] { return m_Queue.empty() == false; });
