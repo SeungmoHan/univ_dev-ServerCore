@@ -3,7 +3,7 @@
 
 #include "GameSession.h"
 #include "Player.h"
-Room g_Room;
+shared_ptr<Room> g_Room = make_shared<Room>();
 
 void Room::Enter(PlayerRef player)
 {
@@ -27,7 +27,7 @@ void Room::FlushJob()
 {
 	while (true)
 	{
-		const auto job = m_Jobs.Pop();
+		const auto job = m_JobQueue.Pop();
 		if (job == nullptr)
 			break;
 		job->Execute();

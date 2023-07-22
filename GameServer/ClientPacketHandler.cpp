@@ -68,8 +68,7 @@ bool Handle_CS_ENTER_GAME(PacketSessionRef& session, Protocol::CS_ENTER_GAME& pk
 	const uint64 index = pkt.playerindex();
 	//TODO validation
 	const auto player = gameSession->m_Players[index];
-	g_Room.PushJob(&Room::Enter, player);
-	//g_Room.Enter(player);
+	g_Room->PushJob(&Room::Enter, player);
 
 	Protocol::SC_ENTER_GAME enterGamePacket;
 	enterGamePacket.set_success(true);
@@ -90,7 +89,7 @@ bool Handle_CS_NORMAL_CHAT(PacketSessionRef& session, Protocol::CS_NORMAL_CHAT& 
 
 
 	const auto sendBuffer = ClientPacketHandler::MakeSendBuffer(chatPacket);
-	g_Room.PushJob(&Room::Broadcast, sendBuffer);
+	g_Room->PushJob(&Room::Broadcast, sendBuffer);
 
 	return true;
 }

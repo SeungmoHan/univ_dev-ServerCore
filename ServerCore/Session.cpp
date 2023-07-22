@@ -17,7 +17,6 @@ Session::Session() : m_RecvBuffer(BUFFER_SIZE)
 
 Session::~Session()
 {
-	cout << "~Session" << endl;
 	SocketUtils::Close(m_Socket);
 }
 
@@ -52,9 +51,6 @@ void Session::Disconnect(const WCHAR* reason)
 {
 	if (m_Connected.exchange(false) == false)
 		return;
-
-	//   [2/25/2023 SeungmoHan] temp
-	wcout << L"Disconnect " << reason << endl;
 
 	RegisterDisconnect();
 }

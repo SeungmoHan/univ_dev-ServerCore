@@ -44,9 +44,7 @@ bool Handle_SC_ENTER_GAME(PacketSessionRef& session, Protocol::SC_ENTER_GAME& pk
 
 bool Handle_SC_NORMAL_CHAT(PacketSessionRef& session, Protocol::SC_NORMAL_CHAT& pkt)
 {
-
 	std::cout << pkt.msg() << std::endl;
-
 	return true;
 }
 
