@@ -38,7 +38,7 @@ int main()
 		NetAddress(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),
 		MakeShared<ServerSession>,// Session Factory TODO : SessionManager
-		100);
+		2);
 
 	ASSERT_CRASH(service->Start());
 

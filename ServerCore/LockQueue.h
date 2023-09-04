@@ -4,7 +4,7 @@ template<typename T>
 class LockQueue
 {
 public:
-	void Push(const JobRef job)
+	void Push(T job)
 	{
 		WRITE_LOCK;
 		m_Items.push(job);

@@ -1,8 +1,8 @@
 ﻿#include "pch.h"
 #include "JobSerializer.h"
+#include "GlobalQueue.h"
 
-
-void JobSerializer::Push(JobRef&& job)
+void JobSerializer::Push(JobRef job, bool pushOnly)
 {
 	const int32 prevCounts = m_JobCounts.fetch_add(1);
 	m_Jobs.Push(job);
@@ -10,12 +10,22 @@ void JobSerializer::Push(JobRef&& job)
 	//첫번째 작업자만 실행까지 담당
 	if(prevCounts == 0)
 	{
-		Execute();
+		if(LCurrentJobQueue == nullptr && pushOnly == false)
+		{
+			Execute();
+		}
+		else
+		{
+			// 여유 있는 다른 쓰레드가 실행하도록 Global Queue에 넘긴다
+			g_GlobalQueue->Push(shared_from_this());
+		}
 	}
 }
 
 void JobSerializer::Execute()
 {
+	LCurrentJobQueue = this;
+
 	while(true)
 	{
 		Vector<JobRef> jobs;
@@ -26,7 +36,18 @@ void JobSerializer::Execute()
 			job->Execute();
 
 		if (m_JobCounts.fetch_sub(jobCounts) == jobCounts)
-			 break;
+		{
+			LCurrentJobQueue = nullptr;
+			break;
+		}
+
+		const uint64 now = ::GetTickCount64();
+		if(now >= LEndTickCount)
+		{
+			LCurrentJobQueue = nullptr;
+			// 여유 있는 다른 쓰레드가 실행하도록 Global Queue에 넘긴다
+			g_GlobalQueue->Push(shared_from_this());
+		}
 
 		// 위에서 break가 안되었으면 다른쓰레드가 fetch_add를 해놓고 m_Jobs.Push를 못한상태임
 		// 그Job을 Push할 수 있게 잠깐 cpu점유를 놓아준다.

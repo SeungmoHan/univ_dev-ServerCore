@@ -67,14 +67,15 @@ bool Handle_CS_ENTER_GAME(PacketSessionRef& session, Protocol::CS_ENTER_GAME& pk
 
 	const uint64 index = pkt.playerindex();
 	//TODO validation
-	const auto player = gameSession->m_Players[index];
-	g_Room->DoAsync(&Room::Enter, player);
+	gameSession->m_CurrentPlayer = gameSession->m_Players[index];
+	gameSession->m_Room = g_Room;
+	g_Room->DoAsync(&Room::Enter, gameSession->m_CurrentPlayer);
 
 	Protocol::SC_ENTER_GAME enterGamePacket;
 	enterGamePacket.set_success(true);
 
 	const auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePacket);
-	player->m_OwnerSession->Send(sendBuffer);
+	gameSession->m_CurrentPlayer->m_OwnerSession->Send(sendBuffer);
 
 	return true;
 }
