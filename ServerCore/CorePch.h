@@ -16,7 +16,8 @@ using namespace std;
 #include "TypeCast.h"
 
 #pragma comment(lib, "ws2_32.lib")
-
+#pragma comment(lib, "winmm.lib")
+#include <timeapi.h>
 #include <WinSock2.h>
 #include <MSWSock.h>
 #include <WS2tcpip.h>

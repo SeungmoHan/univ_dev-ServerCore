@@ -172,15 +172,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="ConfigParser.h" />
     <ClInclude Include="Container.h" />
     <ClInclude Include="CoreGlobal.h" />
     <ClInclude Include="CoreMacro.h" />
     <ClInclude Include="CorePch.h" />
     <ClInclude Include="CoreTLS.h" />
     <ClInclude Include="DeadLockProfiler.h" />
+    <ClInclude Include="GlobalQueue.h" />
     <ClInclude Include="IocpCore.h" />
     <ClInclude Include="IocpEvent.h" />
+    <ClInclude Include="IScriptParser.h" />
     <ClInclude Include="Job.h" />
+    <ClInclude Include="JobTimer.h" />
     <ClInclude Include="LockQueue.h" />
     <ClInclude Include="JobSerializer.h" />
     <ClInclude Include="Listener.h" />
@@ -212,14 +216,18 @@
     <ClCompile Include="Allocator.cpp" />
     <ClCompile Include="BufferReader.cpp" />
     <ClCompile Include="BufferWriter.cpp" />
+    <ClCompile Include="ConfigParser.cpp" />
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="CoreGlobal.cpp" />
     <ClCompile Include="CorePch.cpp" />
     <ClCompile Include="CoreTLS.cpp" />
     <ClCompile Include="DeadLockProfiler.cpp" />
+    <ClCompile Include="GlobalQueue.cpp" />
     <ClCompile Include="IocpCore.cpp" />
     <ClCompile Include="IocpEvent.cpp" />
+    <ClCompile Include="IScriptParser.cpp" />
     <ClCompile Include="Job.cpp" />
+    <ClCompile Include="JobTimer.cpp" />
     <ClCompile Include="LockQueue.cpp" />
     <ClCompile Include="JobSerializer.cpp" />
     <ClCompile Include="Listener.cpp" />

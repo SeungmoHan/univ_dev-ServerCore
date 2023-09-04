@@ -20,6 +20,9 @@ public:
 	static void InitTLS();
 	static void DestroyTLS();
 
+	static void DoGlobalQueueWork();
+	static void ExecuteReservedJobs();
+
 
 private:
 	Mutex			m_Lock;
