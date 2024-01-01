@@ -212,6 +212,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UpdateTickControl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enum.pb.h" />
@@ -232,6 +233,7 @@
     <ClInclude Include="Room.h" />
     <ClInclude Include="ServerOptions.h" />
     <ClInclude Include="Struct.pb.h" />
+    <ClInclude Include="UpdateTickControl.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto" />

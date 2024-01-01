@@ -43,9 +43,9 @@ public:
 	MemoryHeader*	Pop();
 
 private:
-	SLIST_HEADER		_header;
-	int32				_allocSize = 0;
-	atomic<int32>		_useCount = 0;
-	atomic<int32>		_reserveCount = 0;
+	SLIST_HEADER		m_Header;
+	int32				m_AllocSize = 0;
+	atomic<int32>		m_UseCount = 0;
+	atomic<int32>		m_ReserveCount = 0;
 };
 

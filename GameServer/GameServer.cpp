@@ -10,6 +10,7 @@
 #include "Protocol.pb.h"
 #include "GameServer.h"
 #include "GameSessionManager.h"
+#include "UpdateTickControl.h"
 
 #include <functional>
 
@@ -47,23 +48,6 @@ bool GameServer::Update(uint64 deltaTick)
 	return true;
 }
 
-bool GameServer::CheckUpdate(OUT uint64& deltaTick)
-{
-	static uint64 beginTick = GetTickCount64();
-	const uint64 curTick = GetTickCount64();
-	// 1다음번 프레임 시간을 구해야한다...
-	const uint64 timeSpendOnEachFrame = 1000 / m_ServerOption.m_ServerFPS;
-
-
-	// 계산된 다음번 틱이 
-	if(calculatedNextTick <= curTick)
-		return false;
-
-	
-
-
-	return false;
-}
 
 bool GameServer::Init()
 {
@@ -78,6 +62,8 @@ bool GameServer::Init()
 		return false;
 	InitWorkerThread();
 
+	updateControl = MakeShared<UpdateTickControl>();
+
 	return m_ServerRunningFlag = true;
 }
 
@@ -88,15 +74,19 @@ void GameServer::Run()
 		cout << "server not initiated" << endl;
 		return;
 	}
-	uint64 deltaTick = 0;
-	while(m_ServerRunningFlag == true && CheckUpdate(deltaTick) == true)
+	uint64 lastTick = GetTickCount64();
+	while(m_ServerRunningFlag == true )
 	{
-		if (Update(10) == false)
+		 updateControl(lastTick);
+		lastTick = GetTickCount64();
+		// 마지막 프레임시간에서 지금시간까지
+		if (Update(updateControl.GetDeltaTick()) == false)
 		{
 			cout << "Update Error" << endl;
 			m_ServerRunningFlag = false;
 			break;
 		}
+		// updateControl의 소멸자에서 프레임에 소모된 코스트 sleep_for을 보장...
 	}
 
 	cout << "server running flag == false : server off" << endl;

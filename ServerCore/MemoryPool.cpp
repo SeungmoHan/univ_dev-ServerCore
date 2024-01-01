@@ -6,15 +6,15 @@
 	Memory Pool
 -------------------*/
 
-MemoryPool::MemoryPool(const int32 allocSize) :_allocSize(allocSize)
+MemoryPool::MemoryPool(const int32 allocSize) :m_AllocSize(allocSize)
 {
-	InitializeSListHead(&_header);
+	InitializeSListHead(&m_Header);
 }
 
 MemoryPool::~MemoryPool()
 {
 	MemoryHeader* header;
-	while ((header = static_cast<MemoryHeader*>(InterlockedPopEntrySList(&_header))) != nullptr)
+	while ((header = static_cast<MemoryHeader*>(InterlockedPopEntrySList(&m_Header))) != nullptr)
 		_aligned_free(header);
 }
 
@@ -22,28 +22,28 @@ void MemoryPool::Push(MemoryHeader* ptr)
 {
 	ptr->allocSize = 0;
 
-	InterlockedPushEntrySList(&_header, static_cast<SLIST_ENTRY*>(ptr));
+	InterlockedPushEntrySList(&m_Header, static_cast<SLIST_ENTRY*>(ptr));
 
-	_useCount.fetch_sub(1);
-	_reserveCount.fetch_add(1);
+	m_UseCount.fetch_sub(1);
+	m_ReserveCount.fetch_add(1);
 
 }
 
 MemoryHeader* MemoryPool::Pop()
 {
-	auto* memory = static_cast<MemoryHeader*>(InterlockedPopEntrySList(&_header));
+	auto* memory = static_cast<MemoryHeader*>(InterlockedPopEntrySList(&m_Header));
 
 	if (memory == nullptr)
 	{
-		memory = static_cast<MemoryHeader*>(_aligned_malloc(_allocSize, SLIST_ALIGNMENT));
+		memory = static_cast<MemoryHeader*>(_aligned_malloc(m_AllocSize, SLIST_ALIGNMENT));
 	}
 	else
 	{
 		ASSERT_CRASH(memory->allocSize == 0);
-		_reserveCount.fetch_sub(1);
+		m_ReserveCount.fetch_sub(1);
 	}
 
-	_useCount.fetch_add(1);
+	m_UseCount.fetch_add(1);
 
 	return memory;
 }

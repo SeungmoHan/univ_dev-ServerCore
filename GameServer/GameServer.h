@@ -1,12 +1,23 @@
 ﻿#pragma once
 #include "ServerOptions.h"
 
+class UpdateTickControl;
 class Room;
 class ConfigParser;
 class GameScriptParser;
 
 class GameServer
 {
+	// memory alloc 관련 singleton 만들려고하는데
+	// 생성자에서 호출하는 xnew, xdelete MakeShared가 문제가 되었음 ㅠ
+	template<typename Type, typename...Args>
+	friend Type* xnew(Args&&... args);
+	template<typename Type>
+	friend void xdelete(Type* ptr);
+	template<typename Type, typename... Args>
+	friend shared_ptr<Type> MakeShared(Args&&...args);
+
+
 public:
 	static GameServer& Instance()
 	{
@@ -26,9 +37,6 @@ private:
 	bool Update(uint64 deltaTick);
 
 
-	bool CheckUpdate(uint64& OUT deltaTick);
-
-
 	shared_ptr<GameScriptParser>	m_ScriptParser = nullptr;
 
 	ServerServicePtr	m_Service;
@@ -38,6 +46,8 @@ private:
 
 	//
 	ServerOptionData m_ServerOption;
+
+	shared_ptr<UpdateTickControl> updateControl;
 
 	volatile bool m_ServerRunningFlag = false;
 };

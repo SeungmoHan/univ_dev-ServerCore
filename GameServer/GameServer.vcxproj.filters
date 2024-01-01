@@ -16,6 +16,9 @@
     <Filter Include="Utils\ScriptParsers">
       <UniqueIdentifier>{84b9e7c8-badc-4322-a0dd-193c5f90e544}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\UpdateTickControl">
+      <UniqueIdentifier>{c5ba5b88-854a-4693-ad21-752ce8d44126}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameServerMain.cpp">
@@ -60,6 +63,9 @@
     <ClCompile Include="ServerOptions.cpp">
       <Filter>Utils\ScriptParsers</Filter>
     </ClCompile>
+    <ClCompile Include="UpdateTickControl.cpp">
+      <Filter>Utils\UpdateTickControl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -100,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="ServerOptions.h">
       <Filter>Utils\ScriptParsers</Filter>
+    </ClInclude>
+    <ClInclude Include="UpdateTickControl.h">
+      <Filter>Utils\UpdateTickControl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
