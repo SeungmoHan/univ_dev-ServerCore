@@ -19,22 +19,25 @@ using CondVar				= std::condition_variable;
 using UniqueLock			= std::unique_lock<std::mutex>;
 using LockGuard				= std::lock_guard<std::mutex>;
 
-#define USING_SHARED_PTR(_Typename) \
-	using _Typename##Ref = std::shared_ptr<class _Typename>;
+template<typename T>
+using ref = std::shared_ptr<T>;
 
-USING_SHARED_PTR(IocpCore);
-USING_SHARED_PTR(IocpObject);
-USING_SHARED_PTR(PacketSession);
-USING_SHARED_PTR(Session);
-USING_SHARED_PTR(Listener);
-USING_SHARED_PTR(ServerService);
-USING_SHARED_PTR(ClientService);
+#define SHARED_REF(_Typename) \
+	using _Typename##Ptr = ::ref<class _Typename>;
 
-USING_SHARED_PTR(SendBuffer);
-USING_SHARED_PTR(SendBufferChunk);
+SHARED_REF(IocpCore);
+SHARED_REF(IocpObject);
+SHARED_REF(PacketSession);
+SHARED_REF(Session);
+SHARED_REF(Listener);
+SHARED_REF(ServerService);
+SHARED_REF(ClientService);
 
-USING_SHARED_PTR(Job);
-USING_SHARED_PTR(JobSerializer);
+SHARED_REF(SendBuffer);
+SHARED_REF(SendBufferChunk);
+
+SHARED_REF(Job);
+SHARED_REF(JobSerializer);
 
 
 #define size16(val)		static_cast<int16>(sizeof(val))

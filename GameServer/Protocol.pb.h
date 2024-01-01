@@ -867,10 +867,25 @@ class SC_NORMAL_CHAT final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMsgFieldNumber = 2,
+    kPlayerNameFieldNumber = 2,
+    kMsgFieldNumber = 3,
     kPlayerIdFieldNumber = 1,
   };
-  // string msg = 2;
+  // string playerName = 2;
+  void clear_playername();
+  const std::string& playername() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_playername(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_playername();
+  PROTOBUF_FUTURE_MUST_USE_RESULT std::string* release_playername();
+  void set_allocated_playername(std::string* playername);
+  private:
+  const std::string& _internal_playername() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_playername(const std::string& value);
+  std::string* _internal_mutable_playername();
+  public:
+
+  // string msg = 3;
   void clear_msg();
   const std::string& msg() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -900,6 +915,7 @@ class SC_NORMAL_CHAT final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr playername_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr msg_;
   ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -1097,7 +1113,52 @@ inline void SC_NORMAL_CHAT::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) 
   // @@protoc_insertion_point(field_set:Protocol.SC_NORMAL_CHAT.playerId)
 }
 
-// string msg = 2;
+// string playerName = 2;
+inline void SC_NORMAL_CHAT::clear_playername() {
+  playername_.ClearToEmpty();
+}
+inline const std::string& SC_NORMAL_CHAT::playername() const {
+  // @@protoc_insertion_point(field_get:Protocol.SC_NORMAL_CHAT.playerName)
+  return _internal_playername();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void SC_NORMAL_CHAT::set_playername(ArgT0&& arg0, ArgT... args) {
+ 
+ playername_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Protocol.SC_NORMAL_CHAT.playerName)
+}
+inline std::string* SC_NORMAL_CHAT::mutable_playername() {
+  // @@protoc_insertion_point(field_mutable:Protocol.SC_NORMAL_CHAT.playerName)
+  return _internal_mutable_playername();
+}
+inline const std::string& SC_NORMAL_CHAT::_internal_playername() const {
+  return playername_.Get();
+}
+inline void SC_NORMAL_CHAT::_internal_set_playername(const std::string& value) {
+  
+  playername_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* SC_NORMAL_CHAT::_internal_mutable_playername() {
+  
+  return playername_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* SC_NORMAL_CHAT::release_playername() {
+  // @@protoc_insertion_point(field_release:Protocol.SC_NORMAL_CHAT.playerName)
+  return playername_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void SC_NORMAL_CHAT::set_allocated_playername(std::string* playername) {
+  if (playername != nullptr) {
+    
+  } else {
+    
+  }
+  playername_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), playername,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:Protocol.SC_NORMAL_CHAT.playerName)
+}
+
+// string msg = 3;
 inline void SC_NORMAL_CHAT::clear_msg() {
   msg_.ClearToEmpty();
 }

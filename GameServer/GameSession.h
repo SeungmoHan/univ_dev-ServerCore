@@ -4,8 +4,9 @@
 
 class GameSession : public PacketSession
 {
+	DECLARE_TL(SessionTL);
 public:
-	~GameSession()
+	virtual ~GameSession()
 	{
 		cout << "~GameSession" << endl;
 	}
@@ -16,9 +17,12 @@ public:
 	virtual void	OnDisconnected() override;
 
 public:
-	Vector<PlayerRef> m_Players;
+	PlayerPtr GetSeleectedPlayer() const { return m_CurrentPlayer; }
 
-	PlayerRef m_CurrentPlayer;
+public:
+	Vector<PlayerPtr> m_Players;
+
+	PlayerPtr m_CurrentPlayer;
 	weak_ptr<class Room> m_Room;
 };
 

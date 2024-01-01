@@ -55,7 +55,7 @@ void ThreadManager::DoGlobalQueueWork()
 		if (now > LEndTickCount)
 			break;
 
-		JobSerializerRef jobQueue = g_GlobalQueue->Pop();
+		JobSerializerPtr jobQueue = g_GlobalQueue->Pop();
 		if (jobQueue == nullptr)
 			break;
 

@@ -13,9 +13,12 @@
     <Filter Include="GameContents">
       <UniqueIdentifier>{38a25551-158b-4860-984a-c17e29a28742}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\ScriptParsers">
+      <UniqueIdentifier>{84b9e7c8-badc-4322-a0dd-193c5f90e544}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameServer.cpp">
+    <ClCompile Include="GameServerMain.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
@@ -48,6 +51,15 @@
     <ClCompile Include="Job_Temp.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
+    <ClCompile Include="GameServer.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScriptParser.cpp">
+      <Filter>Utils\ScriptParsers</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerOptions.cpp">
+      <Filter>Utils\ScriptParsers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -79,6 +91,15 @@
     </ClInclude>
     <ClInclude Include="Job_Temp.h">
       <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="GameServer.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScriptParser.h">
+      <Filter>Utils\ScriptParsers</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerOptions.h">
+      <Filter>Utils\ScriptParsers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

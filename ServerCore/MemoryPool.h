@@ -2,7 +2,7 @@
 
 enum
 {
-	SLIST_ALIGNMENT = 16,
+	SLIST_ALIGNMENT = MEMORY_ALLOCATION_ALIGNMENT,
 };
 
 /*--------------------

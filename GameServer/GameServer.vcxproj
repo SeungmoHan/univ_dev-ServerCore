@@ -179,7 +179,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="GameScriptParser.cpp" />
     <ClCompile Include="GameServer.cpp" />
+    <ClCompile Include="GameServerMain.cpp" />
     <ClCompile Include="GameSession.cpp" />
     <ClCompile Include="GameSessionManager.cpp" />
     <ClCompile Include="Job_Temp.cpp">
@@ -203,6 +205,7 @@
     </ClCompile>
     <ClCompile Include="ClientPacketHandler.cpp" />
     <ClCompile Include="Room.cpp" />
+    <ClCompile Include="ServerOptions.cpp" />
     <ClCompile Include="Struct.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -212,6 +215,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enum.pb.h" />
+    <ClInclude Include="GameScriptParser.h" />
+    <ClInclude Include="GameServer.h" />
     <ClInclude Include="GameSession.h" />
     <ClInclude Include="GameSessionManager.h" />
     <ClInclude Include="Job_Temp.h">
@@ -225,6 +230,7 @@
     <ClInclude Include="Protocol.pb.h" />
     <ClInclude Include="ClientPacketHandler.h" />
     <ClInclude Include="Room.h" />
+    <ClInclude Include="ServerOptions.h" />
     <ClInclude Include="Struct.pb.h" />
   </ItemGroup>
   <ItemGroup>

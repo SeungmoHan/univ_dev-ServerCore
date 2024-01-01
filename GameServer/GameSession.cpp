@@ -3,15 +3,16 @@
 #include "GameSessionManager.h"
 #include "ClientPacketHandler.h"
 #include "Room.h"
+#include "Service.h"
 
-void	GameSession::OnConnect() 
+void	GameSession::OnConnect()
 {
 	GameSessionManager::Instance()->Add(static_pointer_cast<GameSession>(shared_from_this()));
 };
 
 void	GameSession::OnRecvPacket(BYTE* buffer, const int32 len)
 {
-	auto session = GetPacketSessionRef();
+	auto session = GetPacketSessionPtr();
 	auto header = reinterpret_cast<PacketHeader*>(buffer);
 
 	//TODO PacketID 대역 체크

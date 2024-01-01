@@ -5,12 +5,12 @@
 	NetworkAddress
 -------------------*/
 
-class NetAddress
+class NetAddr_TCP
 {
 public:
-	NetAddress() = default;
-	NetAddress(sockaddr_in addr);
-	NetAddress(wstring ip, uint16 port);
+	explicit NetAddr_TCP() = default;
+	explicit NetAddr_TCP(sockaddr_in addr);
+	explicit NetAddr_TCP(wstring ip, uint16 port);
 
 	sockaddr_in&	GetSockAddr() { return m_Addr; }
 	wstring			GetIpAddress();

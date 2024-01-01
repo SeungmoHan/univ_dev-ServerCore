@@ -4,10 +4,14 @@
 #include "NetworkAddress.h"
 #include "RecvBuffer.h"
 #include "ConcurrentQueue.h"
+class ServerSession;
+class GameSession;
 class Service;
 /*----------------
 	Session
 ----------------*/
+
+using SessionTL = TypeList<Session, PacketSession, GameSession, ServerSession>;
 
 class Session : public IocpObject
 {
@@ -19,11 +23,11 @@ class Session : public IocpObject
 	{
 		BUFFER_SIZE = 0x10000 // 64k
 	};
-
+	DECLARE_TL(SessionTL);
 public:
 
 						/* 외부 사용(콘텐츠에 제공할 API)*/
-	void				Send(SendBufferRef buffer);
+	void				Send(SendBufferPtr buffer);
 	bool				Connect();
 	void				Disconnect(const WCHAR* reason);
 
@@ -35,11 +39,11 @@ public:
 	Session();
 	virtual ~Session();
 
-	void			SetNetAddress(const NetAddress addr) { m_NetAddr = addr; }
-	NetAddress		GetAddress() const { return m_NetAddr; }
+	void			SetNetAddress(const NetAddr_TCP addr) { m_NetAddr = addr; }
+	NetAddr_TCP		GetAddress() const { return m_NetAddr; }
 	SOCKET			GetSocket() const { return m_Socket; }
 	bool			IsConnected() const { return m_Connected.load(); }
-	SessionRef		GetSessionRef() { return static_pointer_cast<Session>(shared_from_this()); }
+	SessionPtr		GetSessionPtr() { return static_pointer_cast<Session>(shared_from_this()); }
 
 
 private:
@@ -77,13 +81,13 @@ public:
 private:
 	weak_ptr<Service>	m_Service;
 	SOCKET				m_Socket = INVALID_SOCKET;
-	NetAddress			m_NetAddr = {};
+	NetAddr_TCP			m_NetAddr;
 	Atomic<bool>		m_Connected = false;
 
 private:
 	USE_LOCK;
 	RecvBuffer			m_RecvBuffer;
-	Queue<SendBufferRef> m_SendQueue;
+	Queue<SendBufferPtr> m_SendQueue;
 	Atomic<bool>		m_SendRegistered;
 private:
 	ConnectEvent m_ConnectEvent;
@@ -104,11 +108,12 @@ struct PacketHeader
 
 class PacketSession : public Session
 {
+	DECLARE_TL(SessionTL);
 public:
 	PacketSession();
 	virtual ~PacketSession();
 	
-	PacketSessionRef GetPacketSessionRef() { return static_pointer_cast<PacketSession>(shared_from_this()); }
+	PacketSessionPtr GetPacketSessionPtr() { return static_pointer_cast<PacketSession>(shared_from_this()); }
 protected:
 	virtual int32 OnRecv(BYTE* buffer, int32 len) sealed;
 	virtual void OnRecvPacket(BYTE* buffer, int32 len) abstract;

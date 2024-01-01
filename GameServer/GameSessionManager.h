@@ -4,22 +4,24 @@
 class GameSession;
 
 
-using GameSessionRef = shared_ptr<GameSession>;
+using GameSessionPtr = shared_ptr<GameSession>;
 
 class GameSessionManager
 {
 public:
-	void Add(GameSessionRef session);
-	void Remove(GameSessionRef session);
-	void Broadcast(SendBufferRef sendBuffer);
+	void Add(GameSessionPtr session);
+	void Remove(GameSessionPtr session);
+	void Broadcast(SendBufferPtr sendBuffer);
 
 	static GameSessionManager* Instance()
 	{
 		static GameSessionManager* manager = new GameSessionManager();
 		return manager;
 	}
+
+	bool Update(uint64 deltaTick);
 private:
 	USE_LOCK;
 
-	Set<GameSessionRef> m_Sessions;
+	Set<GameSessionPtr> m_Sessions;
 };

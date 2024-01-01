@@ -256,11 +256,11 @@ bool CanCast(shared_ptr<From> ptr)
 ////////////////////////////////////////////////////////////////////
 
 
-#define DECLARE_TL		public:\
-						using TL = TL;\
-						inline int32 GetType() const { return _typeId; }\
-						protected: int32 _typeId;\
-						private:
+#define DECLARE_TL(TL_NAME)		public:\
+								using TL = TL_NAME;\
+								inline int32 GetType() const { return _typeId; }\
+								protected: int32 _typeId;\
+								private:
 #define INIT_TL(Type)	_typeId = IndexOf<TL,Type>::value
 
 

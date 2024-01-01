@@ -1,4 +1,6 @@
 #pragma once
+// Dummy Client
+
 
 #define WIN32_LEAN_AND_MEAN // 거의 사용되지 않는 내용을 Windows 헤더에서 제외합니다.
 
@@ -11,3 +13,6 @@
 #endif
 
 #include "CorePch.h"
+
+using ServerSessionPtr = shared_ptr<class ServerSession>;
+using ClientPlayerPtr = shared_ptr<class ClientPlayer>;

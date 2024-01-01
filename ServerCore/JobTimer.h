@@ -3,10 +3,10 @@
 
 struct JobData
 {
-	JobData(weak_ptr<JobSerializer> owner, JobRef job) : owner(owner), job(job){}
+	JobData(weak_ptr<JobSerializer> owner, JobPtr job) : owner(owner), job(job){}
 
 	weak_ptr<JobSerializer> owner;
-	JobRef					job;
+	JobPtr					job;
 };
 
 struct TimerItem
@@ -27,7 +27,7 @@ struct TimerItem
 class JobTimer
 {
 public:
-	void Reserve(uint64 tickAfter, weak_ptr<JobSerializer> owner, JobRef job);
+	void Reserve(uint64 tickAfter, weak_ptr<JobSerializer> owner, JobPtr job);
 	void Execute(uint64 now);
 	void Clear();
 

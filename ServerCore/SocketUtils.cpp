@@ -17,10 +17,10 @@ void SocketUtils::Init()
 	ASSERT_CRASH(WSAStartup(MAKEWORD(2, 2), &data) == 0);
 
 	SOCKET dummySocket = CreateSocket();
-	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_CONNECTEX, reinterpret_cast<LPVOID*>(&ConnectEx)) == true);
-	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_DISCONNECTEX, reinterpret_cast<LPVOID*>(&DisconnectEx)) == true);
-	ASSERT_CRASH(BindWindowsFunction(dummySocket, WSAID_ACCEPTEX, reinterpret_cast<LPVOID*>(&AcceptEx)) == true);
-	Close(dummySocket);
+	ASSERT_CRASH(BindIOCPCallback(dummySocket, WSAID_CONNECTEX, reinterpret_cast<LPVOID*>(&ConnectEx)) == true);
+	ASSERT_CRASH(BindIOCPCallback(dummySocket, WSAID_DISCONNECTEX, reinterpret_cast<LPVOID*>(&DisconnectEx)) == true);
+	ASSERT_CRASH(BindIOCPCallback(dummySocket, WSAID_ACCEPTEX, reinterpret_cast<LPVOID*>(&AcceptEx)) == true);
+	CloseSocket(dummySocket);
 }
 
 void SocketUtils::Clear()
@@ -28,7 +28,7 @@ void SocketUtils::Clear()
 	WSACleanup();
 }
 
-bool SocketUtils::BindWindowsFunction(const SOCKET sock, GUID guid, LPVOID* fn)
+bool SocketUtils::BindIOCPCallback(const SOCKET sock, GUID guid, LPVOID* fn)
 {
 	DWORD bytes = 0;
 	return SOCKET_ERROR != ::WSAIoctl(sock, SIO_GET_EXTENSION_FUNCTION_POINTER, &guid, sizeof(guid), fn, sizeof(*fn), OUT & bytes, nullptr, nullptr);
@@ -73,12 +73,12 @@ bool SocketUtils::SetUpdateAcceptSocket(const SOCKET sock, const SOCKET listenSo
 	return SetSockOpt(sock, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT, listenSocket);
 }
 
-bool SocketUtils::Bind(const SOCKET socket, NetAddress& netAddr)
+bool SocketUtils::Bind(const SOCKET socket, NetAddr_TCP& netAddr)
 {
 	return SOCKET_ERROR != bind(socket, reinterpret_cast<const sockaddr*>(&netAddr.GetSockAddr()), sizeof(sockaddr_in));
 }
 
-bool SocketUtils::BindAnyAddress(const SOCKET socket, const uint16 port)
+bool SocketUtils::Bind(const SOCKET socket, const uint16 port)
 {
 	sockaddr_in addr;
 	addr.sin_family = AF_INET;
@@ -94,7 +94,7 @@ bool SocketUtils::Listen(const SOCKET sock, const int32 backLog)
 	return SOCKET_ERROR != listen(sock, backLog);
 }
 
-void SocketUtils::Close(SOCKET& socket)
+void SocketUtils::CloseSocket(SOCKET& socket)
 {
 	if (socket != INVALID_SOCKET)
 		closesocket(socket);

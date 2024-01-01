@@ -1,17 +1,19 @@
 #include "pch.h"
 #include "ServerPacketHandler.h"
+#include "ClientPlayer.h"
+#include "ServerSession.h"
 
 PacketHandlerFunc g_PacketHandler[UINT16_MAX];
 
 // 직접 컨텐츠 작업자
-bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, const uint32 len)
+bool Handle_INVALID(PacketSessionPtr& session, BYTE* buffer, const uint32 len)
 {
 	auto header = reinterpret_cast<PacketHeader*>(buffer);
 	// TODO Log...
 	return false;
 }
 
-bool Handle_SC_LOGIN(PacketSessionRef& session, Protocol::SC_LOGIN& pkt)
+bool Handle_SC_LOGIN(PacketSessionPtr& session, Protocol::SC_LOGIN& pkt)
 {
 	if(pkt.success() == false)
 	{
@@ -23,28 +25,53 @@ bool Handle_SC_LOGIN(PacketSessionRef& session, Protocol::SC_LOGIN& pkt)
 	{
 		// 캐릭터 생성창
 	}
-
-	// 입장 UI눌러서 입장
+	
 	Protocol::CS_ENTER_GAME enterGamePacket;
-	enterGamePacket.set_playerindex(1);
+	enterGamePacket.set_playerindex(0);
 
+	auto begin = pkt.players().begin();
+	ServerSessionPtr serverSession = reinterpret_pointer_cast<ServerSession>(session);
+	serverSession->m_SelectedPlayer = MakeShared<ClientPlayer>();
+	serverSession->m_SelectedPlayer->m_PlayerID = begin->id();
+	serverSession->m_SelectedPlayer->m_MyName = begin->name();
 	const auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePacket);
 	session->Send(sendBuffer);
 
 	return true;
 }
 
-bool Handle_SC_ENTER_GAME(PacketSessionRef& session, Protocol::SC_ENTER_GAME& pkt)
+bool Handle_SC_ENTER_GAME(PacketSessionPtr& session, Protocol::SC_ENTER_GAME& pkt)
 {
-
-
+	Protocol::CS_NORMAL_CHAT chatPkt;
+	chatPkt.set_msg(u8"Begin Hello World!");
+	const auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
+	session->Send(sendBuffer);
 
 	return true;
 }
 
-bool Handle_SC_NORMAL_CHAT(PacketSessionRef& session, Protocol::SC_NORMAL_CHAT& pkt)
+bool Handle_SC_NORMAL_CHAT(PacketSessionPtr& session, Protocol::SC_NORMAL_CHAT& pkt)
 {
-	std::cout << pkt.msg() << std::endl;
+	static Atomic<unsigned long long> atm = 0;
+	ServerSessionPtr serverSession = reinterpret_pointer_cast<ServerSession>(session);
+
+	ClientPlayerPtr clientPlayer = serverSession->m_SelectedPlayer;
+	if(clientPlayer == nullptr)
+		return false;
+	if(pkt.playerid() != clientPlayer->m_PlayerID)
+	{
+		//cout <<"MyID:" << clientPlayer->m_PlayerID << " | " << pkt.playerid() << "(" << pkt.playername() << ") : " << pkt.msg() << endl;
+	}
+	this_thread::sleep_for(100ms);
+
+	string nextMsg = to_string(++atm) + " : Hello World!";
+	Protocol::CS_NORMAL_CHAT chatPkt;
+	chatPkt.set_msg(nextMsg);
+
+	const auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
+	session->Send(sendBuffer);
+	//cout << "Send" << endl;
+
 	return true;
 }
 

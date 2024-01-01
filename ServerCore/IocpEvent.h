@@ -27,7 +27,7 @@ public:
 
 public:
 	EventType		eventType;
-	IocpObjectRef	owner;
+	IocpObjectPtr	owner;
 };
 
 
@@ -58,7 +58,7 @@ public:
 	AcceptEvent() : IocpEvent(EventType::Accept) {};
 
 public:
-	SessionRef session = nullptr;
+	SessionPtr session = nullptr;
 };
 
 
@@ -80,5 +80,5 @@ public:
 	SendEvent() : IocpEvent(EventType::Send) {};
 
 	//   [2/20/2023 SeungmoHan] temp
-	Vector<SendBufferRef> sendBuffers;
+	Vector<SendBufferPtr> sendBuffers;
 };

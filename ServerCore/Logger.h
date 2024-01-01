@@ -54,7 +54,7 @@
 //
 //	HashMap<LoggerType, std::wstring> m_LoggerTypeToPath;
 //	HashMap<ServerType, std::wstring> m_ServerTypeToPath;
-//	USE_MANY_LOCKS(static_cast<uint32>(ServerType::MAX))
+//	USE_LOCKS(static_cast<uint32>(ServerType::MAX))
 //};
 //
 //class Logger

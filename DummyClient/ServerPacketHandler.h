@@ -1,7 +1,7 @@
 #pragma once
 #include "Protocol.pb.h"
 
-using PacketHandlerFunc = std::function<bool(PacketSessionRef&, BYTE*, const uint32)>;
+using PacketHandlerFunc = std::function<bool(PacketSessionPtr&, BYTE*, const uint32)>;
 extern PacketHandlerFunc g_PacketHandler[UINT16_MAX];
 
 enum : uint16
@@ -15,10 +15,10 @@ enum : uint16
 };
 
 //Custom Handlers
-bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, const uint32 len);
-bool Handle_SC_LOGIN(PacketSessionRef& session, Protocol::SC_LOGIN& pkt);
-bool Handle_SC_ENTER_GAME(PacketSessionRef& session, Protocol::SC_ENTER_GAME& pkt);
-bool Handle_SC_NORMAL_CHAT(PacketSessionRef& session, Protocol::SC_NORMAL_CHAT& pkt);
+bool Handle_INVALID(PacketSessionPtr& session, BYTE* buffer, const uint32 len);
+bool Handle_SC_LOGIN(PacketSessionPtr& session, Protocol::SC_LOGIN& pkt);
+bool Handle_SC_ENTER_GAME(PacketSessionPtr& session, Protocol::SC_ENTER_GAME& pkt);
+bool Handle_SC_NORMAL_CHAT(PacketSessionPtr& session, Protocol::SC_NORMAL_CHAT& pkt);
 
 class ServerPacketHandler
 {
@@ -27,23 +27,23 @@ public:
 	{
 		for (auto& handler : g_PacketHandler)
 			handler = Handle_INVALID;
-		g_PacketHandler[SC_LOGIN] = [](PacketSessionRef& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::SC_LOGIN>(Handle_SC_LOGIN, session, buffer, len); };
-		g_PacketHandler[SC_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::SC_ENTER_GAME>(Handle_SC_ENTER_GAME, session, buffer, len); };
-		g_PacketHandler[SC_NORMAL_CHAT] = [](PacketSessionRef& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::SC_NORMAL_CHAT>(Handle_SC_NORMAL_CHAT, session, buffer, len); };
+		g_PacketHandler[SC_LOGIN] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::SC_LOGIN>(Handle_SC_LOGIN, session, buffer, len); };
+		g_PacketHandler[SC_ENTER_GAME] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::SC_ENTER_GAME>(Handle_SC_ENTER_GAME, session, buffer, len); };
+		g_PacketHandler[SC_NORMAL_CHAT] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::SC_NORMAL_CHAT>(Handle_SC_NORMAL_CHAT, session, buffer, len); };
 	}
 
-	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, const uint32 len)
+	static bool HandlePacket(PacketSessionPtr& session, BYTE* buffer, const uint32 len)
 	{
 		const auto header = reinterpret_cast<PacketHeader*>(buffer);
 		return g_PacketHandler[header->id](session, buffer, len);
 	}
-	static SendBufferRef MakeSendBuffer(const Protocol::CS_LOGIN& pkt) { return MakeSendBuffer(pkt, CS_LOGIN); }
-	static SendBufferRef MakeSendBuffer(const Protocol::CS_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, CS_ENTER_GAME); }
-	static SendBufferRef MakeSendBuffer(const Protocol::CS_NORMAL_CHAT& pkt) { return MakeSendBuffer(pkt, CS_NORMAL_CHAT); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::CS_LOGIN& pkt) { return MakeSendBuffer(pkt, CS_LOGIN); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::CS_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, CS_ENTER_GAME); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::CS_NORMAL_CHAT& pkt) { return MakeSendBuffer(pkt, CS_NORMAL_CHAT); }
 private:
 
 	template <typename PacketType, typename ProcessFunc>
-	static bool HandlePacket(ProcessFunc func, PacketSessionRef& session, BYTE* buffer, const uint32 len)
+	static bool HandlePacket(ProcessFunc func, PacketSessionPtr& session, BYTE* buffer, const uint32 len)
 	{
 		PacketType pkt;
 		if (false == pkt.ParseFromArray(buffer + sizeof(PacketHeader), len - sizeof(PacketHeader)))
@@ -53,12 +53,12 @@ private:
 	}
 
 	template <typename T>
-	static SendBufferRef MakeSendBuffer(const T& pkt, const uint16 pktId)
+	static SendBufferPtr MakeSendBuffer(const T& pkt, const uint16 pktId)
 	{
 		const auto dataSize = static_cast<uint16>(pkt.ByteSizeLong());
 		const uint16 packetSize = dataSize + sizeof(PacketHeader);
 
-		SendBufferRef sendBuffer = g_SendBufferManager->Open(packetSize);
+		SendBufferPtr sendBuffer = g_SendBufferManager->Open(packetSize);
 		const auto header = reinterpret_cast<PacketHeader*>(sendBuffer->Buffer());
 		header->size = packetSize;
 		header->id = pktId;
@@ -70,12 +70,12 @@ private:
 };
 
 template <typename T>
-SendBufferRef _MakeSendBuffer(const T& pkt, const uint16 pktId)
+SendBufferPtr _MakeSendBuffer(const T& pkt, const uint16 pktId)
 {
 	const auto dataSize = static_cast<uint16>(pkt.ByteSizeLong());
 	const uint16 packetSize = dataSize + sizeof(PacketHeader);
 
-	SendBufferRef sendBuffer = g_SendBufferManager->Open(packetSize);
+	SendBufferPtr sendBuffer = g_SendBufferManager->Open(packetSize);
 	const auto header = reinterpret_cast<PacketHeader*>(sendBuffer->Buffer());
 	header->size = packetSize;
 	header->id = pktId;

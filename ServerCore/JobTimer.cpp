@@ -6,7 +6,7 @@
 	JobTimer
 -----------------*/
 
-void JobTimer::Reserve(uint64 tickAfter, weak_ptr<JobSerializer> owner, JobRef job)
+void JobTimer::Reserve(uint64 tickAfter, weak_ptr<JobSerializer> owner, JobPtr job)
 {
 	const uint64 executeTick = GetTickCount64() + tickAfter;
 	JobData* jobData = ObjectPool<JobData>::Pop(owner, job);
@@ -38,7 +38,7 @@ void JobTimer::Execute(uint64 now)
 	// 이구간에서 컨텍스트 스위칭 걸리면 잡 순서 꼬일수있음.
 	for(auto& item : tempItems)
 	{
-		if(JobSerializerRef owner = item.jobData->owner.lock())
+		if(JobSerializerPtr owner = item.jobData->owner.lock())
 		{
 			owner->Push(item.jobData->job, true);
 		}
