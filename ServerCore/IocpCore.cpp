@@ -19,7 +19,7 @@ IocpCore::~IocpCore()
 	CloseHandle(m_IocpHandle);
 }
 
-bool IocpCore::Register(const IocpObjectRef iocpObject) const
+bool IocpCore::Register(const IocpObjectPtr iocpObject) const
 {
 	return ::CreateIoCompletionPort(iocpObject->GetHandle(), m_IocpHandle, /*key*/ 0, 0);
 }
@@ -34,7 +34,7 @@ bool IocpCore::Dispatch(const uint32 timeOutMs) const
 		OUT &key,
 		OUT reinterpret_cast<LPOVERLAPPED*>(&iocpEvent), timeOutMs))
 	{
-		const IocpObjectRef iocpObject = iocpEvent->owner;
+		const IocpObjectPtr iocpObject = iocpEvent->owner;
 		iocpObject->Dispatch(iocpEvent, numOfBytes);
 	}
 	else
@@ -45,8 +45,8 @@ bool IocpCore::Dispatch(const uint32 timeOutMs) const
 			return false;
 		default:
 			// TODO Log
-			const IocpObjectRef iocpObject = iocpEvent->owner;
-			iocpObject->Dispatch(iocpEvent, numOfBytes);
+			const IocpObjectPtr iocpObject = iocpEvent->owner;
+			iocpObject->Dispatch(iocpEvent, numOfBytes); 
 			break;
 		}
 	}

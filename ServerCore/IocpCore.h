@@ -29,7 +29,7 @@ public:
 
 	HANDLE		GetHande() const { return m_IocpHandle; }
 
-	bool		Register(IocpObjectRef iocpObject) const;
+	bool		Register(IocpObjectPtr iocpObject) const;
 	bool		Dispatch(uint32 timeOutMs = INFINITE) const;
 
 private:

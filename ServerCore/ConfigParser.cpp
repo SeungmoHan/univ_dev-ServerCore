@@ -10,7 +10,7 @@ bool ConfigParser::LoadConfig(const std::wstring& fileName)
 	std::wfstream file(fileName);
 	if (!file.is_open())
 		return false;
-	auto tempSections = std::make_unique<HashMap<std::wstring, SectionRef>>();
+	auto tempSections = std::make_unique<HashMap<std::wstring, SectionPtr>>();
 
 	while(true)
 	{
@@ -70,7 +70,7 @@ bool ConfigParser::FindSection(std::wfstream& file, OUT std::wstring& sectionNam
 	return !sectionName.empty();
 }
 
-bool ConfigParser::GetSection(std::wfstream& file, SectionRef section)
+bool ConfigParser::GetSection(std::wfstream& file, SectionPtr section)
 {
 	//	Vector<string>
 	//	[0] = VariableName, 

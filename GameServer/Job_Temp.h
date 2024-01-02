@@ -109,30 +109,30 @@ public:
 };
 
 
-using JobRef = shared_ptr<IJob>;
-using JobQ = lockfree_queue<JobRef>;
+using JobPtr = shared_ptr<IJob>;
+using JobQ = lockfree_queue<JobPtr>;
 
 class JobQueue
 {
 public:
-	void Push(const JobRef job)
+	void Push(const JobPtr job)
 	{
 		WRITE_LOCK;
 		m_Jobs.push(job);
 	}
 
-	JobRef Pop()
+	JobPtr Pop()
 	{
 		WRITE_LOCK;
 		if (m_Jobs.empty())
 			return nullptr;
 
-		JobRef ret = m_Jobs.front();
+		JobPtr ret = m_Jobs.front();
 		m_Jobs.pop();
 		return ret;
 	}
 
 private:
 	USE_LOCK;
-	queue<JobRef> m_Jobs;
+	queue<JobPtr> m_Jobs;
 };

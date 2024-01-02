@@ -11,9 +11,9 @@ public:
 	GlobalQueue();
 	~GlobalQueue();
 
-	void		Push(JobSerializerRef jobQueue);
-	JobSerializerRef Pop();
+	void		Push(JobSerializerPtr jobQueue);
+	JobSerializerPtr Pop();
 
 private:
-	LockQueue<JobSerializerRef> m_JobQueues;
+	LockQueue<JobSerializerPtr> m_JobQueues;
 };

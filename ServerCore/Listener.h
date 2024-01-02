@@ -13,10 +13,10 @@ class Listener : public IocpObject
 {
 public:
 	Listener() = default;
-	~Listener();
+	virtual ~Listener();
 
 public:
-	bool StartAccept(const ServerServiceRef& service);
+	bool StartAccept(const ServerServicePtr& service);
 	void CloseSocket();
 
 
@@ -34,6 +34,6 @@ private:
 protected:
 	SOCKET m_Socket = INVALID_SOCKET;
 	Vector<AcceptEvent*>m_AcceptEvents;
-	ServerServiceRef m_Service;
+	ServerServicePtr m_Service;
 };
 

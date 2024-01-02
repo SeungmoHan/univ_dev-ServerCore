@@ -4,13 +4,13 @@
 class Room : public JobSerializer
 {
 public:
-	void Enter(PlayerRef player);
-	void Leave(PlayerRef player);
-	void Broadcast(SendBufferRef sendBuffer);
+	void Enter(PlayerPtr player);
+	void Leave(PlayerPtr player);
+	void Broadcast(SendBufferPtr sendBuffer);
 
 private:
 	USE_LOCK;
-	map<uint64, PlayerRef> m_PlayerMap;
+	map<uint64, PlayerPtr> m_PlayerMap;
 	Atomic<bool> m_UseFlag = false;
 };
 

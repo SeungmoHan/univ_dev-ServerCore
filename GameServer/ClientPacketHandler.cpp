@@ -7,16 +7,16 @@
 PacketHandlerFunc g_PacketHandler[UINT16_MAX];
 
 // 직접 컨텐츠 작업자
-bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, const uint32 len)
+bool Handle_INVALID(PacketSessionPtr& session, BYTE* buffer, const uint32 len)
 {
 	auto header = reinterpret_cast<PacketHeader*>(buffer);
 	// TODO Log...
 	return false;
 }
 
-bool Handle_CS_LOGIN(PacketSessionRef& session, Protocol::CS_LOGIN& pkt)
+bool Handle_CS_LOGIN(PacketSessionPtr& session, Protocol::CS_LOGIN& pkt)
 {
-	const GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	const GameSessionPtr gameSession = static_pointer_cast<GameSession>(session);
 
 	// TODO validation
 
@@ -27,32 +27,41 @@ bool Handle_CS_LOGIN(PacketSessionRef& session, Protocol::CS_LOGIN& pkt)
 	// DB에서 Player정보 긁어오는 내용
 	// 긁어온 정보를 GameSession에 저장(메모리상에 저장)
 	static Atomic<uint64> idGenerator = 1;
+	string temp = u8"Test";
 	{
 		const auto player = loginPacket.add_players();
-		player->set_name(u8"DB에서 긁어온이름1");
+		string charName = temp + to_string(idGenerator);
+		player->set_name(charName);
 		player->set_playertype(Protocol::PLAYER_TYPE_KNIGHT);
 
-		const PlayerRef playerRef = MakeShared<Player>();
-		playerRef->m_PlayerId = idGenerator++;
+		const PlayerPtr playerRef = MakeShared<Player>();
+		playerRef->m_PlayerId = idGenerator;
 		playerRef->m_Name = player->name();
 		playerRef->m_Type = player->playertype();
 		playerRef->m_OwnerSession = gameSession;
 
+		player->set_id(playerRef->m_PlayerId);
+		player->set_name(playerRef->m_Name);
 		gameSession->m_Players.push_back(playerRef);
+		++idGenerator;
 	}
 
 	{
 		const auto player = loginPacket.add_players();
-		player->set_name(u8"DB에서 긁어온이름2");
+		string charName = temp + to_string(idGenerator);
+		player->set_name(charName);
 		player->set_playertype(Protocol::PLAYER_TYPE_KNIGHT);
 
-		const PlayerRef playerRef = MakeShared<Player>();
-		playerRef->m_PlayerId = idGenerator++;
+		const PlayerPtr playerRef = MakeShared<Player>();
+		playerRef->m_PlayerId = idGenerator;
 		playerRef->m_Name = player->name();
 		playerRef->m_Type = player->playertype();
 		playerRef->m_OwnerSession = gameSession;
 
+		player->set_id(playerRef->m_PlayerId);
+		player->set_name(playerRef->m_Name);
 		gameSession->m_Players.push_back(playerRef);
+		++idGenerator;
 	}
 
 	const auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPacket);
@@ -61,9 +70,9 @@ bool Handle_CS_LOGIN(PacketSessionRef& session, Protocol::CS_LOGIN& pkt)
 	return false;
 }
 
-bool Handle_CS_ENTER_GAME(PacketSessionRef& session, Protocol::CS_ENTER_GAME& pkt)
+bool Handle_CS_ENTER_GAME(PacketSessionPtr& session, Protocol::CS_ENTER_GAME& pkt)
 {
-	const GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	const GameSessionPtr gameSession = static_pointer_cast<GameSession>(session);
 
 	const uint64 index = pkt.playerindex();
 	//TODO validation
@@ -80,12 +89,18 @@ bool Handle_CS_ENTER_GAME(PacketSessionRef& session, Protocol::CS_ENTER_GAME& pk
 	return true;
 }
 
-bool Handle_CS_NORMAL_CHAT(PacketSessionRef& session, Protocol::CS_NORMAL_CHAT& pkt)
+bool Handle_CS_NORMAL_CHAT(PacketSessionPtr& session, Protocol::CS_NORMAL_CHAT& pkt)
 {
-
-	std::cout << pkt.msg() << endl;
+	GameSessionPtr gameSession = static_pointer_cast<GameSession>(session);
+	if (gameSession == nullptr)
+		return false;
+	PlayerPtr player = gameSession->m_CurrentPlayer;
+	if (player == nullptr)
+		return false;
 
 	Protocol::SC_NORMAL_CHAT chatPacket;
+	chatPacket.set_playerid(player->m_PlayerId);
+	chatPacket.set_playername(player->m_Name);
 	chatPacket.set_msg(pkt.msg());
 
 

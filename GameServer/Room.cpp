@@ -5,17 +5,17 @@
 #include "Player.h"
 shared_ptr<Room> g_Room = MakeShared<Room>();
 
-void Room::Enter(PlayerRef player)
+void Room::Enter(PlayerPtr player)
 {
 	m_PlayerMap[player->m_PlayerId] = player;
 }
 
-void Room::Leave(PlayerRef player)
+void Room::Leave(PlayerPtr player)
 {
 	m_PlayerMap.erase(player->m_PlayerId);
 }
 
-void Room::Broadcast(SendBufferRef sendBuffer)
+void Room::Broadcast(SendBufferPtr sendBuffer)
 {
 	for(const auto& [playerId, player] : m_PlayerMap)
 	{

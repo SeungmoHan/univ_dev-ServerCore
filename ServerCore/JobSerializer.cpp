@@ -2,7 +2,7 @@
 #include "JobSerializer.h"
 #include "GlobalQueue.h"
 
-void JobSerializer::Push(JobRef job, bool pushOnly)
+void JobSerializer::Push(JobPtr job, bool pushOnly)
 {
 	const int32 prevCounts = m_JobCounts.fetch_add(1);
 	m_Jobs.Push(job);
@@ -28,7 +28,7 @@ void JobSerializer::Execute()
 
 	while(true)
 	{
-		Vector<JobRef> jobs;
+		Vector<JobPtr> jobs;
 		m_Jobs.PopAll(jobs);
 
 		const auto jobCounts = static_cast<int32>(jobs.size());

@@ -1,7 +1,8 @@
 #pragma once
 #include "Protocol.pb.h"
 
-using PacketHandlerFunc = std::function<bool(PacketSessionRef&, BYTE*, const uint32)>;
+//Hello World
+using PacketHandlerFunc = std::function<bool(PacketSessionPtr&, BYTE*, const uint32)>;
 extern PacketHandlerFunc g_PacketHandler[UINT16_MAX];
 
 enum : uint16
@@ -12,9 +13,9 @@ enum : uint16
 };
 
 //Custom Handlers
-bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, const uint32 len);
+bool Handle_INVALID(PacketSessionPtr& session, BYTE* buffer, const uint32 len);
 {%- for pkt in parser.recv_pkt %}
-bool Handle_{{pkt.name}}(PacketSessionRef& session, Protocol::{{pkt.name}}& pkt);
+bool Handle_{{pkt.name}}(PacketSessionPtr& session, Protocol::{{pkt.name}}& pkt);
 {%- endfor %}
 
 class {{output}}
@@ -26,11 +27,11 @@ public:
 			handler = Handle_INVALID;
 
 {%- for pkt in parser.recv_pkt %}
-		g_PacketHandler[PKT_{{pkt.name}}] = [](PacketSessionRef& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::{{pkt.name}}>(Handle_{{pkt.name}}, session, buffer, len); };
+		g_PacketHandler[PKT_{{pkt.name}}] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::{{pkt.name}}>(Handle_{{pkt.name}}, session, buffer, len); };
 {%- endfor %}
 	}
 
-	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, const uint32 len)
+	static bool HandlePacket(PacketSessionPtr& session, BYTE* buffer, const uint32 len)
 	{
 		const auto header = reinterpret_cast<PacketHeader*>(buffer);
 		return g_PacketHandler[header->id](session, buffer, len);
@@ -38,12 +39,12 @@ public:
 
 
 {%- for pkt in parser.send_pkt %}
-	static SendBufferRef MakeSendBuffer(const Protocol::{{pkt.name}}& pkt) { return MakeSendBuffer(pkt, PKT_{{pkt.name}}); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::{{pkt.name}}& pkt) { return MakeSendBuffer(pkt, PKT_{{pkt.name}}); }
 {%- endfor %}
 private:
 
 	template <typename PacketType, typename ProcessFunc>
-	static bool HandlePacket(ProcessFunc func, PacketSessionRef& session, BYTE* buffer, const uint32 len)
+	static bool HandlePacket(ProcessFunc func, PacketSessionPtr& session, BYTE* buffer, const uint32 len)
 	{
 		PacketType pkt;
 		if (false == pkt.ParseFromArray(buffer + sizeof(PacketHeader), len - sizeof(PacketHeader)))
@@ -53,12 +54,12 @@ private:
 	}
 
 	template <typename T>
-	static SendBufferRef MakeSendBuffer(const T& pkt, const uint16 pktId)
+	static SendBufferPtr MakeSendBuffer(const T& pkt, const uint16 pktId)
 	{
 		const auto dataSize = static_cast<uint16>(pkt.ByteSizeLong());
 		const uint16 packetSize = dataSize + sizeof(PacketHeader);
 
-		SendBufferRef sendBuffer = g_SendBufferManager->Open(packetSize);
+		SendBufferPtr sendBuffer = g_SendBufferManager->Open(packetSize);
 		const auto header = reinterpret_cast<PacketHeader*>(sendBuffer->Buffer());
 		header->size = packetSize;
 		header->id = pktId;
@@ -70,12 +71,12 @@ private:
 };
 
 template <typename T>
-SendBufferRef _MakeSendBuffer(const T& pkt, const uint16 pktId)
+SendBufferPtr _MakeSendBuffer(const T& pkt, const uint16 pktId)
 {
 	const auto dataSize = static_cast<uint16>(pkt.ByteSizeLong());
 	const uint16 packetSize = dataSize + sizeof(PacketHeader);
 
-	SendBufferRef sendBuffer = g_SendBufferManager->Open(packetSize);
+	SendBufferPtr sendBuffer = g_SendBufferManager->Open(packetSize);
 	const auto header = reinterpret_cast<PacketHeader*>(sendBuffer->Buffer());
 	header->size = packetSize;
 	header->id = pktId;

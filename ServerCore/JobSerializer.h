@@ -42,8 +42,8 @@ public:
 	void ClearJob() { m_Jobs.ClearJob(); }
 
 	void Execute();
-	void Push(JobRef job, bool pushOnly = false);
+	void Push(JobPtr job, bool pushOnly = false);
 protected:
-	LockQueue<JobRef>	m_Jobs;
+	LockQueue<JobPtr>	m_Jobs;
 	Atomic<int32>		m_JobCounts = 0;
 };

@@ -10,12 +10,12 @@ GlobalQueue::~GlobalQueue()
 {
 }
 
-void GlobalQueue::Push(const JobSerializerRef jobQueue)
+void GlobalQueue::Push(const JobSerializerPtr jobQueue)
 {
 	m_JobQueues.Push(jobQueue);
 }
 
-JobSerializerRef GlobalQueue::Pop()
+JobSerializerPtr GlobalQueue::Pop()
 {
 	return m_JobQueues.Pop();
 }

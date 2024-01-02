@@ -2,7 +2,7 @@
 
 
 
-class NetAddress;
+class NetAddr_TCP;
 /*--------------------
 	SOCKET Util
 --------------------*/
@@ -17,7 +17,7 @@ public:
 	static void Init();
 	static void Clear();
 
-	static bool BindWindowsFunction(SOCKET sock, GUID guid, LPVOID* fn);
+	static bool BindIOCPCallback(SOCKET sock, GUID guid, LPVOID* fn);
 	static SOCKET CreateSocket();
 
 	static bool SetLinger(SOCKET sock, uint16 onoff, uint16 linger);
@@ -28,10 +28,10 @@ public:
 	static bool SetUpdateAcceptSocket(SOCKET sock, SOCKET listenSocket);
 
 
-	static bool Bind(SOCKET socket, NetAddress& netAddr);
-	static bool BindAnyAddress(SOCKET socket, uint16 port);
+	static bool Bind(SOCKET socket, NetAddr_TCP& netAddr);
+	static bool Bind(SOCKET socket, uint16 port);
 	static bool Listen(SOCKET sock, int32 backLog = SOMAXCONN);
-	static void Close(SOCKET& socket);
+	static void CloseSocket(SOCKET& socket);
 };
 
 template <typename T>

@@ -1,11 +1,10 @@
 #pragma once
 
-
-
 class IScriptParser
 {
 private:
-	inline static const wstring FILE_PATH = L"../Scripts/";
+	inline static const wstring FILE_PATH = 
+				L"C:\\Users\\user\\Desktop\\Education\\Portfolio\\GameServer\\Server\\Binary\\Release\\";
 public:
 	virtual ~IScriptParser() = default;
 
@@ -35,3 +34,4 @@ protected:
 	bool m_ReadCompletedFlag = false;
 };
 
+using IScriptParserPtr = shared_ptr<IScriptParser>;

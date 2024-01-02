@@ -19,6 +19,12 @@
     <Filter Include="Job">
       <UniqueIdentifier>{ccf04e51-ebcd-4798-9813-2e1ffdde1cd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DB">
+      <UniqueIdentifier>{537bb8cd-c1df-483f-9225-81cd5b7ad6d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\TimeUtil">
+      <UniqueIdentifier>{9ce9ae40-5f62-4241-bfe3-36e636e7df2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CorePch.h">
@@ -138,6 +144,12 @@
     <ClInclude Include="JobTimer.h">
       <Filter>Job</Filter>
     </ClInclude>
+    <ClInclude Include="DBConnection.h">
+      <Filter>DB</Filter>
+    </ClInclude>
+    <ClInclude Include="DBConnectionPool.h">
+      <Filter>DB</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CorePch.cpp">
@@ -238,6 +250,12 @@
     </ClCompile>
     <ClCompile Include="JobTimer.cpp">
       <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="DBConnection.cpp">
+      <Filter>DB</Filter>
+    </ClCompile>
+    <ClCompile Include="DBConnectionPool.cpp">
+      <Filter>DB</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

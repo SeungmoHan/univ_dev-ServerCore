@@ -12,16 +12,17 @@
 ----------------*/
 Session::Session() : m_RecvBuffer(BUFFER_SIZE)
 {
+	INIT_TL(Session);
 	m_Socket = SocketUtils::CreateSocket();
 }
 
 Session::~Session()
 {
-	SocketUtils::Close(m_Socket);
+	SocketUtils::CloseSocket(m_Socket);
 }
 
 
-void Session::Send(const SendBufferRef buffer)
+void Session::Send(const SendBufferPtr buffer)
 {
 	if (IsConnected() == false)
 		return;
@@ -71,7 +72,7 @@ void Session::Dispatch(IocpEvent* iocpEvent, const int32 numberOfBytes)
 		ProcessDisconnect();
 		break;
 	case EventType::Recv:
-		ProcessRecv(numberOfBytes);
+		ProcessRecv(numberOfBytes); 
 		break;
 	case EventType::Send:
 		ProcessSend(numberOfBytes);
@@ -92,7 +93,7 @@ bool Session::RegisterConnect()
 	if (SocketUtils::SetReuseAddress(m_Socket, true) == false)
 		return false;
 
-	if (SocketUtils::BindAnyAddress(m_Socket, 0) == false)
+	if (SocketUtils::Bind(m_Socket, 0) == false)
 		return false;
 
 	m_ConnectEvent.Init();
@@ -210,7 +211,7 @@ void Session::ProcessConnect()
 	m_ConnectEvent.owner = nullptr; // Release Ref
 	m_Connected.store(true);
 
-	GetService()->AddSession(GetSessionRef());
+	GetService()->AddSession(GetSessionPtr());
 
 	OnConnect();
 
@@ -222,7 +223,7 @@ void Session::ProcessDisconnect()
 	m_DisconnectEvent.owner = nullptr;	
 
 	OnDisconnected();
-	GetService()->ReleaseSession(GetSessionRef());
+	GetService()->ReleaseSession(GetSessionPtr());
 }
 
 void Session::ProcessRecv(const int32 numOfBytes)
@@ -240,7 +241,7 @@ void Session::ProcessRecv(const int32 numOfBytes)
 	}
 
 	const uint32 dataSize = m_RecvBuffer.DataSize();
-
+	
 	if (const int32 processLen = OnRecv(m_RecvBuffer.ReadPos(), dataSize); 
 		processLen < 0 || static_cast<int32>(dataSize) < processLen || m_RecvBuffer.OnRead(processLen) == false)
 	{
@@ -292,6 +293,7 @@ void Session::ErrorHandler(const int32 errCode)
 
 PacketSession::PacketSession()
 {
+	INIT_TL(PacketSession);
 	// TODO
 }
 

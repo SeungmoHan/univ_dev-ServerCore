@@ -10,7 +10,7 @@
 ----------------*/
 Listener::~Listener()
 {
-	SocketUtils::Close(m_Socket);
+	SocketUtils::CloseSocket(m_Socket);
 
 	for (AcceptEvent* acceptEvent : m_AcceptEvents)
 	{
@@ -20,7 +20,7 @@ Listener::~Listener()
 	}
 }
 
-bool Listener::StartAccept(const ServerServiceRef& service)
+bool Listener::StartAccept(const ServerServicePtr& service)
 {
 	m_Service = service;
 	if (m_Service == nullptr)
@@ -59,7 +59,7 @@ bool Listener::StartAccept(const ServerServiceRef& service)
 
 void Listener::CloseSocket()
 {
-	SocketUtils::Close(m_Socket);
+	SocketUtils::CloseSocket(m_Socket);
 }
 
 HANDLE Listener::GetHandle()
@@ -82,7 +82,7 @@ void Listener::RegisterAccept(AcceptEvent* acceptEvent)
 		cout << "ListenSocket Closed" << endl;
 		return;
 	}
-	const SessionRef session = m_Service->CreateSession();
+	const SessionPtr session = m_Service->CreateSession();
 
 	acceptEvent->Init();
 	acceptEvent->session = session;
@@ -103,14 +103,13 @@ void Listener::RegisterAccept(AcceptEvent* acceptEvent)
 
 void Listener::ProcessAccept(AcceptEvent* acceptEvent)
 {
-	const SessionRef session = acceptEvent->session;
+	const SessionPtr session = acceptEvent->session;
 
 	if (!SocketUtils::SetUpdateAcceptSocket(session->GetSocket(), m_Socket))
 	{
 		RegisterAccept(acceptEvent);
 		return;
 	}
-
 
 	sockaddr_in addr{};
 	int32 addrSize = sizeof(addr);
@@ -121,7 +120,7 @@ void Listener::ProcessAccept(AcceptEvent* acceptEvent)
 		return;
 	}
 
-	session->SetNetAddress(NetAddress(addr));
+	session->SetNetAddress(NetAddr_TCP(addr));
 	session->ProcessConnect();
 
 	cout << "Client Connected" << endl;
