@@ -11,6 +11,7 @@
 #include "GameServer.h"
 #include "GameSessionManager.h"
 #include "UpdateTickControl.h"
+#include <conio.h>
 
 #include <functional>
 
@@ -22,8 +23,14 @@ enum
 
 void WorkerThread(const ServerServicePtr& service)
 {
+	GameServer::Instance().IncreaseRunningThreadCounts();
+	while (GameServer::Instance().IsRunning() == false)
+		this_thread::sleep_for(1s);
 	while (true)
 	{
+		if (GameServer::Instance().IsClosing() == true)
+			break;
+
 		LEndTickCount = ::GetTickCount64() + WORKER_TICK;
 		service->GetIocpCore()->Dispatch(10);
 
@@ -62,37 +69,68 @@ bool GameServer::Init()
 		return false;
 	InitWorkerThread();
 
-	updateControl = MakeShared<UpdateTickControl>();
+	m_UpdateControl = MakeShared<UpdateTickControl>(*this, m_ServerOption.m_ServerFPS);
 
-	return m_ServerRunningFlag = true;
+
+	return m_ServerStartFlag = true;
 }
 
 void GameServer::Run()
 {
-	if(m_ServerRunningFlag == false)
+	if(IsRunning() == false)
 	{
 		cout << "server not initiated" << endl;
 		return;
 	}
-	uint64 lastTick = GetTickCount64();
-	while(m_ServerRunningFlag == true )
-	{
-		 updateControl(lastTick);
-		lastTick = GetTickCount64();
-		// 마지막 프레임시간에서 지금시간까지
-		if (Update(updateControl.GetDeltaTick()) == false)
-		{
-			cout << "Update Error" << endl;
-			m_ServerRunningFlag = false;
-			break;
-		}
-		// updateControl의 소멸자에서 프레임에 소모된 코스트 sleep_for을 보장...
-	}
 
-	cout << "server running flag == false : server off" << endl;
+	while (m_WorkerRunningCounts != m_ServerOption.m_WorkerThreadCounts)
+		this_thread::sleep_for(1s);
+
+	g_ThreadManager->Launch([this]()
+	{
+		// Update Thread Create
+		uint64 lastTick = GetTickCount64();
+		while(IsRunning() == false)
+			this_thread::sleep_for(1s);
+		while (IsClosing() == false)
+		{
+			static int i = 0;
+			if (m_UpdateControl->Update() == true)
+			{
+				if (Update(m_UpdateControl->GetDeltaTick()) == false)
+				{
+					cout << "Update Error" << endl;
+					m_ServerStartFlag = false;
+					m_ServerClosingFlag = true;
+					break;
+				}
+			}
+			m_UpdateControl->DelayFrame();
+		}
+	});
+
+	// Main Thread는 종료 조건을 위한 쓰레드로 남겨두도록 하자...
+	// 키에따라 할일이 달라짐
+	// Command
+	// -> QuitServer	CloseServer
+	// -> Shutdown		ShutDown
+	//while(true)
+	//{
+	//	// 키입력을 여기서 받자...
+	//	if(m_ServerInputControl.Update() == false)
+	//		break;
+	//}
 	g_ThreadManager->Join();
+	cout << "server running flag == false : server off" << endl;
 }
 
+void GameServer::Shutdown()
+{
+	m_ServerClosingFlag = true;
+	this_thread::sleep_for(3s);
+	m_Service->CloseService();
+	GameSessionManager::Instance()->RemoveAll();
+}
 
 bool GameServer::InitConfigParser()
 {
@@ -105,8 +143,9 @@ bool GameServer::InitConfigParser()
 		ASSERT_CRASH(config.Get(L"ScriptPath", m_ServerOption.m_DataScriptPath));
 		ASSERT_CRASH(config.Get(L"IP", m_ServerOption.m_IP));
 		ASSERT_CRASH(config.Get(L"ListenPort", m_ServerOption.m_Port));
-		ASSERT_CRASH(config.Get(L"ListenPort", m_ServerOption.m_MaxSessionCounts));
-		ASSERT_CRASH(config.Get(L"ListenPort", m_ServerOption.m_ServerFPS));
+		ASSERT_CRASH(config.Get(L"MaxSessions", m_ServerOption.m_MaxSessionCounts));
+		ASSERT_CRASH(config.Get(L"ServerFrame", m_ServerOption.m_ServerFPS));
+		ASSERT_CRASH(config.Get(L"WorkerThreadCnt", m_ServerOption.m_WorkerThreadCounts));
 		ASSERT_CRASH(config.Get(L"ServerMode", modeStr));
 		m_ServerOption.m_Mode = ServerOptionData::StringToMode(modeStr);
 	}
@@ -122,29 +161,25 @@ bool GameServer::InitScriptParser()
 bool GameServer::InitServerService()
 {
 	//TODO Service에 들어가는 정보들 초기화 컨피그에서읽은거로...
-	ServerServicePtr service = MakeShared<ServerService>(
-		NetAddr_TCP(L"127.0.0.1", 7777),
+	m_Service = MakeShared<ServerService>(
+		NetAddr_TCP(m_ServerOption.m_IP, m_ServerOption.m_Port),
 		MakeShared<IocpCore>(),
 		MakeShared<GameSession>,// Session Factory TODO : SessionManager
-		100);
+		m_ServerOption.m_MaxSessionCounts);
 
-	if (service->CanStart() == false)
+	if (m_Service->CanStart() == false)
 		return false;
-	m_Service = std::move(service);
 	return m_Service->Start();
 }
 
 void GameServer::InitWorkerThread()
 {
-	for (int32 i = 0; i < 4; i++)
+	for (int32 i = 0; i < m_ServerOption.m_WorkerThreadCounts; i++)
 	{
 		g_ThreadManager->Launch([this]()
 			{
-				this_thread::sleep_for(1000ms);
-				while (true)
-				{
-					WorkerThread(m_Service);
-				}
+				this_thread::sleep_for(1s);
+				WorkerThread(m_Service);
 			}
 		);
 	}

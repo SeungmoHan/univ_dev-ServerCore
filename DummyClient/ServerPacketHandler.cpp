@@ -60,7 +60,7 @@ bool Handle_SC_NORMAL_CHAT(PacketSessionPtr& session, Protocol::SC_NORMAL_CHAT& 
 		return false;
 	if(pkt.playerid() != clientPlayer->m_PlayerID)
 	{
-		//cout <<"MyID:" << clientPlayer->m_PlayerID << " | " << pkt.playerid() << "(" << pkt.playername() << ") : " << pkt.msg() << endl;
+		cout <<"MyID:" << clientPlayer->m_PlayerID << " | " << pkt.playerid() << "(" << pkt.playername() << ") : " << pkt.msg() << endl;
 	}
 	this_thread::sleep_for(100ms);
 

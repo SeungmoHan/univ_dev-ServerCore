@@ -26,6 +26,14 @@ public:
 	}
 	bool Init();
 	void Run();
+	void Shutdown();
+
+	const ServerOptionData& GetServerOption() const { return m_ServerOption; }
+
+	bool IsRunning() { return m_ServerStartFlag; }
+	bool IsClosing() { return m_ServerClosingFlag; }
+
+	void IncreaseRunningThreadCounts() {  m_WorkerRunningCounts.fetch_add(1); }
 
 private:
 	GameServer() = default;
@@ -47,7 +55,12 @@ private:
 	//
 	ServerOptionData m_ServerOption;
 
-	shared_ptr<UpdateTickControl> updateControl;
+	shared_ptr<UpdateTickControl> m_UpdateControl;
 
-	volatile bool m_ServerRunningFlag = false;
+	//KeyboardInputCapture m_ServerInputControl;
+
+	atomic<uint32> m_WorkerRunningCounts = 0;
+
+	volatile bool m_ServerStartFlag = false;
+	volatile bool m_ServerClosingFlag = false;
 };

@@ -20,6 +20,8 @@ public:
 	}
 
 	bool Update(uint64 deltaTick);
+
+	void RemoveAll();
 private:
 	USE_LOCK;
 

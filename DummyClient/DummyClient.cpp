@@ -12,7 +12,7 @@ int main()
 		NetAddr_TCP(L"127.0.0.1", 7777),
 		MakeShared<IocpCore>(),
 		MakeShared<ServerSession>,// Session Factory TODO : SessionManager
-		5000);
+		1);
 
 	ASSERT_CRASH(service->Start());
 

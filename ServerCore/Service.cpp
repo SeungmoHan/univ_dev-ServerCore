@@ -3,8 +3,8 @@
 #include "Session.h"
 #include "Listener.h"
 
-Service::Service(const ServiceType type, const NetAddr_TCP address, const IocpCorePtr core, const SessionFactory factory, const int32 maxSessionCount)
-	: m_Type(type), m_Addr(address) , m_IocpCore(core), m_SessionFactory(factory), m_MaxSessionCounts(maxSessionCount)
+Service::Service(const ServiceType type, const NetAddr_TCP address, const IocpCorePtr core, const SessionAllocator factory, const int32 maxSessionCount)
+	: m_Type(type), m_Addr(address) , m_IocpCore(core), m_SessionAllocator(factory), m_MaxSessionCounts(maxSessionCount)
 { 
 
 }
@@ -27,7 +27,7 @@ void Service::Broadcast(const SendBufferPtr sendBuffer)
 
 SessionPtr Service::CreateSession()
 {
-	SessionPtr session = m_SessionFactory();
+	SessionPtr session = m_SessionAllocator();
 	session->SetService(shared_from_this());
 	if (m_IocpCore->Register(session) == false)
 		return nullptr;
@@ -53,7 +53,7 @@ void Service::ReleaseSession(const SessionPtr session)
 /*------------------
 	ClientService
 ------------------*/
-ClientService::ClientService(const NetAddr_TCP targetAddr, const IocpCorePtr core, const SessionFactory factory, const int32 maxSessionCount)
+ClientService::ClientService(const NetAddr_TCP targetAddr, const IocpCorePtr core, const SessionAllocator factory, const int32 maxSessionCount)
 	:Service(ServiceType::Client, targetAddr, core , factory, maxSessionCount)
 {
 
@@ -87,7 +87,7 @@ void ClientService::CloseService()
 /*------------------
 	ServerService
 ------------------*/
-ServerService::ServerService(const NetAddr_TCP addr, const IocpCorePtr core, const SessionFactory factory, const int32 maxSessionCount)
+ServerService::ServerService(const NetAddr_TCP addr, const IocpCorePtr core, const SessionAllocator factory, const int32 maxSessionCount)
 	:Service(ServiceType::Server, addr, core, factory, maxSessionCount)
 {
 }
@@ -113,4 +113,5 @@ bool ServerService::Start()
 void ServerService::CloseService()
 {
 	Service::CloseService();
+	m_Listener->CloseSocket();
 }

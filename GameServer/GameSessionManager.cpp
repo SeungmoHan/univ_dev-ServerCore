@@ -35,12 +35,19 @@ bool GameSessionManager::Update(uint64 deltaTick)
 			continue;
 		}
 
-		//PlayerPtr curPlayer = session->GetSeleectedPlayer();
+		PlayerPtr curPlayer = session->GetSeleectedPlayer();
 		//if (curPlayer->Update() == false)
 		//{
 		//	continue;
 		//}
-
 	}
 	return true;
+}
+
+void GameSessionManager::RemoveAll()
+{
+	for(GameSessionPtr session : m_Sessions)
+	{
+		session->Disconnect(L"Remove all Connection");
+	}
 }

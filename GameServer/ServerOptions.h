@@ -30,4 +30,5 @@ public:
 	uint16			m_Port = {};
 	uint32			m_MaxSessionCounts = {};
 	uint32			m_ServerFPS = {};
+	uint32			m_WorkerThreadCounts = 0;
 };
