@@ -11,9 +11,10 @@
 #include "GameServer.h"
 #include "GameSessionManager.h"
 #include "UpdateTickControl.h"
-#include <conio.h>
 
 #include <functional>
+
+#include "GameRoomManager.h"
 
 enum
 {
@@ -45,11 +46,13 @@ void WorkerThread(const ServerServicePtr& service)
 
 bool GameServer::Update(uint64 deltaTick)
 {
+	g_Logger->PushLog(L"[%s @%d] Update Frame %d", 
+		__FUNCTIONW__, __LINE__, m_UpdateControl->GetServerFrame());
 	// 플레이들 업데이트 먼저하고
 	GameSessionManager::Instance()->Update(deltaTick);
 
 	// 룸 업데이트 시작
-	//GameRoomManager::Instance()->Update(deltaTick);
+	GameRoomManager::Instance().Update(deltaTick);
 
 	// 그외 콘텐츠들 있으면 여기 밑에서 업데이트 되도록 
 	return true;
@@ -140,13 +143,14 @@ bool GameServer::InitConfigParser()
 	{
 		ASSERT_CRASH(config.SetCurrentSection(L"ServerOptions"));
 		wstring modeStr; // 스크립트의 모드는 스트링이고 타입은 enum값이라서,,,
-		ASSERT_CRASH(config.Get(L"ScriptPath", m_ServerOption.m_DataScriptPath));
-		ASSERT_CRASH(config.Get(L"IP", m_ServerOption.m_IP));
-		ASSERT_CRASH(config.Get(L"ListenPort", m_ServerOption.m_Port));
-		ASSERT_CRASH(config.Get(L"MaxSessions", m_ServerOption.m_MaxSessionCounts));
-		ASSERT_CRASH(config.Get(L"ServerFrame", m_ServerOption.m_ServerFPS));
+		ASSERT_CRASH(config.Get(L"ScriptPath",		m_ServerOption.m_DataScriptPath));
+		ASSERT_CRASH(config.Get(L"LogPath",			m_ServerOption.m_LogPath));
+		ASSERT_CRASH(config.Get(L"IP",				m_ServerOption.m_IP));
+		ASSERT_CRASH(config.Get(L"ListenPort",		m_ServerOption.m_Port));
+		ASSERT_CRASH(config.Get(L"MaxSessions",		m_ServerOption.m_MaxSessionCounts));
+		ASSERT_CRASH(config.Get(L"ServerFrame",		m_ServerOption.m_ServerFPS));
 		ASSERT_CRASH(config.Get(L"WorkerThreadCnt", m_ServerOption.m_WorkerThreadCounts));
-		ASSERT_CRASH(config.Get(L"ServerMode", modeStr));
+		ASSERT_CRASH(config.Get(L"ServerMode",		modeStr));
 		m_ServerOption.m_Mode = ServerOptionData::StringToMode(modeStr);
 	}
 	// 필요한 데이터는 섹션 선택해놓고 찾으면됨...
@@ -174,7 +178,7 @@ bool GameServer::InitServerService()
 
 void GameServer::InitWorkerThread()
 {
-	for (int32 i = 0; i < m_ServerOption.m_WorkerThreadCounts; i++)
+	for (uint32 i = 0; i < m_ServerOption.m_WorkerThreadCounts; i++)
 	{
 		g_ThreadManager->Launch([this]()
 			{

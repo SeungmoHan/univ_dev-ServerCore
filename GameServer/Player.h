@@ -1,11 +1,37 @@
 #pragma once
+#include "BaseObject.h"
 
-class Player
+
+class Room;
+
+class Player : public BaseObject
 {
 public:
-	uint64					m_PlayerId = 0;
-	string					m_Name;
-	Protocol::PlayerType	m_Type = Protocol::PLAYER_TYPE_NONE;
-	GameSessionPtr			m_OwnerSession;
+	Player() = default;
+	~Player() override = default;
+	void Init(const uint64 playerId,
+	          const string& name,
+	          const Protocol::PlayerType type,
+	          const GameSessionPtr& ownerSession);
+
+	void SendPacket(const SendBufferPtr& sendBuffer) const;
+
+	uint64 GetPlayerGuid() const { return m_PlayerGuid; }
+	const string& GetPlayerName() const { return m_Name; }
+
+	ptr<Room> SetCurrentRoom(const ptr<Room>& gameRoom);
+	ptr<Room> GetCurrentRoom() const;
+
+	void Update() override;
+
+	GameSessionPtr GetOwnerSession() const { return m_OwnerSession; }
+	
+
+private:
+	uint64						m_PlayerGuid = 0;
+	string						m_Name;
+	Protocol::PlayerType		m_Type = Protocol::PLAYER_TYPE_NONE;
+	GameSessionPtr				m_OwnerSession;
+	weak_ptr<Room>	m_Room;
 };
 

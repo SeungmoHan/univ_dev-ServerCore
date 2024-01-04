@@ -4,15 +4,20 @@
 class Room : public JobSerializer
 {
 public:
-	void Enter(PlayerPtr player);
-	void Leave(PlayerPtr player);
-	void Broadcast(SendBufferPtr sendBuffer);
+	virtual void Enter(PlayerPtr player);
+	virtual bool Leave(PlayerPtr player);
+	virtual void Broadcast(SendBufferPtr sendBuffer);
+	virtual void Update(uint64 deltaTick);
+
+	explicit Room() = default;
+	~Room() override = default;
+
+	void Init(uint64 roomKey);
 
 private:
 	USE_LOCK;
+	uint64 m_RoomKey = 0;
+	PlayerPtr m_RoomLeader;
 	map<uint64, PlayerPtr> m_PlayerMap;
 	Atomic<bool> m_UseFlag = false;
 };
-
-
-extern shared_ptr<Room> g_Room;

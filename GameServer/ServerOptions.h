@@ -26,6 +26,7 @@ public:
 
 	eServerMode		m_Mode = NONE;
 	wstring			m_DataScriptPath;
+	wstring			m_LogPath;
 	wstring			m_IP;
 	uint16			m_Port = {};
 	uint32			m_MaxSessionCounts = {};

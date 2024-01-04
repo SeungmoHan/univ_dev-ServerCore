@@ -34,7 +34,6 @@ bool UpdateTickControl::Update()
 		if(m_CurTick >= m_LogLastTick + SECOND)
 		{
 			auto fps = m_LogTotalFrame - m_LogLastFrame;
-			cout << "FPS : " << fps << endl;
 			m_LogLastFrame = m_LogTotalFrame;
 			m_LogLastTick = m_CurTick;
 		}

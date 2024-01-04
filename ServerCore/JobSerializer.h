@@ -12,6 +12,8 @@
 class JobSerializer : public enable_shared_from_this<JobSerializer>
 {
 public:
+	virtual ~JobSerializer() = default;
+
 	void DoAsync(CallbackType&& callback)
 	{
 		Push(ObjectPool<Job>::MakeShared(std::move(callback)));

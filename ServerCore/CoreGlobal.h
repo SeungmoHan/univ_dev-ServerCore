@@ -9,3 +9,4 @@ extern class JobTimer*				g_JobTimer;
 
 extern class DeadLockProfiler*		g_DeadlockProfiler;
 extern class DBConnectionPool*		g_DBConnectionPool;
+extern class Logger*				g_Logger;
