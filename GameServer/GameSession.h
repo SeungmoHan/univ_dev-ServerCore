@@ -17,12 +17,18 @@ public:
 	virtual void	OnDisconnected() override;
 
 public:
-	PlayerPtr GetSeleectedPlayer() const { return m_CurrentPlayer; }
+	void AddPlayer(PlayerPtr newPlayer);
 
-public:
-	Vector<PlayerPtr> m_Players;
+	PlayerPtr GetSelectedPlayer() const { return m_CurrentPlayer; }
+	void SetSelectedPlayer(const size_t playerIndex);
 
-	PlayerPtr m_CurrentPlayer;
-	weak_ptr<class Room> m_Room;
+	PlayerPtr GetPlayer(size_t playerIndex);
+
+private:
+	bool is_valid(const size_t index) const;
+
+
+	Vector<PlayerPtr> m_Players = {};
+	PlayerPtr m_CurrentPlayer = nullptr;
 };
 

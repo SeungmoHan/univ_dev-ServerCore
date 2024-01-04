@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "ClientPacketHandler.h"
+#include "GameRoomManager.h"
 #include "Player.h"
 #include "Room.h"
 #include "GameSession.h"
@@ -35,14 +36,11 @@ bool Handle_CS_LOGIN(PacketSessionPtr& session, Protocol::CS_LOGIN& pkt)
 		player->set_playertype(Protocol::PLAYER_TYPE_KNIGHT);
 
 		const PlayerPtr playerRef = MakeShared<Player>();
-		playerRef->m_PlayerId = idGenerator;
-		playerRef->m_Name = player->name();
-		playerRef->m_Type = player->playertype();
-		playerRef->m_OwnerSession = gameSession;
+		playerRef->Init(idGenerator, player->name(), player->playertype(), gameSession);
 
-		player->set_id(playerRef->m_PlayerId);
-		player->set_name(playerRef->m_Name);
-		gameSession->m_Players.push_back(playerRef);
+		player->set_id(playerRef->GetPlayerGuid());
+		player->set_name(playerRef->GetPlayerName());
+		gameSession->AddPlayer(playerRef);
 		++idGenerator;
 	}
 
@@ -53,14 +51,11 @@ bool Handle_CS_LOGIN(PacketSessionPtr& session, Protocol::CS_LOGIN& pkt)
 		player->set_playertype(Protocol::PLAYER_TYPE_KNIGHT);
 
 		const PlayerPtr playerRef = MakeShared<Player>();
-		playerRef->m_PlayerId = idGenerator;
-		playerRef->m_Name = player->name();
-		playerRef->m_Type = player->playertype();
-		playerRef->m_OwnerSession = gameSession;
-
-		player->set_id(playerRef->m_PlayerId);
-		player->set_name(playerRef->m_Name);
-		gameSession->m_Players.push_back(playerRef);
+		playerRef->Init(idGenerator, player->name(), player->playertype(), gameSession);
+		
+		player->set_id(playerRef->GetPlayerGuid());
+		player->set_name(playerRef->GetPlayerName());
+		gameSession->AddPlayer(playerRef);
 		++idGenerator;
 	}
 
@@ -76,36 +71,43 @@ bool Handle_CS_ENTER_GAME(PacketSessionPtr& session, Protocol::CS_ENTER_GAME& pk
 
 	const uint64 index = pkt.playerindex();
 	//TODO validation
-	gameSession->m_CurrentPlayer = gameSession->m_Players[index];
-	gameSession->m_Room = g_Room;
-	g_Room->DoAsync(&Room::Enter, gameSession->m_CurrentPlayer);
+	gameSession->SetSelectedPlayer(index);
+	const auto player = gameSession->GetSelectedPlayer();
+	const auto room = player->SetCurrentRoom(GameRoomManager::Instance().GetDefaultEnterRoom());
+	if (room == nullptr)
+		return false;
+
+	room->DoAsync(&Room::Enter, player);
 
 	Protocol::SC_ENTER_GAME enterGamePacket;
 	enterGamePacket.set_success(true);
 
 	const auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePacket);
-	gameSession->m_CurrentPlayer->m_OwnerSession->Send(sendBuffer);
+	player->SendPacket(sendBuffer);
 
 	return true;
 }
 
 bool Handle_CS_NORMAL_CHAT(PacketSessionPtr& session, Protocol::CS_NORMAL_CHAT& pkt)
 {
-	GameSessionPtr gameSession = static_pointer_cast<GameSession>(session);
+	const GameSessionPtr gameSession = static_pointer_cast<GameSession>(session);
 	if (gameSession == nullptr)
 		return false;
-	PlayerPtr player = gameSession->m_CurrentPlayer;
+	const PlayerPtr player = gameSession->GetSelectedPlayer();
 	if (player == nullptr)
 		return false;
 
 	Protocol::SC_NORMAL_CHAT chatPacket;
-	chatPacket.set_playerid(player->m_PlayerId);
-	chatPacket.set_playername(player->m_Name);
+	chatPacket.set_playerid(player->GetPlayerGuid());
+	chatPacket.set_playername(player->GetPlayerName());
 	chatPacket.set_msg(pkt.msg());
 
 
 	const auto sendBuffer = ClientPacketHandler::MakeSendBuffer(chatPacket);
-	g_Room->DoAsync(&Room::Broadcast, sendBuffer);
+	const auto room = player->GetCurrentRoom();
+	if (room == nullptr)
+		return false;
+	room->DoAsync(&Room::Broadcast, sendBuffer);
 
 	return true;
 }

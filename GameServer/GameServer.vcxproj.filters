@@ -19,6 +19,9 @@
     <Filter Include="Utils\UpdateTickControl">
       <UniqueIdentifier>{c5ba5b88-854a-4693-ad21-752ce8d44126}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameContents\GameRoom">
+      <UniqueIdentifier>{a19ff89a-1bf0-4606-9e4f-8f61cf0e057d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameServerMain.cpp">
@@ -66,6 +69,12 @@
     <ClCompile Include="UpdateTickControl.cpp">
       <Filter>Utils\UpdateTickControl</Filter>
     </ClCompile>
+    <ClCompile Include="GameRoomManager.cpp">
+      <Filter>GameContents\GameRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseObject.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -109,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="UpdateTickControl.h">
       <Filter>Utils\UpdateTickControl</Filter>
+    </ClInclude>
+    <ClInclude Include="GameRoomManager.h">
+      <Filter>GameContents\GameRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseObject.h">
+      <Filter>GameContents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

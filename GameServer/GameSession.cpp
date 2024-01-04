@@ -3,7 +3,7 @@
 #include "GameSessionManager.h"
 #include "ClientPacketHandler.h"
 #include "Room.h"
-#include "Service.h"
+#include "Player.h"
 
 void	GameSession::OnConnect()
 {
@@ -32,13 +32,37 @@ void	GameSession::OnDisconnected()
 	if(m_CurrentPlayer)
 	{
 		// 방이 있으면
-		if(const auto room = m_Room.lock())
+		if(const auto room = m_CurrentPlayer->GetCurrentRoom())
 		{
 			// 방탈출 잡 실행
-			room->DoAsync(&Room::Leave, m_CurrentPlayer);
+			if (room != nullptr)
+				room->DoAsync(&Room::Leave, m_CurrentPlayer);
 		}
 	}
 	m_CurrentPlayer = nullptr;
 	m_Players.clear();
 
+}
+
+void GameSession::AddPlayer(PlayerPtr newPlayer)
+{
+	m_Players.push_back(newPlayer);
+}
+
+void GameSession::SetSelectedPlayer(const size_t playerIndex)
+{
+	if (is_valid(playerIndex))
+		m_CurrentPlayer = m_Players[playerIndex];
+}
+
+PlayerPtr GameSession::GetPlayer(size_t playerIndex)
+{
+	if (is_valid(playerIndex))
+		return m_Players[playerIndex];
+	return nullptr;
+}
+
+bool GameSession::is_valid(const size_t index) const
+{
+	return index < m_Players.size();
 };

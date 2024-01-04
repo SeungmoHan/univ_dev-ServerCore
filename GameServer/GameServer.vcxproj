@@ -173,12 +173,14 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Enum.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="GameRoomManager.cpp" />
     <ClCompile Include="GameScriptParser.cpp" />
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="GameServerMain.cpp" />
@@ -215,7 +217,9 @@
     <ClCompile Include="UpdateTickControl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Enum.pb.h" />
+    <ClInclude Include="GameRoomManager.h" />
     <ClInclude Include="GameScriptParser.h" />
     <ClInclude Include="GameServer.h" />
     <ClInclude Include="GameSession.h" />

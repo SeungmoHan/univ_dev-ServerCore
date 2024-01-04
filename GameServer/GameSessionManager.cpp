@@ -35,7 +35,7 @@ bool GameSessionManager::Update(uint64 deltaTick)
 			continue;
 		}
 
-		PlayerPtr curPlayer = session->GetSeleectedPlayer();
+		PlayerPtr curPlayer = session->GetSelectedPlayer();
 		//if (curPlayer->Update() == false)
 		//{
 		//	continue;

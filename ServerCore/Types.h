@@ -20,10 +20,10 @@ using UniqueLock			= std::unique_lock<std::mutex>;
 using LockGuard				= std::lock_guard<std::mutex>;
 
 template<typename T>
-using ref = std::shared_ptr<T>;
+using ptr = std::shared_ptr<T>;
 
 #define SHARED_REF(_Typename) \
-	using _Typename##Ptr = ::ref<class _Typename>;
+	using _Typename##Ptr = ::ptr<class _Typename>;
 
 SHARED_REF(IocpCore);
 SHARED_REF(IocpObject);

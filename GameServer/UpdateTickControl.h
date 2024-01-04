@@ -16,6 +16,7 @@ public:
 	}
 	~UpdateTickControl() = default;
 	void DelayFrame();
+	uint32 GetServerFrame() const { return m_LogTotalFrame; }
 
 private:
 
