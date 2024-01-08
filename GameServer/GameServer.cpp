@@ -14,6 +14,8 @@
 
 #include <functional>
 
+#include "Channel.h"
+#include "ChannelManager.h"
 #include "GameRoomManager.h"
 
 enum
@@ -24,12 +26,12 @@ enum
 
 void WorkerThread(const ServerServicePtr& service)
 {
-	GameServer::Instance().IncreaseRunningThreadCounts();
-	while (GameServer::Instance().IsRunning() == false)
+	GameServer::Instance()->IncreaseRunningThreadCounts();
+	while (GameServer::Instance()->IsRunning() == false)
 		this_thread::sleep_for(1s);
 	while (true)
 	{
-		if (GameServer::Instance().IsClosing() == true)
+		if (GameServer::Instance()->IsClosing() == true)
 			break;
 
 		LEndTickCount = ::GetTickCount64() + WORKER_TICK;
@@ -46,18 +48,28 @@ void WorkerThread(const ServerServicePtr& service)
 
 bool GameServer::Update(uint64 deltaTick)
 {
-	g_Logger->PushLog(L"[%s @%d] Update Frame %d", 
-		__FUNCTIONW__, __LINE__, m_UpdateControl->GetServerFrame());
-	// 플레이들 업데이트 먼저하고
-	GameSessionManager::Instance()->Update(deltaTick);
-
-	// 룸 업데이트 시작
+	// 게임채널의 목적 -> 각각 분리된 환경이 조성되어야 하는 콘텐츠들을 위함
+	// ex) 각 채널마다의 맵이라던가 그런것들...
+	// 게임서버의 목적 -> 범채널 콘텐츠를 다루기 위함...
+	// ex) 길드, 파티, 채팅과관련된것들...
+	// 룸(파티) 업데이트 시작
 	GameRoomManager::Instance().Update(deltaTick);
 
+
 	// 그외 콘텐츠들 있으면 여기 밑에서 업데이트 되도록 
+	//GuildManager::Instance()->UpdatE(deltaTick); // 일단 얘까지는 포폴에 넣고싶다...
 	return true;
 }
 
+
+void GameServer::InitChannel()
+{
+	// 굳이 서버에서 채널을 관리할 필요가 있을까..?
+	// 싱글톤화 되어서 어디서든 접근 가능한데...
+	// 이부분에 대한 설계를 다시 고민해봐야겠다...
+	for (int i = 0; i < m_ServerOption.m_ChannelCounts; i++)
+		CreateChannel();
+}
 
 bool GameServer::Init()
 {
@@ -72,7 +84,9 @@ bool GameServer::Init()
 		return false;
 	InitWorkerThread();
 
-	m_UpdateControl = MakeShared<UpdateTickControl>(*this, m_ServerOption.m_ServerFPS);
+	m_UpdateControl = MakeShared<UpdateTickControl>(m_ServerOption.m_ServerFPS);
+
+	InitChannel();
 
 
 	return m_ServerStartFlag = true;
@@ -97,18 +111,14 @@ void GameServer::Run()
 			this_thread::sleep_for(1s);
 		while (IsClosing() == false)
 		{
-			static int i = 0;
-			if (m_UpdateControl->Update() == true)
+			if (Update(m_UpdateControl->GetDeltaTick()) == false)
 			{
-				if (Update(m_UpdateControl->GetDeltaTick()) == false)
-				{
-					cout << "Update Error" << endl;
-					m_ServerStartFlag = false;
-					m_ServerClosingFlag = true;
-					break;
-				}
+				cout << "Update Error" << endl;
+				m_ServerStartFlag = false;
+				m_ServerClosingFlag = true;
+				break;
 			}
-			m_UpdateControl->DelayFrame();
+			m_UpdateControl->Update();
 		}
 	});
 
@@ -135,6 +145,25 @@ void GameServer::Shutdown()
 	GameSessionManager::Instance()->RemoveAll();
 }
 
+
+uint32 GameServer::RebootChannel(uint32 channelKey)
+{
+	if(ChannelManager::Instance().DetatchChannel(channelKey))
+		return 0;
+
+	return ChannelManager::Instance().AttatchChannel();
+}
+
+void GameServer::CloseChennel(uint32 channelKey)
+{
+	ChannelManager::Instance().DetatchChannel(channelKey);
+}
+
+uint32 GameServer::CreateChannel()
+{
+	return ChannelManager::Instance().AttatchChannel();
+}
+
 bool GameServer::InitConfigParser()
 {
 	ConfigParser config;
@@ -150,6 +179,7 @@ bool GameServer::InitConfigParser()
 		ASSERT_CRASH(config.Get(L"MaxSessions",		m_ServerOption.m_MaxSessionCounts));
 		ASSERT_CRASH(config.Get(L"ServerFrame",		m_ServerOption.m_ServerFPS));
 		ASSERT_CRASH(config.Get(L"WorkerThreadCnt", m_ServerOption.m_WorkerThreadCounts));
+		ASSERT_CRASH(config.Get(L"ChannelCounts",	m_ServerOption.m_ChannelCounts));
 		ASSERT_CRASH(config.Get(L"ServerMode",		modeStr));
 		m_ServerOption.m_Mode = ServerOptionData::StringToMode(modeStr);
 	}

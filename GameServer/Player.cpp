@@ -28,7 +28,17 @@ ptr<Room> Player::GetCurrentRoom() const
 	return m_Room.lock();
 }
 
-void Player::Update()
+ChannelPtr Player::SetCurrentChannel(const ChannelPtr& channel)
+{
+	return m_CurrentChannel = channel;
+}
+
+ChannelPtr Player::GetCurrentChannel() const
+{
+	return m_CurrentChannel;
+}
+
+void Player::Update(uint64 deltaTick)
 {
 	//TODO 플레이어 움직이는거나,,, 이런거 여기서 할예정임
 	// 다만 State 변경 같은건 패킷에서 DoAsync를 이용해서 수정할거

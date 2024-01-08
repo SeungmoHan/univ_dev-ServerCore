@@ -2,50 +2,66 @@
 #include "GameServer.h"
 #include "UpdateTickControl.h"
 
+#include "Channel.h"
 
-UpdateTickControl::UpdateTickControl(GameServer& ownerServer, uint32 desiredFPS): m_DesiredFPS(ownerServer.GetServerOption().m_ServerFPS)
+UpdateTickControl::UpdateTickControl(const uint32 desiredFrame) : m_DesiredFPS(desiredFrame)
 {
+	
 }
+thread_local bool frameSkipFlag;
+thread_local int cur = timeGetTime();
+thread_local int old = timeGetTime();
+thread_local int deltaTime;
+thread_local int skipTime = 0;
+
 
 // true == 게임서버 업데이트o, false == 게임서버 업데이트x
-bool UpdateTickControl::Update()
+void UpdateTickControl::Update()
 {
-	const uint64 desiredSpendTime = 1000 / m_DesiredFPS;
-	// 1. 업데이트 틱에대한 업데이트
-	m_CurTick = GetTickCount64();
-
-	// 2. 1에서 나온 정보를 가지고 게임서버의 업데이트를 할지 말지를 처리할거임.
-	if(m_CurTick - m_LastTick < desiredSpendTime)
-	{
-		// 아직 다음번 틱이 안된거임
-		return false;
-	}
-	// 현재 시간이 이전시간 + 소모희망시간 보다 더 길면... sleep 시간을 줄여야함
-	// 현재 시간이 이전시간 + 소모희망시간 보다 더 짧으면... 그만큼 sleep 해줘야함
-	// 3. 마지막 프레임 틱 업데이트
-	m_LastTick += desiredSpendTime;
-	const uint64 sleepTime = m_LastTick - m_CurTick;
-	constexpr uint64 Zero = 0;
-	m_SleepTime_ms = max(sleepTime, Zero);
 	// log 관련한거
 	{
 		// 1초에 몇번 호출 했는지 확인하려고...
 		m_LogTotalFrame++;
-		if(m_CurTick >= m_LogLastTick + SECOND)
+		if (m_CurTick >= m_LogLastTick + SECOND)
 		{
-			auto fps = m_LogTotalFrame - m_LogLastFrame;
+			const auto fps = m_LogTotalFrame - m_LogLastFrame;
 			m_LogLastFrame = m_LogTotalFrame;
 			m_LogLastTick = m_CurTick;
+            cout << fps << endl;
 		}
 	}
-	return true;
+
+    const int32 desiredSpendTime = 1000 / m_DesiredFPS;
+    m_CurTick = timeGetTime();
+    if (m_FrameSkipFlag)
+    {
+        m_LastTick = m_CurTick - (m_DeltaTick - (desiredSpendTime - (m_CurTick - m_SkippedTime)));
+        m_FrameSkipFlag = false;
+    }
+    m_DeltaTick = m_CurTick - m_LastTick;
+
+    if (m_DeltaTick >= desiredSpendTime*2 == false)
+    {
+        if (m_DeltaTick < desiredSpendTime)
+        {
+            m_SleepTime_ms = desiredSpendTime - m_DeltaTick;
+            DelayFrame();
+        }
+        m_LastTick = m_CurTick - (m_DeltaTick - desiredSpendTime);
+    }
+    else
+    {
+        m_FrameSkipFlag = true;
+        m_SkippedTime = m_CurTick;
+    }
 }
 
 void UpdateTickControl::DelayFrame()
 {
 	if (m_SleepTime_ms > 0)
 	{
-		chrono::milliseconds sleepTime(m_SleepTime_ms);
+		const chrono::milliseconds sleepTime(m_SleepTime_ms);
 		this_thread::sleep_for(sleepTime);
+		m_SleepTime_ms = 0;
 	}
 }

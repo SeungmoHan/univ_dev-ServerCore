@@ -19,7 +19,7 @@ public:
 	BaseObject() = default;
 
 	void Init(uint64 objKey, ObjectType objType);
-	virtual void Update() = 0;
+	virtual void Update(uint64 deltaTick) = 0;
 
 
 private:

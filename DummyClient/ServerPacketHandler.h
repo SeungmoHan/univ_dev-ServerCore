@@ -8,15 +8,17 @@ enum : uint16
 {
 	CS_LOGIN = 1000,
 	SC_LOGIN = 1001,
-	CS_ENTER_GAME = 1002,
-	SC_ENTER_GAME = 1003,
-	CS_NORMAL_CHAT = 1004,
-	SC_NORMAL_CHAT = 1005,
+	SC_CHAR_LIST = 1002,
+	CS_ENTER_GAME = 1003,
+	SC_ENTER_GAME = 1004,
+	CS_NORMAL_CHAT = 1005,
+	SC_NORMAL_CHAT = 1006,
 };
 
 //Custom Handlers
 bool Handle_INVALID(PacketSessionPtr& session, BYTE* buffer, const uint32 len);
 bool Handle_SC_LOGIN(PacketSessionPtr& session, Protocol::SC_LOGIN& pkt);
+bool Handle_SC_CHAR_LIST(PacketSessionPtr& session, Protocol::SC_CHAR_LIST& pkt);
 bool Handle_SC_ENTER_GAME(PacketSessionPtr& session, Protocol::SC_ENTER_GAME& pkt);
 bool Handle_SC_NORMAL_CHAT(PacketSessionPtr& session, Protocol::SC_NORMAL_CHAT& pkt);
 
@@ -28,6 +30,7 @@ public:
 		for (auto& handler : g_PacketHandler)
 			handler = Handle_INVALID;
 		g_PacketHandler[SC_LOGIN] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::SC_LOGIN>(Handle_SC_LOGIN, session, buffer, len); };
+		g_PacketHandler[SC_CHAR_LIST] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::SC_CHAR_LIST>(Handle_SC_CHAR_LIST, session, buffer, len); };
 		g_PacketHandler[SC_ENTER_GAME] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::SC_ENTER_GAME>(Handle_SC_ENTER_GAME, session, buffer, len); };
 		g_PacketHandler[SC_NORMAL_CHAT] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::SC_NORMAL_CHAT>(Handle_SC_NORMAL_CHAT, session, buffer, len); };
 	}

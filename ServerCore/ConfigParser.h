@@ -34,9 +34,10 @@ public:
 
 		bool Get(IN const std::wstring& key, OUT std::wstring& value)
 		{
-			auto foundIter = m_ValueMap.find(key);
+			const auto foundIter = m_ValueMap.find(key);
 			if (foundIter == m_ValueMap.end())
 				return false;
+			wstring temp = foundIter->second;
 			value = foundIter->second;
 			return true;
 		}

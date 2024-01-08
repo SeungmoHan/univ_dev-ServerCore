@@ -1,6 +1,10 @@
 ﻿#include "pch.h"
 #include "ClientPacketHandler.h"
+
+#include "Channel.h"
+#include "ChannelManager.h"
 #include "GameRoomManager.h"
+#include "GameServer.h"
 #include "Player.h"
 #include "Room.h"
 #include "GameSession.h"
@@ -22,41 +26,29 @@ bool Handle_CS_LOGIN(PacketSessionPtr& session, Protocol::CS_LOGIN& pkt)
 	// TODO validation
 
 	Protocol::SC_LOGIN loginPacket;
+	// 로그인 관련해서는 무조건 성공처리 한다...
 	loginPacket.set_success(true);
 
-
-	// DB에서 Player정보 긁어오는 내용
-	// 긁어온 정보를 GameSession에 저장(메모리상에 저장)
-	static Atomic<uint64> idGenerator = 1;
-	string temp = u8"Test";
+	vector<uint32> channelIds;
+	ChannelManager::Instance().GetChannelIDs(channelIds);
+	for(const auto channelId : channelIds)
 	{
-		const auto player = loginPacket.add_players();
-		string charName = temp + to_string(idGenerator);
-		player->set_name(charName);
-		player->set_playertype(Protocol::PLAYER_TYPE_KNIGHT);
+		auto channel = ChannelManager::Instance().GetChannel(channelId);
+		if (channel == nullptr)
+		{
+			//??
+			continue;
+		}
 
-		const PlayerPtr playerRef = MakeShared<Player>();
-		playerRef->Init(idGenerator, player->name(), player->playertype(), gameSession);
-
-		player->set_id(playerRef->GetPlayerGuid());
-		player->set_name(playerRef->GetPlayerName());
-		gameSession->AddPlayer(playerRef);
-		++idGenerator;
-	}
-
-	{
-		const auto player = loginPacket.add_players();
-		string charName = temp + to_string(idGenerator);
-		player->set_name(charName);
-		player->set_playertype(Protocol::PLAYER_TYPE_KNIGHT);
-
-		const PlayerPtr playerRef = MakeShared<Player>();
-		playerRef->Init(idGenerator, player->name(), player->playertype(), gameSession);
-		
-		player->set_id(playerRef->GetPlayerGuid());
-		player->set_name(playerRef->GetPlayerName());
-		gameSession->AddPlayer(playerRef);
-		++idGenerator;
+		const auto channelData = loginPacket.add_channels();
+		auto& [channelKey, 
+				channelName, 
+				maxCounts, 
+				curCounts] = channel->GetChannelOption();
+		channelData->set_channelindex(channelKey);
+		channelData->set_channelname(channelName.c_str(), channelName.size() * sizeof(wchar_t));
+		channelData->set_usercounts(curCounts);
+		channelData->set_maxchanneluser(maxCounts);
 	}
 
 	const auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPacket);

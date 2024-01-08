@@ -8,10 +8,11 @@ enum : uint16
 {
 	CS_LOGIN = 1000,
 	SC_LOGIN = 1001,
-	CS_ENTER_GAME = 1002,
-	SC_ENTER_GAME = 1003,
-	CS_NORMAL_CHAT = 1004,
-	SC_NORMAL_CHAT = 1005,
+	SC_CHAR_LIST = 1002,
+	CS_ENTER_GAME = 1003,
+	SC_ENTER_GAME = 1004,
+	CS_NORMAL_CHAT = 1005,
+	SC_NORMAL_CHAT = 1006,
 };
 
 //Custom Handlers
@@ -38,6 +39,7 @@ public:
 		return g_PacketHandler[header->id](session, buffer, len);
 	}
 	static SendBufferPtr MakeSendBuffer(const Protocol::SC_LOGIN& pkt) { return MakeSendBuffer(pkt, SC_LOGIN); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::SC_CHAR_LIST& pkt) { return MakeSendBuffer(pkt, SC_CHAR_LIST); }
 	static SendBufferPtr MakeSendBuffer(const Protocol::SC_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, SC_ENTER_GAME); }
 	static SendBufferPtr MakeSendBuffer(const Protocol::SC_NORMAL_CHAT& pkt) { return MakeSendBuffer(pkt, SC_NORMAL_CHAT); }
 private:

@@ -1,10 +1,5 @@
 #pragma once
 
-
-
-
-
-
 #pragma region LOCK_IN_CLASS
 #define USE_LOCKS(count)		Lock _locks[count];
 #define USE_LOCK				USE_LOCKS(1)
@@ -23,11 +18,9 @@
 #define _xrelease(ptr)	PoolAllocator::Release(ptr)
 #endif
 
-/*------------------
-		CRASH
-------------------*/
+
 #pragma region CRASH_DEFINE
-#define CRASH(cause)					\
+#define CRASH(reason)					\
 do{										\
 	uint32* crash = nullptr;			\
 	__analysis_assume(crash != nullptr);\
@@ -46,9 +39,7 @@ do{										\
 #pragma endregion
 
 
-/*------------------
-		 LOG
-------------------*/
+
 #pragma region LOG_DEFINE
 #define DUMMY_ERR_LOG Logger(ServerType::DUMMY_CLIENT, LoggerType::ERROR_LOG)
 #define DUMMY_WAR_LOG Logger(ServerType::DUMMY_CLIENT, LoggerType::WARNING_LOG)

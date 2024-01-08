@@ -2,6 +2,8 @@
 #include "Logger.h"
 #include <fstream>
 
+#include "ThreadManager.h"
+
 void Logger::PushLog(const wchar_t* format, ...)
 {
 	va_list args;
@@ -32,4 +34,19 @@ void Logger::Flush()
 	{
 		fs << str << endl;
 	}
+}
+
+
+
+void Logger::RunLogger()
+{
+	m_RunningFlag = true;
+	g_ThreadManager->Launch([]() { LoggerWorker(); });
+	std::thread t(LoggerWorker);
+}
+
+void Logger::LoggerWorker()
+{
+	while (g_Logger->m_RunningFlag)
+		g_Logger->Flush();
 }

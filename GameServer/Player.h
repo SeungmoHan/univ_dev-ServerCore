@@ -22,7 +22,10 @@ public:
 	ptr<Room> SetCurrentRoom(const ptr<Room>& gameRoom);
 	ptr<Room> GetCurrentRoom() const;
 
-	void Update() override;
+	ChannelPtr SetCurrentChannel(const ChannelPtr& channel);
+	ChannelPtr GetCurrentChannel() const;
+
+	void Update(uint64 deltaTick) override;
 
 	GameSessionPtr GetOwnerSession() const { return m_OwnerSession; }
 	
@@ -32,6 +35,8 @@ private:
 	string						m_Name;
 	Protocol::PlayerType		m_Type = Protocol::PLAYER_TYPE_NONE;
 	GameSessionPtr				m_OwnerSession;
-	weak_ptr<Room>	m_Room;
+	ChannelPtr					m_CurrentChannel;
+	weak_ptr<Room>				m_Room;
 };
 
+using PlayerPtr = ptr<Player>;

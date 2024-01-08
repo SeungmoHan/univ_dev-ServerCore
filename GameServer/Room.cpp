@@ -42,18 +42,18 @@ void Room::Broadcast(SendBufferPtr sendBuffer)
 
 void Room::Update(uint64 deltaTick)
 {
-	for(const auto& [playerId, player] : m_PlayerMap)
+	// Room은 방과 관련된 업데이트만 치도록하자...
+	// 업데이트 == 방에서 나가야할 사람들 정하기... 등등
+	for(auto [playerid, player] : m_PlayerMap)
 	{
-		GameSessionPtr ownerSession = player->GetOwnerSession();
-		if (ownerSession == nullptr || ownerSession->IsConnected() == false)
-			continue;
-
-		//TODO Player Update 구현해두기
-		player->Update();
+		if(player->GetOwnerSession()->IsConnected() == false)
+		{
+			
+		}
 	}
 }
 
-void Room::Init(uint64 roomKey)
+void Room::Init(const uint64 roomKey)
 {
 	m_RoomKey = roomKey;
 }
