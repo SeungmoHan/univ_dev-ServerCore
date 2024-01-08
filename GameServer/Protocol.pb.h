@@ -48,7 +48,7 @@ struct TableStruct_Protocol_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[6]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[7]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -65,6 +65,9 @@ extern CS_LOGINDefaultTypeInternal _CS_LOGIN_default_instance_;
 class CS_NORMAL_CHAT;
 struct CS_NORMAL_CHATDefaultTypeInternal;
 extern CS_NORMAL_CHATDefaultTypeInternal _CS_NORMAL_CHAT_default_instance_;
+class SC_CHAR_LIST;
+struct SC_CHAR_LISTDefaultTypeInternal;
+extern SC_CHAR_LISTDefaultTypeInternal _SC_CHAR_LIST_default_instance_;
 class SC_ENTER_GAME;
 struct SC_ENTER_GAMEDefaultTypeInternal;
 extern SC_ENTER_GAMEDefaultTypeInternal _SC_ENTER_GAME_default_instance_;
@@ -79,6 +82,7 @@ PROTOBUF_NAMESPACE_OPEN
 template<> ::Protocol::CS_ENTER_GAME* Arena::CreateMaybeMessage<::Protocol::CS_ENTER_GAME>(Arena*);
 template<> ::Protocol::CS_LOGIN* Arena::CreateMaybeMessage<::Protocol::CS_LOGIN>(Arena*);
 template<> ::Protocol::CS_NORMAL_CHAT* Arena::CreateMaybeMessage<::Protocol::CS_NORMAL_CHAT>(Arena*);
+template<> ::Protocol::SC_CHAR_LIST* Arena::CreateMaybeMessage<::Protocol::SC_CHAR_LIST>(Arena*);
 template<> ::Protocol::SC_ENTER_GAME* Arena::CreateMaybeMessage<::Protocol::SC_ENTER_GAME>(Arena*);
 template<> ::Protocol::SC_LOGIN* Arena::CreateMaybeMessage<::Protocol::SC_LOGIN>(Arena*);
 template<> ::Protocol::SC_NORMAL_CHAT* Arena::CreateMaybeMessage<::Protocol::SC_NORMAL_CHAT>(Arena*);
@@ -314,26 +318,26 @@ class SC_LOGIN final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPlayersFieldNumber = 2,
+    kChannelsFieldNumber = 2,
     kSuccessFieldNumber = 1,
   };
-  // repeated .Protocol.Player players = 2;
-  int players_size() const;
+  // repeated .Protocol.Packet_ChannelInfo channels = 2;
+  int channels_size() const;
   private:
-  int _internal_players_size() const;
+  int _internal_channels_size() const;
   public:
-  void clear_players();
-  ::Protocol::Player* mutable_players(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Player >*
-      mutable_players();
+  void clear_channels();
+  ::Protocol::Packet_ChannelInfo* mutable_channels(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Packet_ChannelInfo >*
+      mutable_channels();
   private:
-  const ::Protocol::Player& _internal_players(int index) const;
-  ::Protocol::Player* _internal_add_players();
+  const ::Protocol::Packet_ChannelInfo& _internal_channels(int index) const;
+  ::Protocol::Packet_ChannelInfo* _internal_add_channels();
   public:
-  const ::Protocol::Player& players(int index) const;
-  ::Protocol::Player* add_players();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Player >&
-      players() const;
+  const ::Protocol::Packet_ChannelInfo& channels(int index) const;
+  ::Protocol::Packet_ChannelInfo* add_channels();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Packet_ChannelInfo >&
+      channels() const;
 
   // bool success = 1;
   void clear_success();
@@ -351,8 +355,149 @@ class SC_LOGIN final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Player > players_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Packet_ChannelInfo > channels_;
   bool success_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Protocol_2eproto;
+};
+// -------------------------------------------------------------------
+
+class SC_CHAR_LIST final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.SC_CHAR_LIST) */ {
+ public:
+  inline SC_CHAR_LIST() : SC_CHAR_LIST(nullptr) {}
+  ~SC_CHAR_LIST() override;
+  explicit constexpr SC_CHAR_LIST(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  SC_CHAR_LIST(const SC_CHAR_LIST& from);
+  SC_CHAR_LIST(SC_CHAR_LIST&& from) noexcept
+    : SC_CHAR_LIST() {
+    *this = ::std::move(from);
+  }
+
+  inline SC_CHAR_LIST& operator=(const SC_CHAR_LIST& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline SC_CHAR_LIST& operator=(SC_CHAR_LIST&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const SC_CHAR_LIST& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const SC_CHAR_LIST* internal_default_instance() {
+    return reinterpret_cast<const SC_CHAR_LIST*>(
+               &_SC_CHAR_LIST_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  friend void swap(SC_CHAR_LIST& a, SC_CHAR_LIST& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(SC_CHAR_LIST* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(SC_CHAR_LIST* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline SC_CHAR_LIST* New() const final {
+    return new SC_CHAR_LIST();
+  }
+
+  SC_CHAR_LIST* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<SC_CHAR_LIST>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const SC_CHAR_LIST& from);
+  void MergeFrom(const SC_CHAR_LIST& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(SC_CHAR_LIST* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.SC_CHAR_LIST";
+  }
+  protected:
+  explicit SC_CHAR_LIST(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPlayersFieldNumber = 1,
+  };
+  // repeated .Protocol.Packet_PlayerInfo players = 1;
+  int players_size() const;
+  private:
+  int _internal_players_size() const;
+  public:
+  void clear_players();
+  ::Protocol::Packet_PlayerInfo* mutable_players(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Packet_PlayerInfo >*
+      mutable_players();
+  private:
+  const ::Protocol::Packet_PlayerInfo& _internal_players(int index) const;
+  ::Protocol::Packet_PlayerInfo* _internal_add_players();
+  public:
+  const ::Protocol::Packet_PlayerInfo& players(int index) const;
+  ::Protocol::Packet_PlayerInfo* add_players();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Packet_PlayerInfo >&
+      players() const;
+
+  // @@protoc_insertion_point(class_scope:Protocol.SC_CHAR_LIST)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Packet_PlayerInfo > players_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -402,7 +547,7 @@ class CS_ENTER_GAME final :
                &_CS_ENTER_GAME_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    3;
 
   friend void swap(CS_ENTER_GAME& a, CS_ENTER_GAME& b) {
     a.Swap(&b);
@@ -534,7 +679,7 @@ class SC_ENTER_GAME final :
                &_SC_ENTER_GAME_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(SC_ENTER_GAME& a, SC_ENTER_GAME& b) {
     a.Swap(&b);
@@ -666,7 +811,7 @@ class CS_NORMAL_CHAT final :
                &_CS_NORMAL_CHAT_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(CS_NORMAL_CHAT& a, CS_NORMAL_CHAT& b) {
     a.Swap(&b);
@@ -732,7 +877,7 @@ class CS_NORMAL_CHAT final :
   enum : int {
     kMsgFieldNumber = 1,
   };
-  // string msg = 1;
+  // bytes msg = 1;
   void clear_msg();
   const std::string& msg() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -803,7 +948,7 @@ class SC_NORMAL_CHAT final :
                &_SC_NORMAL_CHAT_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(SC_NORMAL_CHAT& a, SC_NORMAL_CHAT& b) {
     a.Swap(&b);
@@ -871,7 +1016,7 @@ class SC_NORMAL_CHAT final :
     kMsgFieldNumber = 3,
     kPlayerIdFieldNumber = 1,
   };
-  // string playerName = 2;
+  // bytes playerName = 2;
   void clear_playername();
   const std::string& playername() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -885,7 +1030,7 @@ class SC_NORMAL_CHAT final :
   std::string* _internal_mutable_playername();
   public:
 
-  // string msg = 3;
+  // bytes msg = 3;
   void clear_msg();
   const std::string& msg() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -956,39 +1101,79 @@ inline void SC_LOGIN::set_success(bool value) {
   // @@protoc_insertion_point(field_set:Protocol.SC_LOGIN.success)
 }
 
-// repeated .Protocol.Player players = 2;
-inline int SC_LOGIN::_internal_players_size() const {
+// repeated .Protocol.Packet_ChannelInfo channels = 2;
+inline int SC_LOGIN::_internal_channels_size() const {
+  return channels_.size();
+}
+inline int SC_LOGIN::channels_size() const {
+  return _internal_channels_size();
+}
+inline ::Protocol::Packet_ChannelInfo* SC_LOGIN::mutable_channels(int index) {
+  // @@protoc_insertion_point(field_mutable:Protocol.SC_LOGIN.channels)
+  return channels_.Mutable(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Packet_ChannelInfo >*
+SC_LOGIN::mutable_channels() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.SC_LOGIN.channels)
+  return &channels_;
+}
+inline const ::Protocol::Packet_ChannelInfo& SC_LOGIN::_internal_channels(int index) const {
+  return channels_.Get(index);
+}
+inline const ::Protocol::Packet_ChannelInfo& SC_LOGIN::channels(int index) const {
+  // @@protoc_insertion_point(field_get:Protocol.SC_LOGIN.channels)
+  return _internal_channels(index);
+}
+inline ::Protocol::Packet_ChannelInfo* SC_LOGIN::_internal_add_channels() {
+  return channels_.Add();
+}
+inline ::Protocol::Packet_ChannelInfo* SC_LOGIN::add_channels() {
+  // @@protoc_insertion_point(field_add:Protocol.SC_LOGIN.channels)
+  return _internal_add_channels();
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Packet_ChannelInfo >&
+SC_LOGIN::channels() const {
+  // @@protoc_insertion_point(field_list:Protocol.SC_LOGIN.channels)
+  return channels_;
+}
+
+// -------------------------------------------------------------------
+
+// SC_CHAR_LIST
+
+// repeated .Protocol.Packet_PlayerInfo players = 1;
+inline int SC_CHAR_LIST::_internal_players_size() const {
   return players_.size();
 }
-inline int SC_LOGIN::players_size() const {
+inline int SC_CHAR_LIST::players_size() const {
   return _internal_players_size();
 }
-inline ::Protocol::Player* SC_LOGIN::mutable_players(int index) {
-  // @@protoc_insertion_point(field_mutable:Protocol.SC_LOGIN.players)
+inline ::Protocol::Packet_PlayerInfo* SC_CHAR_LIST::mutable_players(int index) {
+  // @@protoc_insertion_point(field_mutable:Protocol.SC_CHAR_LIST.players)
   return players_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Player >*
-SC_LOGIN::mutable_players() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.SC_LOGIN.players)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Packet_PlayerInfo >*
+SC_CHAR_LIST::mutable_players() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.SC_CHAR_LIST.players)
   return &players_;
 }
-inline const ::Protocol::Player& SC_LOGIN::_internal_players(int index) const {
+inline const ::Protocol::Packet_PlayerInfo& SC_CHAR_LIST::_internal_players(int index) const {
   return players_.Get(index);
 }
-inline const ::Protocol::Player& SC_LOGIN::players(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.SC_LOGIN.players)
+inline const ::Protocol::Packet_PlayerInfo& SC_CHAR_LIST::players(int index) const {
+  // @@protoc_insertion_point(field_get:Protocol.SC_CHAR_LIST.players)
   return _internal_players(index);
 }
-inline ::Protocol::Player* SC_LOGIN::_internal_add_players() {
+inline ::Protocol::Packet_PlayerInfo* SC_CHAR_LIST::_internal_add_players() {
   return players_.Add();
 }
-inline ::Protocol::Player* SC_LOGIN::add_players() {
-  // @@protoc_insertion_point(field_add:Protocol.SC_LOGIN.players)
+inline ::Protocol::Packet_PlayerInfo* SC_CHAR_LIST::add_players() {
+  // @@protoc_insertion_point(field_add:Protocol.SC_CHAR_LIST.players)
   return _internal_add_players();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Player >&
-SC_LOGIN::players() const {
-  // @@protoc_insertion_point(field_list:Protocol.SC_LOGIN.players)
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Packet_PlayerInfo >&
+SC_CHAR_LIST::players() const {
+  // @@protoc_insertion_point(field_list:Protocol.SC_CHAR_LIST.players)
   return players_;
 }
 
@@ -1044,7 +1229,7 @@ inline void SC_ENTER_GAME::set_success(bool value) {
 
 // CS_NORMAL_CHAT
 
-// string msg = 1;
+// bytes msg = 1;
 inline void CS_NORMAL_CHAT::clear_msg() {
   msg_.ClearToEmpty();
 }
@@ -1056,7 +1241,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void CS_NORMAL_CHAT::set_msg(ArgT0&& arg0, ArgT... args) {
  
- msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ msg_.SetBytes(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Protocol.CS_NORMAL_CHAT.msg)
 }
 inline std::string* CS_NORMAL_CHAT::mutable_msg() {
@@ -1113,7 +1298,7 @@ inline void SC_NORMAL_CHAT::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) 
   // @@protoc_insertion_point(field_set:Protocol.SC_NORMAL_CHAT.playerId)
 }
 
-// string playerName = 2;
+// bytes playerName = 2;
 inline void SC_NORMAL_CHAT::clear_playername() {
   playername_.ClearToEmpty();
 }
@@ -1125,7 +1310,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void SC_NORMAL_CHAT::set_playername(ArgT0&& arg0, ArgT... args) {
  
- playername_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ playername_.SetBytes(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Protocol.SC_NORMAL_CHAT.playerName)
 }
 inline std::string* SC_NORMAL_CHAT::mutable_playername() {
@@ -1158,7 +1343,7 @@ inline void SC_NORMAL_CHAT::set_allocated_playername(std::string* playername) {
   // @@protoc_insertion_point(field_set_allocated:Protocol.SC_NORMAL_CHAT.playerName)
 }
 
-// string msg = 3;
+// bytes msg = 3;
 inline void SC_NORMAL_CHAT::clear_msg() {
   msg_.ClearToEmpty();
 }
@@ -1170,7 +1355,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void SC_NORMAL_CHAT::set_msg(ArgT0&& arg0, ArgT... args) {
  
- msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ msg_.SetBytes(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Protocol.SC_NORMAL_CHAT.msg)
 }
 inline std::string* SC_NORMAL_CHAT::mutable_msg() {
@@ -1206,6 +1391,8 @@ inline void SC_NORMAL_CHAT::set_allocated_msg(std::string* msg) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

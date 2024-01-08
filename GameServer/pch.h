@@ -15,3 +15,4 @@
 
 using GameSessionPtr = shared_ptr<class GameSession>;
 using PlayerPtr = shared_ptr<class Player>;
+using ChannelPtr = shared_ptr<class Channel>;

@@ -20,23 +20,19 @@ bool Handle_SC_LOGIN(PacketSessionPtr& session, Protocol::SC_LOGIN& pkt)
 		// 로비로 튕겨내거나 한다
 		return true;
 	}
-
-	if(pkt.players().empty())
-	{
-		// 캐릭터 생성창
-	}
 	
 	Protocol::CS_ENTER_GAME enterGamePacket;
 	enterGamePacket.set_playerindex(0);
 
-	auto begin = pkt.players().begin();
-	ServerSessionPtr serverSession = reinterpret_pointer_cast<ServerSession>(session);
-	serverSession->m_SelectedPlayer = MakeShared<ClientPlayer>();
-	serverSession->m_SelectedPlayer->m_PlayerID = begin->id();
-	serverSession->m_SelectedPlayer->m_MyName = begin->name();
+
 	const auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePacket);
 	session->Send(sendBuffer);
 
+	return true;
+}
+
+bool Handle_SC_CHAR_LIST(PacketSessionPtr& session, Protocol::SC_CHAR_LIST& pkt)
+{
 	return true;
 }
 

@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "GameSession.h"
+
+#include "Channel.h"
 #include "GameSessionManager.h"
 #include "ClientPacketHandler.h"
 #include "Room.h"
@@ -32,11 +34,14 @@ void	GameSession::OnDisconnected()
 	if(m_CurrentPlayer)
 	{
 		// 방이 있으면
+		if(const auto channel = m_CurrentPlayer->GetCurrentChannel())
+		{
+			channel->DoAsync<Channel, void>(&Channel::RemovePlayer, m_CurrentPlayer);
+		}
 		if(const auto room = m_CurrentPlayer->GetCurrentRoom())
 		{
 			// 방탈출 잡 실행
-			if (room != nullptr)
-				room->DoAsync(&Room::Leave, m_CurrentPlayer);
+			room->DoAsync(&Room::Leave, m_CurrentPlayer);
 		}
 	}
 	m_CurrentPlayer = nullptr;

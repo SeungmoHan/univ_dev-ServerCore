@@ -22,6 +22,12 @@
     <Filter Include="GameContents\GameRoom">
       <UniqueIdentifier>{a19ff89a-1bf0-4606-9e4f-8f61cf0e057d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameContents\Channel">
+      <UniqueIdentifier>{fa6f850c-2a00-4404-b688-341ef71e0b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameContents\Field">
+      <UniqueIdentifier>{5f6c63db-be8b-493c-a4a1-7da910cfe3af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameServerMain.cpp">
@@ -48,9 +54,6 @@
     <ClCompile Include="Struct.pb.cc">
       <Filter>Protocol</Filter>
     </ClCompile>
-    <ClCompile Include="Room.cpp">
-      <Filter>GameContents</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
@@ -75,6 +78,15 @@
     <ClCompile Include="BaseObject.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
+    <ClCompile Include="Channel.cpp">
+      <Filter>GameContents\Channel</Filter>
+    </ClCompile>
+    <ClCompile Include="ChannelManager.cpp">
+      <Filter>GameContents\Channel</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>GameContents\GameRoom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -97,9 +109,6 @@
     </ClInclude>
     <ClInclude Include="Struct.pb.h">
       <Filter>Protocol</Filter>
-    </ClInclude>
-    <ClInclude Include="Room.h">
-      <Filter>GameContents</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>GameContents</Filter>
@@ -124,6 +133,15 @@
     </ClInclude>
     <ClInclude Include="BaseObject.h">
       <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="Channel.h">
+      <Filter>GameContents\Channel</Filter>
+    </ClInclude>
+    <ClInclude Include="ChannelManager.h">
+      <Filter>GameContents\Channel</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>GameContents\GameRoom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

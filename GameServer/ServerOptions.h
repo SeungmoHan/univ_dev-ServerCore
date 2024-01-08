@@ -32,4 +32,6 @@ public:
 	uint32			m_MaxSessionCounts = {};
 	uint32			m_ServerFPS = {};
 	uint32			m_WorkerThreadCounts = 0;
+	uint32			m_ChannelCounts = 0;
+	uint32			m_MaxPlayerPerChannel = 0;
 };

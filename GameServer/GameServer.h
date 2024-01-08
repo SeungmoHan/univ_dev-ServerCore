@@ -19,11 +19,13 @@ class GameServer
 
 
 public:
-	static GameServer& Instance()
+	static ptr<GameServer> Instance()
 	{
-		static GameServer gameServer;
+		static ptr<GameServer> gameServer = MakeShared<GameServer>();
 		return gameServer;
 	}
+
+	void InitChannel();
 	bool Init();
 	void Run();
 	void Shutdown();
@@ -35,8 +37,14 @@ public:
 
 	void IncreaseRunningThreadCounts() {  m_WorkerRunningCounts.fetch_add(1); }
 
+	uint32 RebootChannel(uint32 channelKey);
+	void CloseChennel(uint32 channelKey);
+
+
 private:
 	GameServer() = default;
+
+	uint32 CreateChannel();
 
 	bool InitConfigParser();
 	bool InitScriptParser();
@@ -47,8 +55,8 @@ private:
 
 	shared_ptr<GameScriptParser>	m_ScriptParser = nullptr;
 
-	ServerServicePtr	m_Service;
 
+	// for party system 채널이 달라도 파티는 가능함...
 	shared_ptr<Room> m_LobbyRoom;
 	HashMap<uint32, shared_ptr<Room>> m_RoomMaps;
 
@@ -60,6 +68,10 @@ private:
 	//KeyboardInputCapture m_ServerInputControl;
 
 	atomic<uint32> m_WorkerRunningCounts = 0;
+
+	HashSet<uint32> m_ChannelKeySet;
+	priority_queue<uint32> channel_id_queue;
+	ServerServicePtr	m_Service;
 
 	volatile bool m_ServerStartFlag = false;
 	volatile bool m_ServerClosingFlag = false;

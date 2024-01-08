@@ -2541,6 +2541,12 @@
       "url": "https://json.schemastore.org/lgtm.json"
     },
     {
+      "name": "liblab.config.json",
+      "description": "Liblab configuration file",
+      "fileMatch": ["liblab.config.json", "*.liblab.config.json"],
+      "url": "https://cdn.jsdelivr.net/npm/liblab@latest/liblab.config.schema.json"
+    },
+    {
       "name": "libman.json",
       "description": "client-side library config files",
       "fileMatch": ["libman.json"],
@@ -3526,12 +3532,6 @@
       "description": "Windows App localization file",
       "fileMatch": ["*.resjson"],
       "url": "https://json.schemastore.org/resjson.json"
-    },
-    {
-      "name": "rtx",
-      "description": "rtx config, a polyglot dev tool manager",
-      "fileMatch": [".rtx.toml", ".rtx.*.toml", "**/rtx/config.toml"],
-      "url": "https://rtx.pub/schema/rtx.json"
     },
     {
       "name": "Ruff",
@@ -4557,6 +4557,18 @@
       "description": "mirrord",
       "fileMatch": ["*.mirrord.+(toml|json|y?(a)ml)"],
       "url": "https://raw.githubusercontent.com/metalbear-co/mirrord/main/mirrord-schema.json"
+    },
+    {
+      "name": "mise",
+      "description": "mise config, a polyglot dev tool manager",
+      "fileMatch": [".mise.toml", ".mise.*.toml", "**/mise/config.toml"],
+      "url": "https://mise.jdx.dev/schema/mise.json"
+    },
+    {
+      "name": "mise-settings",
+      "description": "mise settings, a polyglot dev tool manager",
+      "fileMatch": ["**/mise/settings.toml"],
+      "url": "https://mise.jdx.dev/schema/settings.json"
     },
     {
       "name": "mta.yaml",
@@ -5782,6 +5794,12 @@
       "description": "Rudder techniques",
       "fileMatch": ["technique.yml", "technique.ids.yml"],
       "url": "https://json.schemastore.org/rudder-techniques.json"
+    },
+    {
+      "name": "SkyPilot Task JSON",
+      "description": "SkyPilot Task JSON to specify a task (resource requirements, setup commands, run commands, file mounts, storage mounts, and so on)",
+      "fileMatch": ["skypilot-task.yml", "skypilot-task.yaml"],
+      "url": "https://json.schemastore.org/skypilot-task.json"
     }
   ]
 }
