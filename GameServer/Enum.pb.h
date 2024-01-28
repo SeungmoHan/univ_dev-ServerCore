@@ -83,6 +83,59 @@ inline bool PlayerType_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PlayerType>(
     PlayerType_descriptor(), name, value);
 }
+enum MoveDirection : int {
+  PLAYER_MOVE_DIR_NONE = 0,
+  PLAYER_MOVE_DIR_LEFT = 1,
+  PLAYER_MOVE_DIR_RIGHT = 2,
+  PLAYER_MOVE_DIR_UP = 3,
+  PLAYER_MOVE_DIR_DOWN = 4,
+  MoveDirection_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  MoveDirection_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool MoveDirection_IsValid(int value);
+constexpr MoveDirection MoveDirection_MIN = PLAYER_MOVE_DIR_NONE;
+constexpr MoveDirection MoveDirection_MAX = PLAYER_MOVE_DIR_DOWN;
+constexpr int MoveDirection_ARRAYSIZE = MoveDirection_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MoveDirection_descriptor();
+template<typename T>
+inline const std::string& MoveDirection_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, MoveDirection>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function MoveDirection_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    MoveDirection_descriptor(), enum_t_value);
+}
+inline bool MoveDirection_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, MoveDirection* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MoveDirection>(
+    MoveDirection_descriptor(), name, value);
+}
+enum idx_for_SC_CHAR_SELECT_RES : int {
+  idx_for_cur_sector = 0,
+  idx_for_cur_pos = 1,
+  idx_for_SC_CHAR_SELECT_RES_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  idx_for_SC_CHAR_SELECT_RES_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool idx_for_SC_CHAR_SELECT_RES_IsValid(int value);
+constexpr idx_for_SC_CHAR_SELECT_RES idx_for_SC_CHAR_SELECT_RES_MIN = idx_for_cur_sector;
+constexpr idx_for_SC_CHAR_SELECT_RES idx_for_SC_CHAR_SELECT_RES_MAX = idx_for_cur_pos;
+constexpr int idx_for_SC_CHAR_SELECT_RES_ARRAYSIZE = idx_for_SC_CHAR_SELECT_RES_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* idx_for_SC_CHAR_SELECT_RES_descriptor();
+template<typename T>
+inline const std::string& idx_for_SC_CHAR_SELECT_RES_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, idx_for_SC_CHAR_SELECT_RES>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function idx_for_SC_CHAR_SELECT_RES_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    idx_for_SC_CHAR_SELECT_RES_descriptor(), enum_t_value);
+}
+inline bool idx_for_SC_CHAR_SELECT_RES_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, idx_for_SC_CHAR_SELECT_RES* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<idx_for_SC_CHAR_SELECT_RES>(
+    idx_for_SC_CHAR_SELECT_RES_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -109,6 +162,16 @@ template <> struct is_proto_enum< ::Protocol::PlayerType> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::PlayerType>() {
   return ::Protocol::PlayerType_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::MoveDirection> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::MoveDirection>() {
+  return ::Protocol::MoveDirection_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::idx_for_SC_CHAR_SELECT_RES> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::idx_for_SC_CHAR_SELECT_RES>() {
+  return ::Protocol::idx_for_SC_CHAR_SELECT_RES_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

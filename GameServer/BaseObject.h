@@ -6,6 +6,7 @@ enum ObjectType
 {
 	NONE,
 	PLAYER,
+	CHARACTER,
 	NPC,
 	MONSTER,
 };
@@ -18,7 +19,7 @@ public:
 	~BaseObject() override = default;
 	BaseObject() = default;
 
-	void Init(uint64 objKey, ObjectType objType);
+	virtual void Init(ObjectType objType);
 	virtual void Update(uint64 deltaTick) = 0;
 
 

@@ -2,22 +2,28 @@
 #include "BaseObject.h"
 
 
+class Character;
+class Field;
 class Room;
 
 class Player : public BaseObject
 {
 public:
+	enum PlayerMoveDirection
+	{
+		None = 0, Left, Right, Up, Down,
+	};
 	Player() = default;
 	~Player() override = default;
 	void Init(const uint64 playerId,
-	          const string& name,
-	          const Protocol::PlayerType type,
 	          const GameSessionPtr& ownerSession);
 
 	void SendPacket(const SendBufferPtr& sendBuffer) const;
+	void Disconnect(const wstring& reason);
+
+	void OnDisconnected();
 
 	uint64 GetPlayerGuid() const { return m_PlayerGuid; }
-	const string& GetPlayerName() const { return m_Name; }
 
 	ptr<Room> SetCurrentRoom(const ptr<Room>& gameRoom);
 	ptr<Room> GetCurrentRoom() const;
@@ -25,18 +31,46 @@ public:
 	ChannelPtr SetCurrentChannel(const ChannelPtr& channel);
 	ChannelPtr GetCurrentChannel() const;
 
+	ptr<Field> SetCurrentField(const ptr<Field>& field);
+	ptr<Field> GetCurrentField() const;
+
 	void Update(uint64 deltaTick) override;
 
 	GameSessionPtr GetOwnerSession() const { return m_OwnerSession; }
-	
 
+	void SelectCharacter(const uint64 characterIndex);
+	ptr<Character> GetSelectedCharacter() const;
+
+	size_t GetCharacterCounts() const { return m_CharacterList.size(); }
+
+	bool CanAddCharacter() const;
+	void AddCharacter(const ptr<Character> character);
+
+	void OnEnterChannel(ptr<Channel> channel);
+	void OnEnterRoom(ptr<Room> room);
+	void OnEnterField(ptr<Field> field);
+
+
+	bool CheckMoveSync(const Vector2D& vec);
+
+	void BeginMove(const Protocol::MoveDirection dir);
+	void EndMove(const Protocol::MoveDirection dir);
+
+	void ResetPlayer();
+
+	void SendSyncPacket();
 private:
-	uint64						m_PlayerGuid = 0;
-	string						m_Name;
-	Protocol::PlayerType		m_Type = Protocol::PLAYER_TYPE_NONE;
-	GameSessionPtr				m_OwnerSession;
-	ChannelPtr					m_CurrentChannel;
-	weak_ptr<Room>				m_Room;
+
+	void Reset();
+	// 플레이어 정보
+	uint64						m_PlayerGuid		= 0;
+	GameSessionPtr				m_OwnerSession		= nullptr;
+	ptr<Channel>				m_CurrentChannel	= nullptr;
+	ptr<Room>					m_Room				= nullptr;
+	ptr<Field>					m_Field				= nullptr;
+
+	ptr<Character>				m_SelectedCharacter = nullptr;
+	vector<ptr<Character>>		m_CharacterList;
 };
 
 using PlayerPtr = ptr<Player>;

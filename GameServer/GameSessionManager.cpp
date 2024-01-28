@@ -34,12 +34,6 @@ bool GameSessionManager::Update(uint64 deltaTick)
 			session->Disconnect(L"Not Connected Update");
 			continue;
 		}
-
-		PlayerPtr curPlayer = session->GetSelectedPlayer();
-		//if (curPlayer->Update() == false)
-		//{
-		//	continue;
-		//}
 	}
 	return true;
 }

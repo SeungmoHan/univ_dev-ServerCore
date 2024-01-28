@@ -4,6 +4,7 @@
 #include "GameRoomManager.h"
 #include "GameSession.h"
 #include "Player.h"
+
 void Room::Enter(PlayerPtr player)
 {
 	if(m_PlayerMap.empty())
@@ -11,8 +12,7 @@ void Room::Enter(PlayerPtr player)
 	m_PlayerMap[player->GetPlayerGuid()] = player;
 }
 
-// true -> 룸 살려둬야함, false -> room destroy
-bool Room::Leave(const PlayerPtr player)
+void Room::Leave(const PlayerPtr player)
 {
 	if(m_RoomLeader == player)
 		m_RoomLeader = nullptr;
@@ -22,11 +22,20 @@ bool Room::Leave(const PlayerPtr player)
 	if(m_PlayerMap.empty() && m_RoomKey != 1)
 	{
 		GameRoomManager::Instance().EraseRoom(m_RoomKey);
+		return;
 	}
 
 	if (m_RoomLeader == nullptr)
 		m_RoomLeader = m_PlayerMap.begin()->second;
-	return true;
+}
+
+void Room::Leave(uint64 playerGuid)
+{
+	const auto itr = m_PlayerMap.find(playerGuid);
+	if (itr == m_PlayerMap.end())
+		return;
+	const auto player = itr->second;
+	Leave(player);
 }
 
 void Room::Broadcast(SendBufferPtr sendBuffer)

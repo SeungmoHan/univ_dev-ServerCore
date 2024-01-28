@@ -6,20 +6,34 @@ extern PacketHandlerFunc g_PacketHandler[UINT16_MAX];
 
 enum : uint16
 {
-	CS_LOGIN = 1000,
-	SC_LOGIN = 1001,
-	SC_CHAR_LIST = 1002,
-	CS_ENTER_GAME = 1003,
-	SC_ENTER_GAME = 1004,
-	CS_NORMAL_CHAT = 1005,
-	SC_NORMAL_CHAT = 1006,
+	CS_LOGIN_REQ = 1000,
+	SC_LOGIN_RES = 1001,
+	CS_CHANNEL_SELECT_REQ = 1002,
+	SC_CHANNEL_SELECT_RES = 1003,
+	CS_CHAR_LIST_REQ = 1004,
+	SC_CHAR_LIST_RES = 1005,
+	CS_CHAR_SELECT_REQ = 1006,
+	SC_CHAR_SELECT_RES = 1007,
+	CS_MOVE_REQ = 1008,
+	SC_MOVE_RES = 1009,
+	CS_MOVE_CHANNEL_REQ = 1010,
+	SC_MOVE_CHANNEL_RES = 1011,
+	CS_NORMAL_CHAT_REQ = 1012,
+	SC_NORMAL_CHAT_RES = 1013,
+	SC_CREATE_PLAYER_CMD = 1014,
+	SC_DELETE_PLAYER_CMD = 1015,
+	SC_POSITION_SYNC = 1016,
 };
 
 //Custom Handlers
 bool Handle_INVALID(PacketSessionPtr& session, BYTE* buffer, const uint32 len);
-bool Handle_CS_LOGIN(PacketSessionPtr& session, Protocol::CS_LOGIN& pkt);
-bool Handle_CS_ENTER_GAME(PacketSessionPtr& session, Protocol::CS_ENTER_GAME& pkt);
-bool Handle_CS_NORMAL_CHAT(PacketSessionPtr& session, Protocol::CS_NORMAL_CHAT& pkt);
+bool Handle_CS_LOGIN_REQ(PacketSessionPtr& session, Protocol::CS_LOGIN_REQ& pkt);
+bool Handle_CS_CHANNEL_SELECT_REQ(PacketSessionPtr& session, Protocol::CS_CHANNEL_SELECT_REQ& pkt);
+bool Handle_CS_CHAR_LIST_REQ(PacketSessionPtr& session, Protocol::CS_CHAR_LIST_REQ& pkt);
+bool Handle_CS_CHAR_SELECT_REQ(PacketSessionPtr& session, Protocol::CS_CHAR_SELECT_REQ& pkt);
+bool Handle_CS_MOVE_REQ(PacketSessionPtr& session, Protocol::CS_MOVE_REQ& pkt);
+bool Handle_CS_MOVE_CHANNEL_REQ(PacketSessionPtr& session, Protocol::CS_MOVE_CHANNEL_REQ& pkt);
+bool Handle_CS_NORMAL_CHAT_REQ(PacketSessionPtr& session, Protocol::CS_NORMAL_CHAT_REQ& pkt);
 
 class ClientPacketHandler
 {
@@ -28,9 +42,13 @@ public:
 	{
 		for (auto& handler : g_PacketHandler)
 			handler = Handle_INVALID;
-		g_PacketHandler[CS_LOGIN] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::CS_LOGIN>(Handle_CS_LOGIN, session, buffer, len); };
-		g_PacketHandler[CS_ENTER_GAME] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::CS_ENTER_GAME>(Handle_CS_ENTER_GAME, session, buffer, len); };
-		g_PacketHandler[CS_NORMAL_CHAT] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::CS_NORMAL_CHAT>(Handle_CS_NORMAL_CHAT, session, buffer, len); };
+		g_PacketHandler[CS_LOGIN_REQ] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::CS_LOGIN_REQ>(Handle_CS_LOGIN_REQ, session, buffer, len); };
+		g_PacketHandler[CS_CHANNEL_SELECT_REQ] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::CS_CHANNEL_SELECT_REQ>(Handle_CS_CHANNEL_SELECT_REQ, session, buffer, len); };
+		g_PacketHandler[CS_CHAR_LIST_REQ] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::CS_CHAR_LIST_REQ>(Handle_CS_CHAR_LIST_REQ, session, buffer, len); };
+		g_PacketHandler[CS_CHAR_SELECT_REQ] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::CS_CHAR_SELECT_REQ>(Handle_CS_CHAR_SELECT_REQ, session, buffer, len); };
+		g_PacketHandler[CS_MOVE_REQ] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::CS_MOVE_REQ>(Handle_CS_MOVE_REQ, session, buffer, len); };
+		g_PacketHandler[CS_MOVE_CHANNEL_REQ] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::CS_MOVE_CHANNEL_REQ>(Handle_CS_MOVE_CHANNEL_REQ, session, buffer, len); };
+		g_PacketHandler[CS_NORMAL_CHAT_REQ] = [](PacketSessionPtr& session, BYTE* buffer, const uint32 len) {return HandlePacket<Protocol::CS_NORMAL_CHAT_REQ>(Handle_CS_NORMAL_CHAT_REQ, session, buffer, len); };
 	}
 
 	static bool HandlePacket(PacketSessionPtr& session, BYTE* buffer, const uint32 len)
@@ -38,10 +56,16 @@ public:
 		const auto header = reinterpret_cast<PacketHeader*>(buffer);
 		return g_PacketHandler[header->id](session, buffer, len);
 	}
-	static SendBufferPtr MakeSendBuffer(const Protocol::SC_LOGIN& pkt) { return MakeSendBuffer(pkt, SC_LOGIN); }
-	static SendBufferPtr MakeSendBuffer(const Protocol::SC_CHAR_LIST& pkt) { return MakeSendBuffer(pkt, SC_CHAR_LIST); }
-	static SendBufferPtr MakeSendBuffer(const Protocol::SC_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, SC_ENTER_GAME); }
-	static SendBufferPtr MakeSendBuffer(const Protocol::SC_NORMAL_CHAT& pkt) { return MakeSendBuffer(pkt, SC_NORMAL_CHAT); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::SC_LOGIN_RES& pkt) { return MakeSendBuffer(pkt, SC_LOGIN_RES); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::SC_CHANNEL_SELECT_RES& pkt) { return MakeSendBuffer(pkt, SC_CHANNEL_SELECT_RES); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::SC_CHAR_LIST_RES& pkt) { return MakeSendBuffer(pkt, SC_CHAR_LIST_RES); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::SC_CHAR_SELECT_RES& pkt) { return MakeSendBuffer(pkt, SC_CHAR_SELECT_RES); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::SC_MOVE_RES& pkt) { return MakeSendBuffer(pkt, SC_MOVE_RES); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::SC_MOVE_CHANNEL_RES& pkt) { return MakeSendBuffer(pkt, SC_MOVE_CHANNEL_RES); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::SC_NORMAL_CHAT_RES& pkt) { return MakeSendBuffer(pkt, SC_NORMAL_CHAT_RES); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::SC_CREATE_PLAYER_CMD& pkt) { return MakeSendBuffer(pkt, SC_CREATE_PLAYER_CMD); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::SC_DELETE_PLAYER_CMD& pkt) { return MakeSendBuffer(pkt, SC_DELETE_PLAYER_CMD); }
+	static SendBufferPtr MakeSendBuffer(const Protocol::SC_POSITION_SYNC& pkt) { return MakeSendBuffer(pkt, SC_POSITION_SYNC); }
 private:
 
 	template <typename PacketType, typename ProcessFunc>

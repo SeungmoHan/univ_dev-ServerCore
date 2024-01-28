@@ -13,6 +13,9 @@
 #endif
 
 #include "CorePch.h"
+#include "DummyStructManager.h"
+#include "Structs.h"
+
 
 using ServerSessionPtr = shared_ptr<class ServerSession>;
 using ClientPlayerPtr = shared_ptr<class ClientPlayer>;

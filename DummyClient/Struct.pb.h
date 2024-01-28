@@ -47,7 +47,7 @@ struct TableStruct_Struct_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[2]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[3]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -58,36 +58,40 @@ namespace Protocol {
 class Packet_ChannelInfo;
 struct Packet_ChannelInfoDefaultTypeInternal;
 extern Packet_ChannelInfoDefaultTypeInternal _Packet_ChannelInfo_default_instance_;
-class Packet_PlayerInfo;
-struct Packet_PlayerInfoDefaultTypeInternal;
-extern Packet_PlayerInfoDefaultTypeInternal _Packet_PlayerInfo_default_instance_;
+class Packet_CharacterInfo;
+struct Packet_CharacterInfoDefaultTypeInternal;
+extern Packet_CharacterInfoDefaultTypeInternal _Packet_CharacterInfo_default_instance_;
+class Packet_Vector;
+struct Packet_VectorDefaultTypeInternal;
+extern Packet_VectorDefaultTypeInternal _Packet_Vector_default_instance_;
 }  // namespace Protocol
 PROTOBUF_NAMESPACE_OPEN
 template<> ::Protocol::Packet_ChannelInfo* Arena::CreateMaybeMessage<::Protocol::Packet_ChannelInfo>(Arena*);
-template<> ::Protocol::Packet_PlayerInfo* Arena::CreateMaybeMessage<::Protocol::Packet_PlayerInfo>(Arena*);
+template<> ::Protocol::Packet_CharacterInfo* Arena::CreateMaybeMessage<::Protocol::Packet_CharacterInfo>(Arena*);
+template<> ::Protocol::Packet_Vector* Arena::CreateMaybeMessage<::Protocol::Packet_Vector>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace Protocol {
 
 // ===================================================================
 
-class Packet_PlayerInfo final :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.Packet_PlayerInfo) */ {
+class Packet_Vector final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.Packet_Vector) */ {
  public:
-  inline Packet_PlayerInfo() : Packet_PlayerInfo(nullptr) {}
-  ~Packet_PlayerInfo() override;
-  explicit constexpr Packet_PlayerInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+  inline Packet_Vector() : Packet_Vector(nullptr) {}
+  ~Packet_Vector() override;
+  explicit constexpr Packet_Vector(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
 
-  Packet_PlayerInfo(const Packet_PlayerInfo& from);
-  Packet_PlayerInfo(Packet_PlayerInfo&& from) noexcept
-    : Packet_PlayerInfo() {
+  Packet_Vector(const Packet_Vector& from);
+  Packet_Vector(Packet_Vector&& from) noexcept
+    : Packet_Vector() {
     *this = ::std::move(from);
   }
 
-  inline Packet_PlayerInfo& operator=(const Packet_PlayerInfo& from) {
+  inline Packet_Vector& operator=(const Packet_Vector& from) {
     CopyFrom(from);
     return *this;
   }
-  inline Packet_PlayerInfo& operator=(Packet_PlayerInfo&& from) noexcept {
+  inline Packet_Vector& operator=(Packet_Vector&& from) noexcept {
     if (this == &from) return *this;
     if (GetOwningArena() == from.GetOwningArena()) {
       InternalSwap(&from);
@@ -106,20 +110,20 @@ class Packet_PlayerInfo final :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const Packet_PlayerInfo& default_instance() {
+  static const Packet_Vector& default_instance() {
     return *internal_default_instance();
   }
-  static inline const Packet_PlayerInfo* internal_default_instance() {
-    return reinterpret_cast<const Packet_PlayerInfo*>(
-               &_Packet_PlayerInfo_default_instance_);
+  static inline const Packet_Vector* internal_default_instance() {
+    return reinterpret_cast<const Packet_Vector*>(
+               &_Packet_Vector_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  friend void swap(Packet_PlayerInfo& a, Packet_PlayerInfo& b) {
+  friend void swap(Packet_Vector& a, Packet_Vector& b) {
     a.Swap(&b);
   }
-  inline void Swap(Packet_PlayerInfo* other) {
+  inline void Swap(Packet_Vector* other) {
     if (other == this) return;
     if (GetOwningArena() == other->GetOwningArena()) {
       InternalSwap(other);
@@ -127,7 +131,7 @@ class Packet_PlayerInfo final :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(Packet_PlayerInfo* other) {
+  void UnsafeArenaSwap(Packet_Vector* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
     InternalSwap(other);
@@ -135,17 +139,17 @@ class Packet_PlayerInfo final :
 
   // implements Message ----------------------------------------------
 
-  inline Packet_PlayerInfo* New() const final {
-    return new Packet_PlayerInfo();
+  inline Packet_Vector* New() const final {
+    return new Packet_Vector();
   }
 
-  Packet_PlayerInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<Packet_PlayerInfo>(arena);
+  Packet_Vector* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<Packet_Vector>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const Packet_PlayerInfo& from);
-  void MergeFrom(const Packet_PlayerInfo& from);
+  void CopyFrom(const Packet_Vector& from);
+  void MergeFrom(const Packet_Vector& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -159,13 +163,13 @@ class Packet_PlayerInfo final :
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(Packet_PlayerInfo* other);
+  void InternalSwap(Packet_Vector* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Protocol.Packet_PlayerInfo";
+    return "Protocol.Packet_Vector";
   }
   protected:
-  explicit Packet_PlayerInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit Packet_Vector(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -178,23 +182,174 @@ class Packet_PlayerInfo final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNameFieldNumber = 3,
+    kXFieldNumber = 1,
+    kYFieldNumber = 2,
+  };
+  // int64 x = 1;
+  void clear_x();
+  ::PROTOBUF_NAMESPACE_ID::int64 x() const;
+  void set_x(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_x() const;
+  void _internal_set_x(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // int64 y = 2;
+  void clear_y();
+  ::PROTOBUF_NAMESPACE_ID::int64 y() const;
+  void set_y(::PROTOBUF_NAMESPACE_ID::int64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int64 _internal_y() const;
+  void _internal_set_y(::PROTOBUF_NAMESPACE_ID::int64 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:Protocol.Packet_Vector)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::int64 x_;
+  ::PROTOBUF_NAMESPACE_ID::int64 y_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Struct_2eproto;
+};
+// -------------------------------------------------------------------
+
+class Packet_CharacterInfo final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.Packet_CharacterInfo) */ {
+ public:
+  inline Packet_CharacterInfo() : Packet_CharacterInfo(nullptr) {}
+  ~Packet_CharacterInfo() override;
+  explicit constexpr Packet_CharacterInfo(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  Packet_CharacterInfo(const Packet_CharacterInfo& from);
+  Packet_CharacterInfo(Packet_CharacterInfo&& from) noexcept
+    : Packet_CharacterInfo() {
+    *this = ::std::move(from);
+  }
+
+  inline Packet_CharacterInfo& operator=(const Packet_CharacterInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Packet_CharacterInfo& operator=(Packet_CharacterInfo&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Packet_CharacterInfo& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Packet_CharacterInfo* internal_default_instance() {
+    return reinterpret_cast<const Packet_CharacterInfo*>(
+               &_Packet_CharacterInfo_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  friend void swap(Packet_CharacterInfo& a, Packet_CharacterInfo& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(Packet_CharacterInfo* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Packet_CharacterInfo* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline Packet_CharacterInfo* New() const final {
+    return new Packet_CharacterInfo();
+  }
+
+  Packet_CharacterInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<Packet_CharacterInfo>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const Packet_CharacterInfo& from);
+  void MergeFrom(const Packet_CharacterInfo& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(Packet_CharacterInfo* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.Packet_CharacterInfo";
+  }
+  protected:
+  explicit Packet_CharacterInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kNameFieldNumber = 16,
     kIdFieldNumber = 1,
     kPlayerTypeFieldNumber = 2,
   };
-  // bytes name = 3;
-  void clear_name();
-  const std::string& name() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_name(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_name();
-  PROTOBUF_FUTURE_MUST_USE_RESULT std::string* release_name();
-  void set_allocated_name(std::string* name);
+  // repeated int32 name = 16;
+  int name_size() const;
   private:
-  const std::string& _internal_name() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_name(const std::string& value);
-  std::string* _internal_mutable_name();
+  int _internal_name_size() const;
   public:
+  void clear_name();
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_name(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+      _internal_name() const;
+  void _internal_add_name(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+      _internal_mutable_name();
+  public:
+  ::PROTOBUF_NAMESPACE_ID::int32 name(int index) const;
+  void set_name(int index, ::PROTOBUF_NAMESPACE_ID::int32 value);
+  void add_name(::PROTOBUF_NAMESPACE_ID::int32 value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+      name() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+      mutable_name();
 
   // uint64 id = 1;
   void clear_id();
@@ -214,14 +369,15 @@ class Packet_PlayerInfo final :
   void _internal_set_playertype(::Protocol::PlayerType value);
   public:
 
-  // @@protoc_insertion_point(class_scope:Protocol.Packet_PlayerInfo)
+  // @@protoc_insertion_point(class_scope:Protocol.Packet_CharacterInfo)
  private:
   class _Internal;
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 > name_;
+  mutable std::atomic<int> _name_cached_byte_size_;
   ::PROTOBUF_NAMESPACE_ID::uint64 id_;
   int playertype_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -273,7 +429,7 @@ class Packet_ChannelInfo final :
                &_Packet_ChannelInfo_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    1;
+    2;
 
   friend void swap(Packet_ChannelInfo& a, Packet_ChannelInfo& b) {
     a.Swap(&b);
@@ -337,32 +493,40 @@ class Packet_ChannelInfo final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kChannelNameFieldNumber = 4,
-    kChannelIndexFieldNumber = 1,
+    kChannelNameFieldNumber = 16,
+    kChannelIDFieldNumber = 1,
     kMaxChannelUserFieldNumber = 2,
     kUserCountsFieldNumber = 3,
   };
-  // bytes channelName = 4;
-  void clear_channelname();
-  const std::string& channelname() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_channelname(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_channelname();
-  PROTOBUF_FUTURE_MUST_USE_RESULT std::string* release_channelname();
-  void set_allocated_channelname(std::string* channelname);
+  // repeated int32 channelName = 16;
+  int channelname_size() const;
   private:
-  const std::string& _internal_channelname() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_channelname(const std::string& value);
-  std::string* _internal_mutable_channelname();
+  int _internal_channelname_size() const;
   public:
-
-  // uint32 channelIndex = 1;
-  void clear_channelindex();
-  ::PROTOBUF_NAMESPACE_ID::uint32 channelindex() const;
-  void set_channelindex(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  void clear_channelname();
   private:
-  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_channelindex() const;
-  void _internal_set_channelindex(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_channelname(int index) const;
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+      _internal_channelname() const;
+  void _internal_add_channelname(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+      _internal_mutable_channelname();
+  public:
+  ::PROTOBUF_NAMESPACE_ID::int32 channelname(int index) const;
+  void set_channelname(int index, ::PROTOBUF_NAMESPACE_ID::int32 value);
+  void add_channelname(::PROTOBUF_NAMESPACE_ID::int32 value);
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+      channelname() const;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+      mutable_channelname();
+
+  // uint32 channelID = 1;
+  void clear_channelid();
+  ::PROTOBUF_NAMESPACE_ID::uint32 channelid() const;
+  void set_channelid(::PROTOBUF_NAMESPACE_ID::uint32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint32 _internal_channelid() const;
+  void _internal_set_channelid(::PROTOBUF_NAMESPACE_ID::uint32 value);
   public:
 
   // uint32 maxChannelUser = 2;
@@ -390,8 +554,9 @@ class Packet_ChannelInfo final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr channelname_;
-  ::PROTOBUF_NAMESPACE_ID::uint32 channelindex_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 > channelname_;
+  mutable std::atomic<int> _channelname_cached_byte_size_;
+  ::PROTOBUF_NAMESPACE_ID::uint32 channelid_;
   ::PROTOBUF_NAMESPACE_ID::uint32 maxchanneluser_;
   ::PROTOBUF_NAMESPACE_ID::uint32 usercounts_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -406,115 +571,161 @@ class Packet_ChannelInfo final :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// Packet_PlayerInfo
+// Packet_Vector
+
+// int64 x = 1;
+inline void Packet_Vector::clear_x() {
+  x_ = int64_t{0};
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 Packet_Vector::_internal_x() const {
+  return x_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 Packet_Vector::x() const {
+  // @@protoc_insertion_point(field_get:Protocol.Packet_Vector.x)
+  return _internal_x();
+}
+inline void Packet_Vector::_internal_set_x(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  
+  x_ = value;
+}
+inline void Packet_Vector::set_x(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_x(value);
+  // @@protoc_insertion_point(field_set:Protocol.Packet_Vector.x)
+}
+
+// int64 y = 2;
+inline void Packet_Vector::clear_y() {
+  y_ = int64_t{0};
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 Packet_Vector::_internal_y() const {
+  return y_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int64 Packet_Vector::y() const {
+  // @@protoc_insertion_point(field_get:Protocol.Packet_Vector.y)
+  return _internal_y();
+}
+inline void Packet_Vector::_internal_set_y(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  
+  y_ = value;
+}
+inline void Packet_Vector::set_y(::PROTOBUF_NAMESPACE_ID::int64 value) {
+  _internal_set_y(value);
+  // @@protoc_insertion_point(field_set:Protocol.Packet_Vector.y)
+}
+
+// -------------------------------------------------------------------
+
+// Packet_CharacterInfo
 
 // uint64 id = 1;
-inline void Packet_PlayerInfo::clear_id() {
+inline void Packet_CharacterInfo::clear_id() {
   id_ = uint64_t{0u};
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint64 Packet_PlayerInfo::_internal_id() const {
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Packet_CharacterInfo::_internal_id() const {
   return id_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint64 Packet_PlayerInfo::id() const {
-  // @@protoc_insertion_point(field_get:Protocol.Packet_PlayerInfo.id)
+inline ::PROTOBUF_NAMESPACE_ID::uint64 Packet_CharacterInfo::id() const {
+  // @@protoc_insertion_point(field_get:Protocol.Packet_CharacterInfo.id)
   return _internal_id();
 }
-inline void Packet_PlayerInfo::_internal_set_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+inline void Packet_CharacterInfo::_internal_set_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   
   id_ = value;
 }
-inline void Packet_PlayerInfo::set_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+inline void Packet_CharacterInfo::set_id(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_id(value);
-  // @@protoc_insertion_point(field_set:Protocol.Packet_PlayerInfo.id)
+  // @@protoc_insertion_point(field_set:Protocol.Packet_CharacterInfo.id)
 }
 
 // .Protocol.PlayerType playerType = 2;
-inline void Packet_PlayerInfo::clear_playertype() {
+inline void Packet_CharacterInfo::clear_playertype() {
   playertype_ = 0;
 }
-inline ::Protocol::PlayerType Packet_PlayerInfo::_internal_playertype() const {
+inline ::Protocol::PlayerType Packet_CharacterInfo::_internal_playertype() const {
   return static_cast< ::Protocol::PlayerType >(playertype_);
 }
-inline ::Protocol::PlayerType Packet_PlayerInfo::playertype() const {
-  // @@protoc_insertion_point(field_get:Protocol.Packet_PlayerInfo.playerType)
+inline ::Protocol::PlayerType Packet_CharacterInfo::playertype() const {
+  // @@protoc_insertion_point(field_get:Protocol.Packet_CharacterInfo.playerType)
   return _internal_playertype();
 }
-inline void Packet_PlayerInfo::_internal_set_playertype(::Protocol::PlayerType value) {
+inline void Packet_CharacterInfo::_internal_set_playertype(::Protocol::PlayerType value) {
   
   playertype_ = value;
 }
-inline void Packet_PlayerInfo::set_playertype(::Protocol::PlayerType value) {
+inline void Packet_CharacterInfo::set_playertype(::Protocol::PlayerType value) {
   _internal_set_playertype(value);
-  // @@protoc_insertion_point(field_set:Protocol.Packet_PlayerInfo.playerType)
+  // @@protoc_insertion_point(field_set:Protocol.Packet_CharacterInfo.playerType)
 }
 
-// bytes name = 3;
-inline void Packet_PlayerInfo::clear_name() {
-  name_.ClearToEmpty();
+// repeated int32 name = 16;
+inline int Packet_CharacterInfo::_internal_name_size() const {
+  return name_.size();
 }
-inline const std::string& Packet_PlayerInfo::name() const {
-  // @@protoc_insertion_point(field_get:Protocol.Packet_PlayerInfo.name)
+inline int Packet_CharacterInfo::name_size() const {
+  return _internal_name_size();
+}
+inline void Packet_CharacterInfo::clear_name() {
+  name_.Clear();
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 Packet_CharacterInfo::_internal_name(int index) const {
+  return name_.Get(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 Packet_CharacterInfo::name(int index) const {
+  // @@protoc_insertion_point(field_get:Protocol.Packet_CharacterInfo.name)
+  return _internal_name(index);
+}
+inline void Packet_CharacterInfo::set_name(int index, ::PROTOBUF_NAMESPACE_ID::int32 value) {
+  name_.Set(index, value);
+  // @@protoc_insertion_point(field_set:Protocol.Packet_CharacterInfo.name)
+}
+inline void Packet_CharacterInfo::_internal_add_name(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  name_.Add(value);
+}
+inline void Packet_CharacterInfo::add_name(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_add_name(value);
+  // @@protoc_insertion_point(field_add:Protocol.Packet_CharacterInfo.name)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+Packet_CharacterInfo::_internal_name() const {
+  return name_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+Packet_CharacterInfo::name() const {
+  // @@protoc_insertion_point(field_list:Protocol.Packet_CharacterInfo.name)
   return _internal_name();
 }
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void Packet_PlayerInfo::set_name(ArgT0&& arg0, ArgT... args) {
- 
- name_.SetBytes(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:Protocol.Packet_PlayerInfo.name)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+Packet_CharacterInfo::_internal_mutable_name() {
+  return &name_;
 }
-inline std::string* Packet_PlayerInfo::mutable_name() {
-  // @@protoc_insertion_point(field_mutable:Protocol.Packet_PlayerInfo.name)
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+Packet_CharacterInfo::mutable_name() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.Packet_CharacterInfo.name)
   return _internal_mutable_name();
-}
-inline const std::string& Packet_PlayerInfo::_internal_name() const {
-  return name_.Get();
-}
-inline void Packet_PlayerInfo::_internal_set_name(const std::string& value) {
-  
-  name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
-}
-inline std::string* Packet_PlayerInfo::_internal_mutable_name() {
-  
-  return name_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
-}
-inline std::string* Packet_PlayerInfo::release_name() {
-  // @@protoc_insertion_point(field_release:Protocol.Packet_PlayerInfo.name)
-  return name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
-}
-inline void Packet_PlayerInfo::set_allocated_name(std::string* name) {
-  if (name != nullptr) {
-    
-  } else {
-    
-  }
-  name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
-      GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:Protocol.Packet_PlayerInfo.name)
 }
 
 // -------------------------------------------------------------------
 
 // Packet_ChannelInfo
 
-// uint32 channelIndex = 1;
-inline void Packet_ChannelInfo::clear_channelindex() {
-  channelindex_ = 0u;
+// uint32 channelID = 1;
+inline void Packet_ChannelInfo::clear_channelid() {
+  channelid_ = 0u;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Packet_ChannelInfo::_internal_channelindex() const {
-  return channelindex_;
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Packet_ChannelInfo::_internal_channelid() const {
+  return channelid_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::uint32 Packet_ChannelInfo::channelindex() const {
-  // @@protoc_insertion_point(field_get:Protocol.Packet_ChannelInfo.channelIndex)
-  return _internal_channelindex();
+inline ::PROTOBUF_NAMESPACE_ID::uint32 Packet_ChannelInfo::channelid() const {
+  // @@protoc_insertion_point(field_get:Protocol.Packet_ChannelInfo.channelID)
+  return _internal_channelid();
 }
-inline void Packet_ChannelInfo::_internal_set_channelindex(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+inline void Packet_ChannelInfo::_internal_set_channelid(::PROTOBUF_NAMESPACE_ID::uint32 value) {
   
-  channelindex_ = value;
+  channelid_ = value;
 }
-inline void Packet_ChannelInfo::set_channelindex(::PROTOBUF_NAMESPACE_ID::uint32 value) {
-  _internal_set_channelindex(value);
-  // @@protoc_insertion_point(field_set:Protocol.Packet_ChannelInfo.channelIndex)
+inline void Packet_ChannelInfo::set_channelid(::PROTOBUF_NAMESPACE_ID::uint32 value) {
+  _internal_set_channelid(value);
+  // @@protoc_insertion_point(field_set:Protocol.Packet_ChannelInfo.channelID)
 }
 
 // uint32 maxChannelUser = 2;
@@ -557,54 +768,58 @@ inline void Packet_ChannelInfo::set_usercounts(::PROTOBUF_NAMESPACE_ID::uint32 v
   // @@protoc_insertion_point(field_set:Protocol.Packet_ChannelInfo.userCounts)
 }
 
-// bytes channelName = 4;
+// repeated int32 channelName = 16;
+inline int Packet_ChannelInfo::_internal_channelname_size() const {
+  return channelname_.size();
+}
+inline int Packet_ChannelInfo::channelname_size() const {
+  return _internal_channelname_size();
+}
 inline void Packet_ChannelInfo::clear_channelname() {
-  channelname_.ClearToEmpty();
+  channelname_.Clear();
 }
-inline const std::string& Packet_ChannelInfo::channelname() const {
+inline ::PROTOBUF_NAMESPACE_ID::int32 Packet_ChannelInfo::_internal_channelname(int index) const {
+  return channelname_.Get(index);
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 Packet_ChannelInfo::channelname(int index) const {
   // @@protoc_insertion_point(field_get:Protocol.Packet_ChannelInfo.channelName)
-  return _internal_channelname();
+  return _internal_channelname(index);
 }
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void Packet_ChannelInfo::set_channelname(ArgT0&& arg0, ArgT... args) {
- 
- channelname_.SetBytes(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+inline void Packet_ChannelInfo::set_channelname(int index, ::PROTOBUF_NAMESPACE_ID::int32 value) {
+  channelname_.Set(index, value);
   // @@protoc_insertion_point(field_set:Protocol.Packet_ChannelInfo.channelName)
 }
-inline std::string* Packet_ChannelInfo::mutable_channelname() {
-  // @@protoc_insertion_point(field_mutable:Protocol.Packet_ChannelInfo.channelName)
+inline void Packet_ChannelInfo::_internal_add_channelname(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  channelname_.Add(value);
+}
+inline void Packet_ChannelInfo::add_channelname(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_add_channelname(value);
+  // @@protoc_insertion_point(field_add:Protocol.Packet_ChannelInfo.channelName)
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+Packet_ChannelInfo::_internal_channelname() const {
+  return channelname_;
+}
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >&
+Packet_ChannelInfo::channelname() const {
+  // @@protoc_insertion_point(field_list:Protocol.Packet_ChannelInfo.channelName)
+  return _internal_channelname();
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+Packet_ChannelInfo::_internal_mutable_channelname() {
+  return &channelname_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedField< ::PROTOBUF_NAMESPACE_ID::int32 >*
+Packet_ChannelInfo::mutable_channelname() {
+  // @@protoc_insertion_point(field_mutable_list:Protocol.Packet_ChannelInfo.channelName)
   return _internal_mutable_channelname();
-}
-inline const std::string& Packet_ChannelInfo::_internal_channelname() const {
-  return channelname_.Get();
-}
-inline void Packet_ChannelInfo::_internal_set_channelname(const std::string& value) {
-  
-  channelname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
-}
-inline std::string* Packet_ChannelInfo::_internal_mutable_channelname() {
-  
-  return channelname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
-}
-inline std::string* Packet_ChannelInfo::release_channelname() {
-  // @@protoc_insertion_point(field_release:Protocol.Packet_ChannelInfo.channelName)
-  return channelname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
-}
-inline void Packet_ChannelInfo::set_allocated_channelname(std::string* channelname) {
-  if (channelname != nullptr) {
-    
-  } else {
-    
-  }
-  channelname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), channelname,
-      GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:Protocol.Packet_ChannelInfo.channelName)
 }
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 

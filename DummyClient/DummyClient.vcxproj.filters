@@ -10,6 +10,9 @@
     <Filter Include="Protocol">
       <UniqueIdentifier>{0843b7eb-6ae6-4192-b936-af029c3caa55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Struct">
+      <UniqueIdentifier>{ef78d37a-f849-4a8e-a7f3-582333e837b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -36,6 +39,15 @@
     <ClCompile Include="ServerSession.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="TempStruct.cpp">
+      <Filter>Struct</Filter>
+    </ClCompile>
+    <ClCompile Include="DummyStructManager.cpp">
+      <Filter>Struct</Filter>
+    </ClCompile>
+    <ClCompile Include="Structs.cpp">
+      <Filter>Struct</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -58,6 +70,15 @@
     </ClInclude>
     <ClInclude Include="ServerSession.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="TempStruct.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="DummyStructManager.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,10 +3,14 @@
 
 class GameServer;
 class UpdateTickControl;
+class Field;
+class Room;
 
 class Channel : public JobSerializer
 {
 public:
+	~Channel() override = default;
+
 	struct ChannelOption
 	{
 		uint32 _channelKey = 0;
@@ -22,26 +26,26 @@ public:
 	void Run();
 	void Clear();
 
-
 	void MoveChannel(const uint32 toKey, PlayerPtr player);
 	void MoveChannel(const uint32 toKey, const uint64 playerKey);
 	void RemovePlayer(const uint64 playerKey);
-	void RemovePlayer(PlayerPtr player);
 	void AddPlayer(PlayerPtr player);
 	void Close();
 
 	void RemoveAllPlayer();
 
-	bool CanEnter() const;
+	void EnterField(const uint64 fieldCode, PlayerPtr player);
+	uint64 GetStartFieldCode();
 
+	virtual bool CanEnter() const;
+	virtual bool Update(uint64 deltaTick);
 private:
-	bool Update(uint64 deltaTick);
-
-
-
 
 	ChannelOption m_ChannelOption;
 
+	ptr<Field> m_StartField = nullptr;
+	HashMap<uint64, ptr<Field>> m_FieldMap;
+	HashMap<uint64, ptr<Room>> m_RoomMap;
 	HashMap<uint64, PlayerPtr> m_PlayerMap;
 
 	ptr<UpdateTickControl> m_UpdateControl;

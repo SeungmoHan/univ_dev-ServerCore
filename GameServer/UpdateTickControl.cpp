@@ -8,12 +8,11 @@ UpdateTickControl::UpdateTickControl(const uint32 desiredFrame) : m_DesiredFPS(d
 {
 	
 }
-thread_local bool frameSkipFlag;
-thread_local int cur = timeGetTime();
-thread_local int old = timeGetTime();
-thread_local int deltaTime;
-thread_local int skipTime = 0;
 
+void UpdateTickControl::Init()
+{
+    m_LastTick = m_CurTick = timeGetTime();
+}
 
 // true == 게임서버 업데이트o, false == 게임서버 업데이트x
 void UpdateTickControl::Update()
