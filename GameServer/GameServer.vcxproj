@@ -176,12 +176,14 @@
     <ClCompile Include="BaseObject.cpp" />
     <ClCompile Include="Channel.cpp" />
     <ClCompile Include="ChannelManager.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="Enum.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="GameRoomManager.cpp" />
     <ClCompile Include="GameScriptParser.cpp" />
     <ClCompile Include="GameServer.cpp" />
@@ -216,13 +218,16 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Structs.cpp" />
     <ClCompile Include="UpdateTickControl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseObject.h" />
     <ClInclude Include="Channel.h" />
     <ClInclude Include="ChannelManager.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Enum.pb.h" />
+    <ClInclude Include="Field.h" />
     <ClInclude Include="GameRoomManager.h" />
     <ClInclude Include="GameScriptParser.h" />
     <ClInclude Include="GameServer.h" />
@@ -246,6 +251,7 @@
     <ClInclude Include="Room.h" />
     <ClInclude Include="ServerOptions.h" />
     <ClInclude Include="Struct.pb.h" />
+    <ClInclude Include="Structs.h" />
     <ClInclude Include="UpdateTickControl.h" />
   </ItemGroup>
   <ItemGroup>

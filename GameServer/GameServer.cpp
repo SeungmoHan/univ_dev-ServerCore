@@ -67,7 +67,8 @@ void GameServer::InitChannel()
 	// 굳이 서버에서 채널을 관리할 필요가 있을까..?
 	// 싱글톤화 되어서 어디서든 접근 가능한데...
 	// 이부분에 대한 설계를 다시 고민해봐야겠다...
-	for (int i = 0; i < m_ServerOption.m_ChannelCounts; i++)
+	// 디폴트 채널 0채널 => 로그인 직후 아직 채널선택이 되지 않은 유저들을 보낼 채널
+	for (int i = 0; i < m_ServerOption.m_ChannelCounts + 1; i++)
 		CreateChannel();
 }
 
@@ -109,6 +110,7 @@ void GameServer::Run()
 		uint64 lastTick = GetTickCount64();
 		while(IsRunning() == false)
 			this_thread::sleep_for(1s);
+		m_UpdateControl->Init();
 		while (IsClosing() == false)
 		{
 			if (Update(m_UpdateControl->GetDeltaTick()) == false)
@@ -146,7 +148,7 @@ void GameServer::Shutdown()
 }
 
 
-uint32 GameServer::RebootChannel(uint32 channelKey)
+uint32 GameServer::RebootChannel(const uint32 channelKey)
 {
 	if(ChannelManager::Instance().DetatchChannel(channelKey))
 		return 0;
@@ -154,7 +156,7 @@ uint32 GameServer::RebootChannel(uint32 channelKey)
 	return ChannelManager::Instance().AttatchChannel();
 }
 
-void GameServer::CloseChennel(uint32 channelKey)
+void GameServer::CloseChennel(const uint32 channelKey)
 {
 	ChannelManager::Instance().DetatchChannel(channelKey);
 }
@@ -172,15 +174,17 @@ bool GameServer::InitConfigParser()
 	{
 		ASSERT_CRASH(config.SetCurrentSection(L"ServerOptions"));
 		wstring modeStr; // 스크립트의 모드는 스트링이고 타입은 enum값이라서,,,
-		ASSERT_CRASH(config.Get(L"ScriptPath",		m_ServerOption.m_DataScriptPath));
-		ASSERT_CRASH(config.Get(L"LogPath",			m_ServerOption.m_LogPath));
-		ASSERT_CRASH(config.Get(L"IP",				m_ServerOption.m_IP));
-		ASSERT_CRASH(config.Get(L"ListenPort",		m_ServerOption.m_Port));
-		ASSERT_CRASH(config.Get(L"MaxSessions",		m_ServerOption.m_MaxSessionCounts));
-		ASSERT_CRASH(config.Get(L"ServerFrame",		m_ServerOption.m_ServerFPS));
-		ASSERT_CRASH(config.Get(L"WorkerThreadCnt", m_ServerOption.m_WorkerThreadCounts));
-		ASSERT_CRASH(config.Get(L"ChannelCounts",	m_ServerOption.m_ChannelCounts));
-		ASSERT_CRASH(config.Get(L"ServerMode",		modeStr));
+		ASSERT_CRASH(config.Get(L"ScriptPath",				m_ServerOption.m_DataScriptPath));
+		ASSERT_CRASH(config.Get(L"LogPath",					m_ServerOption.m_LogPath));
+		ASSERT_CRASH(config.Get(L"IP",						m_ServerOption.m_IP));
+		ASSERT_CRASH(config.Get(L"ListenPort",				m_ServerOption.m_Port));
+		ASSERT_CRASH(config.Get(L"MaxSessions",				m_ServerOption.m_MaxSessionCounts));
+		ASSERT_CRASH(config.Get(L"ServerFrame",				m_ServerOption.m_ServerFPS));
+		ASSERT_CRASH(config.Get(L"WorkerThreadCnt",			m_ServerOption.m_WorkerThreadCounts));
+		ASSERT_CRASH(config.Get(L"ChannelCounts",			m_ServerOption.m_ChannelCounts));
+		ASSERT_CRASH(config.Get(L"MaxCharacterPerPlayer",	m_ServerOption.m_MaxCharacterPerPlayer));
+		ASSERT_CRASH(config.Get(L"MaxSectorSize",			m_ServerOption.m_MaxSectorSize));
+		ASSERT_CRASH(config.Get(L"ServerMode", modeStr));
 		m_ServerOption.m_Mode = ServerOptionData::StringToMode(modeStr);
 	}
 	// 필요한 데이터는 섹션 선택해놓고 찾으면됨...

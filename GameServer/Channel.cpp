@@ -2,8 +2,10 @@
 #include "Player.h"
 #include "Channel.h"
 #include "ChannelManager.h"
+#include "Field.h"
 #include "GameServer.h"
 #include "GameSession.h"
+#include "Room.h"
 #include "UpdateTickControl.h"
 
 PlayerPtr Channel::GetPlayer(const uint64 playerId)
@@ -25,12 +27,23 @@ void Channel::Init(const ChannelOption& channelOption, const ptr<GameServer>& ow
 	m_OwnerServer = owner;
 	m_ChannelOption = channelOption;
 	m_ChannelStartFlag = true;
+	m_StartField = nullptr;
 	m_UpdateControl = MakeShared<UpdateTickControl>(m_OwnerServer->GetServerOption().m_ServerFPS);
+
+	if(m_ChannelOption._channelKey == ChannelManager::Instance().DefaultChannelID())
+		m_ChannelOption._maxPlayerCounts = std::numeric_limits<uint32>::max();
+
+	// 나중엔 여기서 스크립트에서 읽은 것들만 넣도록 해야함... FieldInfo.txt... 같은거
+	FieldPtr startField = MakeShared<Field>();
+	startField->Init();
+	
+	m_FieldMap.emplace(startField->GetFieldCode(), startField);
 }
 
 void Channel::Run()
 {
 	this_thread::sleep_for(5s);
+	m_UpdateControl->Init();
 	while (m_ChannelCloseFlag == false)
 	{
 		if (Update(m_UpdateControl->GetDeltaTick()) == false)
@@ -48,9 +61,25 @@ void Channel::Clear()
 
 bool Channel::Update(uint64 deltaTick)
 {
-	for(auto [playerKey, player] : m_PlayerMap)
+	if (this->GetChannelOption()._channelKey == ChannelManager::Instance().DefaultChannelID())
+		return true;
+
+	// 필드들 업데이트
+	for(auto [fieldKey, field] : m_FieldMap)
 	{
-		player->Update(deltaTick);
+		if(field != nullptr)
+		{
+			// field 안에서 player들 업데이트 처리...
+			field->Update(deltaTick);
+		}
+	}
+	// 채널에 있는 룸(파티)들 업데이트
+	for(auto [roomKey, room] : m_RoomMap)
+	{
+		if(room != nullptr)
+		{
+			room->Update(deltaTick);
+		}
 	}
 	return true;
 }
@@ -66,7 +95,7 @@ void Channel::MoveChannel(const uint32 toKey, PlayerPtr player)
 	if(nextChannel->CanEnter())
 	{
 		// 지금 있는 채널에서 리무브
-		RemovePlayer(player);
+		RemovePlayer(player->GetPlayerGuid());
 		// 3. 그 채널에 플레이어 add, 잡으로 넣어야 동기화 관련 문제가 안생김
 		nextChannel->DoAsync(&Channel::AddPlayer, player);
 	}
@@ -98,6 +127,24 @@ void Channel::RemoveAllPlayer()
 	// 3 그 외에 정리 할게 뭐가있을까? 일단은 없는 듯...
 }
 
+void Channel::EnterField(const uint64 fieldCode, PlayerPtr player)
+{
+	auto itr = m_FieldMap.find(fieldCode);
+	if (itr == m_FieldMap.end())
+		return;
+	const auto character = player->GetSelectedCharacter();
+	const auto field = itr->second;
+	field->DoAsync(&Field::AddPlayer, character);
+}
+
+uint64 Channel::GetStartFieldCode()
+{
+	if (m_StartField == nullptr)
+		return numeric_limits<uint64>::max();
+	return m_StartField->GetFieldCode();
+
+}
+
 bool Channel::CanEnter() const
 {
 	// 일단 기본 조건은 플레이어 수가 꽉찼는지 확인...
@@ -115,6 +162,7 @@ void Channel::AddPlayer(PlayerPtr player)
 		return;
 	m_PlayerMap.emplace(playerKey, player);
 	m_ChannelOption._curPlayerCounts++;
+	player->DoAsync(&Player::OnEnterChannel, static_pointer_cast<Channel>(shared_from_this()));
 }
 
 
@@ -123,11 +171,12 @@ void Channel::RemovePlayer(const uint64 playerKey)
 	const auto itr = m_PlayerMap.find(playerKey);
 	if (itr == m_PlayerMap.end())
 		return;
+	PlayerPtr player = itr->second;
 	m_PlayerMap.erase(playerKey);
 	m_ChannelOption._curPlayerCounts--;
-}
+	if (player == nullptr)
+		return;
 
-void Channel::RemovePlayer(PlayerPtr player)
-{
-	return RemovePlayer(player->GetPlayerGuid());
+	const auto field = player->GetCurrentField();
+	field->DoAsync(&Field::LeavePlayer, player->GetSelectedCharacter());
 }

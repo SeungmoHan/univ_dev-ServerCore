@@ -14,8 +14,9 @@ ChannelManager& ChannelManager::Instance()
 
 uint32 ChannelManager::AttatchChannel()
 {
+	WRITE_LOCK;
 	const auto channelKey = m_ChannelKey.top();
-	// ChannelKey 의 최소값은 1이다...
+	// ChannelKey 의 최소값은 1이다... 0은 디폴트채널,,,
 	if(m_ChannelMap.find(channelKey) != m_ChannelMap.end())
 		return 0;
 	m_ChannelKey.pop();
@@ -32,12 +33,14 @@ uint32 ChannelManager::AttatchChannel()
 			newChannel->Run();
 			newChannel->Clear();
 		});
+	m_ChannelMap.emplace(channelKey, newChannel);
 
 	return channelKey;
 }
 
 bool ChannelManager::DetatchChannel(uint32 channelId)
 {
+	WRITE_LOCK;
 	const auto channel = GetChannel(channelId);
 	if (channel == nullptr)
 		return false;
@@ -57,12 +60,14 @@ void ChannelManager::MoveChannel(const uint32 from, const uint32 to, const Playe
 
 void ChannelManager::GetChannelIDs(OUT vector<uint32>& ids)
 {
+	READ_LOCK;
 	for (auto [key, channel] : m_ChannelMap)
 		ids.push_back(key);
 }
 
 ptr<Channel> ChannelManager::GetChannel(const uint32 channelId)
 {
+	READ_LOCK;
 	const auto itr = m_ChannelMap.find(channelId);
 	if (itr == m_ChannelMap.end())
 		return nullptr;
@@ -74,7 +79,7 @@ ptr<Channel> ChannelManager::GetChannel(const uint32 channelId)
 
 ChannelManager::ChannelManager() 
 {
-	for(int i=1; i <= MaxChannelCounts; i++)
+	for (int i = 0; i <= MaxChannelCounts; i++)
 		m_ChannelKey.emplace(i);
 	// Do nothing...
 

@@ -28,46 +28,14 @@ void	GameSession::OnSend(int32 len)
 
 void	GameSession::OnDisconnected() 
 {
+	m_Player->OnDisconnected();
 	GameSessionManager::Instance()->Remove(static_pointer_cast<GameSession>(shared_from_this()));
-
-	// 나갈때 현재 사용중인 플레이어가 있으면
-	if(m_CurrentPlayer)
-	{
-		// 방이 있으면
-		if(const auto channel = m_CurrentPlayer->GetCurrentChannel())
-		{
-			channel->DoAsync<Channel, void>(&Channel::RemovePlayer, m_CurrentPlayer);
-		}
-		if(const auto room = m_CurrentPlayer->GetCurrentRoom())
-		{
-			// 방탈출 잡 실행
-			room->DoAsync(&Room::Leave, m_CurrentPlayer);
-		}
-	}
-	m_CurrentPlayer = nullptr;
-	m_Players.clear();
-
+	m_Player = nullptr;
 }
 
-void GameSession::AddPlayer(PlayerPtr newPlayer)
-{
-	m_Players.push_back(newPlayer);
-}
 
-void GameSession::SetSelectedPlayer(const size_t playerIndex)
-{
-	if (is_valid(playerIndex))
-		m_CurrentPlayer = m_Players[playerIndex];
-}
 
-PlayerPtr GameSession::GetPlayer(size_t playerIndex)
+PlayerPtr GameSession::GetPlayer()
 {
-	if (is_valid(playerIndex))
-		return m_Players[playerIndex];
-	return nullptr;
+	return m_Player;
 }
-
-bool GameSession::is_valid(const size_t index) const
-{
-	return index < m_Players.size();
-};

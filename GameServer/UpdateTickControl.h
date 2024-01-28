@@ -8,6 +8,9 @@ class UpdateTickControl
 public:
 	constexpr static int32 SECOND = 1000;
 	explicit UpdateTickControl(uint32 desiredFrame);
+
+	void Init();
+
 	void Update();
 
 	int32 GetDeltaTick() const
@@ -21,8 +24,8 @@ public:
 private:
 
 	// 프레임 타임 관련 변수들
-	int32	m_LastTick = timeGetTime();
-	int32	m_CurTick = timeGetTime();
+	int32	m_LastTick = 0;
+	int32	m_CurTick = 0;
 	int32	m_SkippedTime = 0;
 	int32	m_DeltaTick = 0;
 	bool	m_FrameSkipFlag = false;

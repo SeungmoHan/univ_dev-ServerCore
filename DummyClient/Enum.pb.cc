@@ -18,7 +18,7 @@
 PROTOBUF_PRAGMA_INIT_SEG
 namespace Protocol {
 }  // namespace Protocol
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[1];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[3];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_Enum_2eproto = nullptr;
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Enum_2eproto::offsets[1] = {};
 static constexpr ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema* schemas = nullptr;
@@ -28,11 +28,16 @@ const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "\n\nEnum.proto\022\010Protocol*h\n\nPlayerType\022\024\n\020"
   "PLAYER_TYPE_NONE\020\000\022\026\n\022PLAYER_TYPE_KNIGHT"
   "\020\001\022\024\n\020PLAYER_TYPE_MAGE\020\002\022\026\n\022PLAYER_TYPE_"
-  "ARCHER\020\003b\006proto3"
+  "ARCHER\020\003*\220\001\n\rMoveDirection\022\030\n\024PLAYER_MOV"
+  "E_DIR_NONE\020\000\022\030\n\024PLAYER_MOVE_DIR_LEFT\020\001\022\031"
+  "\n\025PLAYER_MOVE_DIR_RIGHT\020\002\022\026\n\022PLAYER_MOVE"
+  "_DIR_UP\020\003\022\030\n\024PLAYER_MOVE_DIR_DOWN\020\004*I\n\032i"
+  "dx_for_SC_CHAR_SELECT_RES\022\026\n\022idx_for_cur"
+  "_sector\020\000\022\023\n\017idx_for_cur_pos\020\001b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Enum_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Enum_2eproto = {
-  false, false, 136, descriptor_table_protodef_Enum_2eproto, "Enum.proto", 
+  false, false, 358, descriptor_table_protodef_Enum_2eproto, "Enum.proto", 
   &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
   schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
   nullptr, file_level_enum_descriptors_Enum_2eproto, file_level_service_descriptors_Enum_2eproto,
@@ -54,6 +59,37 @@ bool PlayerType_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* MoveDirection_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[1];
+}
+bool MoveDirection_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* idx_for_SC_CHAR_SELECT_RES_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[2];
+}
+bool idx_for_SC_CHAR_SELECT_RES_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
       return true;
     default:
       return false;

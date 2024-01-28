@@ -2,6 +2,8 @@
 
 #include "Session.h"
 
+#include <utility>
+
 class GameSession : public PacketSession
 {
 	DECLARE_TL(SessionTL);
@@ -17,18 +19,11 @@ public:
 	virtual void	OnDisconnected() override;
 
 public:
-	void AddPlayer(PlayerPtr newPlayer);
-
-	PlayerPtr GetSelectedPlayer() const { return m_CurrentPlayer; }
-	void SetSelectedPlayer(const size_t playerIndex);
-
-	PlayerPtr GetPlayer(size_t playerIndex);
+	void SetPlayer(PlayerPtr player) { m_Player = std::move(player); }
+	PlayerPtr GetPlayer();
 
 private:
-	bool is_valid(const size_t index) const;
 
-
-	Vector<PlayerPtr> m_Players = {};
-	PlayerPtr m_CurrentPlayer = nullptr;
+	PlayerPtr m_Player;
 };
 

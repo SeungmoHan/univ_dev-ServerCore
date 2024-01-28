@@ -1,8 +1,8 @@
 ﻿#include "pch.h"
 #include "BaseObject.h"
 
-void BaseObject::Init(uint64 objKey, ObjectType objType)
+void BaseObject::Init(ObjectType objType)
 {
-	m_ObjectKey = objKey;
+	m_ObjectKey = ObjectKeyGenerator.fetch_add(1);
 	m_ObjectType = objType;
 }

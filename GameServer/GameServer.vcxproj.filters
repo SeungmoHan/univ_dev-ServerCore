@@ -28,6 +28,9 @@
     <Filter Include="GameContents\Field">
       <UniqueIdentifier>{5f6c63db-be8b-493c-a4a1-7da910cfe3af}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Struct">
+      <UniqueIdentifier>{02d300d4-3984-4a75-b186-ca66410a6acd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameServerMain.cpp">
@@ -87,6 +90,15 @@
     <ClCompile Include="Room.cpp">
       <Filter>GameContents\GameRoom</Filter>
     </ClCompile>
+    <ClCompile Include="Field.cpp">
+      <Filter>GameContents\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="Structs.cpp">
+      <Filter>Struct</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -142,6 +154,15 @@
     </ClInclude>
     <ClInclude Include="Room.h">
       <Filter>GameContents\GameRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="Field.h">
+      <Filter>GameContents\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Struct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,7 @@
 ﻿#include "pch.h"
 #include "GameRoomManager.h"
+
+#include "Player.h"
 #include "Room.h"
 
 void GameRoomManager::Update(const uint64 deltaTick)
@@ -34,7 +36,7 @@ void GameRoomManager::LeaveRoom(const uint64 roomKey, const PlayerPtr& player)
 		return;
 	const ptr<Room> gameRoom = itr->second;
 
-	gameRoom->DoAsync(&Room::Leave, player);
+	gameRoom->DoAsync<Room, void>(&Room::Leave, player->GetPlayerGuid());
 }
 
 void GameRoomManager::EraseRoom(const uint64 roomKey)

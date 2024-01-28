@@ -12,7 +12,9 @@
 
 #include "CorePch.h"
 #include "Enum.pb.h"
+#include "Structs.h"
 
-using GameSessionPtr = shared_ptr<class GameSession>;
-using PlayerPtr = shared_ptr<class Player>;
-using ChannelPtr = shared_ptr<class Channel>;
+using GameSessionPtr	=	ptr<class GameSession>;
+using PlayerPtr			=	ptr<class Player>;
+using CharacterPtr		=	ptr<class Character>;
+using ChannelPtr		=	ptr<class Channel>;

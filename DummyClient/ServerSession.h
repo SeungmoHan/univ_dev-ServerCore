@@ -17,7 +17,7 @@ public:
 	virtual void	OnSend(int32 len) override
 	{
 	};
-	virtual void	OnDisconnected() override {};
+	virtual void	OnDisconnected() override;;
 
-	ClientPlayerPtr m_SelectedPlayer = nullptr;
+	uint64 id;
 };
