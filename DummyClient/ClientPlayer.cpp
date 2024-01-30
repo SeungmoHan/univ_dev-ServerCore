@@ -16,22 +16,30 @@ void ClientPlayer::ChangeState()
 
 	movePacket.set_movedir(_moveState);
 	Protocol::Packet_Vector vec;
-	vec.set_x(curPos._x);
-	vec.set_y(curPos._y);
+	vec.set_x(_curPos._x);
+	vec.set_y(_curPos._y);
 	movePacket.set_allocated_curpos(&vec);
 
 	const auto sendBuffer= ServerPacketHandler::MakeSendBuffer(movePacket);
 	SendPacket(sendBuffer);
 }
 
+void ClientPlayer::SetCurpos(const Vector2D& vec)
+{
+	_curPos = vec;
+}
+
 void ClientPlayer::SendNormalChat()
 {
+	if (_chatState == ChatState::Sended)
+		return;
+	_chatState = ChatState::Sended;
 	static wstring text = L"안녕하시옵니까?~__";
 	static Atomic<uint64> chatCounts = 0;
 
 	const uint64 cur = chatCounts.fetch_add(1);
 
-	wstring sendMessage = text + to_wstring(cur);
+	const wstring sendMessage = text + to_wstring(cur);
 
 	Protocol::CS_NORMAL_CHAT_REQ chatPacket;
 	for (const auto c : sendMessage)
@@ -40,6 +48,29 @@ void ClientPlayer::SendNormalChat()
 	const auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPacket);
 	SendPacket(sendBuffer);
 
+}
+
+void ClientPlayer::RecvNormalChat(uint64 playerID, const wstring& message, const wstring& name)
+{
+	// 내가 보낸 메시지였다면
+	if(playerID == GetSelectedCharKey())
+	{
+		// 일단은 상태만 원상복구 시키고 나가자...
+		if (_chatState == ChatState::CanSend)
+			return;
+		_chatState = ChatState::CanSend;
+	}
+	else
+	{
+		// 일단 다른사람이 보낸거 체크할 그건없음...
+		// 추후에 내 주변에 이 플레이어가 있어야하는지 검사하는 로직에서 검증할 예정
+	}
+
+}
+
+void ClientPlayer::SetMoveState(const Protocol::MoveDirection dir)
+{
+	_moveState = dir;
 }
 
 void ClientPlayer::Update()

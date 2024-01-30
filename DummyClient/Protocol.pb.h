@@ -1177,11 +1177,10 @@ class SC_CHAR_SELECT_RES final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kVecsFieldNumber = 3,
+    kVecsFieldNumber = 2,
     kCharIndexFieldNumber = 1,
-    kVecsSizeFieldNumber = 2,
   };
-  // repeated .Protocol.Packet_Vector vecs = 3;
+  // repeated .Protocol.Packet_Vector vecs = 2;
   int vecs_size() const;
   private:
   int _internal_vecs_size() const;
@@ -1208,15 +1207,6 @@ class SC_CHAR_SELECT_RES final :
   void _internal_set_charindex(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // int32 vecsSize = 2;
-  void clear_vecssize();
-  ::PROTOBUF_NAMESPACE_ID::int32 vecssize() const;
-  void set_vecssize(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_vecssize() const;
-  void _internal_set_vecssize(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
   // @@protoc_insertion_point(class_scope:Protocol.SC_CHAR_SELECT_RES)
  private:
   class _Internal;
@@ -1226,7 +1216,6 @@ class SC_CHAR_SELECT_RES final :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Packet_Vector > vecs_;
   ::PROTOBUF_NAMESPACE_ID::uint64 charindex_;
-  ::PROTOBUF_NAMESPACE_ID::int32 vecssize_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -2857,27 +2846,7 @@ inline void SC_CHAR_SELECT_RES::set_charindex(::PROTOBUF_NAMESPACE_ID::uint64 va
   // @@protoc_insertion_point(field_set:Protocol.SC_CHAR_SELECT_RES.charIndex)
 }
 
-// int32 vecsSize = 2;
-inline void SC_CHAR_SELECT_RES::clear_vecssize() {
-  vecssize_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 SC_CHAR_SELECT_RES::_internal_vecssize() const {
-  return vecssize_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 SC_CHAR_SELECT_RES::vecssize() const {
-  // @@protoc_insertion_point(field_get:Protocol.SC_CHAR_SELECT_RES.vecsSize)
-  return _internal_vecssize();
-}
-inline void SC_CHAR_SELECT_RES::_internal_set_vecssize(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  vecssize_ = value;
-}
-inline void SC_CHAR_SELECT_RES::set_vecssize(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_vecssize(value);
-  // @@protoc_insertion_point(field_set:Protocol.SC_CHAR_SELECT_RES.vecsSize)
-}
-
-// repeated .Protocol.Packet_Vector vecs = 3;
+// repeated .Protocol.Packet_Vector vecs = 2;
 inline int SC_CHAR_SELECT_RES::_internal_vecs_size() const {
   return vecs_.size();
 }

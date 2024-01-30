@@ -9,14 +9,20 @@ public:
 
 	enum class ChatState
 	{
-		None, Send, RecvWait, Recved,
+		CanSend, Sended,
 	};
 
 	void SendPacket(const SendBufferPtr sendBuffer) const;
 	void ChangeState();
+	void SetCurpos(const Vector2D& vec);
 
 	void SendNormalChat();
+	void RecvNormalChat(uint64 playerID, const wstring& message, const wstring& name);
+
+	void SetMoveState(Protocol::MoveDirection dir);
 	void Update();
+
+	uint64 GetSelectedCharKey() const { return _characterData[_selectedClientIndex]->id; }
 
 	uint64 _key = 0;
 	Atomic<bool> _finished_to_set = false;
@@ -28,9 +34,10 @@ public:
 	HashMap<uint32, ptr<ClientChannelData>> _channelData;
 
 	uint64 _selectedClientIndex;
+	uint64 _charKey;
 	Vector<ptr<ClientCharacterData>> _characterData;
 
-	Vector2D curPos;
+	Vector2D _curPos;
 
 	Protocol::MoveDirection _moveState;
 	ChatState _chatState;

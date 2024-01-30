@@ -126,14 +126,39 @@ bool Player::CheckMoveSync(const Vector2D& vec)
 	const auto y_diff = abs(vec._y - charPos._y);
 	if (x_diff > 30 || y_diff > 30)
 	{
-		// 여기서 노인정함,,, syncPacket보내야함
-		// sync 보내고,,, true를 보내자 그냥 일단은
-		SendSyncPacket();
+		return false;
 	}
-
-	// 일단은 다 true
 	return true;
 }
+
+void Player::ChangeMoveStatus(const Protocol::MoveDirection dir, const Vector2D curPos)
+{
+	// 싱크인 경우 판단
+	const auto character = GetSelectedCharacter();
+	if (character == nullptr)
+	{
+		Disconnect(L"움직여야 하는데 캐릭터가 없다..?");
+		return;
+	}
+	if (CheckMoveSync(curPos))
+		SendSyncPacket();
+	// 적당한 거리 내에있으면 클라가 준 좌표를 믿는다.
+	else
+		character->SetCurrentPos({ curPos._x, curPos._y });
+
+	character->SetMoveDirection(dir);
+	Protocol::SC_MOVE_RES resPacket;
+	Protocol::Packet_Vector packetVec;
+	resPacket.set_success(true);
+	const auto& charPos = character->GetCurrentPos();
+	packetVec.set_x(charPos._x);
+	packetVec.set_y(charPos._y);
+	resPacket.set_allocated_curpos(&packetVec);
+	resPacket.set_movedir(dir);
+	const auto sendBuffer = ClientPacketHandler::MakeSendBuffer(resPacket);
+	SendPacket(sendBuffer);
+}
+
 
 void Player::ResetPlayer()
 {
@@ -163,6 +188,7 @@ void Player::SendSyncPacket()
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(syncPacket);
 	SendPacket(sendBuffer);
 }
+
 
 void Player::Reset()
 {

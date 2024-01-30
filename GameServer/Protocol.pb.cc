@@ -104,8 +104,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT CS_CHAR_SELECT_REQDefaultTypeIn
 constexpr SC_CHAR_SELECT_RES::SC_CHAR_SELECT_RES(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : vecs_()
-  , charindex_(uint64_t{0u})
-  , vecssize_(0){}
+  , charindex_(uint64_t{0u}){}
 struct SC_CHAR_SELECT_RESDefaultTypeInternal {
   constexpr SC_CHAR_SELECT_RESDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -293,7 +292,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Protocol_2eproto::offsets[] PR
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::SC_CHAR_SELECT_RES, charindex_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::SC_CHAR_SELECT_RES, vecssize_),
   PROTOBUF_FIELD_OFFSET(::Protocol::SC_CHAR_SELECT_RES, vecs_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::CS_MOVE_REQ, _internal_metadata_),
@@ -370,15 +368,15 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 30, -1, sizeof(::Protocol::SC_CHAR_LIST_RES)},
   { 36, -1, sizeof(::Protocol::CS_CHAR_SELECT_REQ)},
   { 42, -1, sizeof(::Protocol::SC_CHAR_SELECT_RES)},
-  { 50, -1, sizeof(::Protocol::CS_MOVE_REQ)},
-  { 57, -1, sizeof(::Protocol::SC_MOVE_RES)},
-  { 65, -1, sizeof(::Protocol::CS_MOVE_CHANNEL_REQ)},
-  { 71, -1, sizeof(::Protocol::SC_MOVE_CHANNEL_RES)},
-  { 78, -1, sizeof(::Protocol::CS_NORMAL_CHAT_REQ)},
-  { 84, -1, sizeof(::Protocol::SC_NORMAL_CHAT_RES)},
-  { 92, -1, sizeof(::Protocol::SC_CREATE_PLAYER_CMD)},
-  { 101, -1, sizeof(::Protocol::SC_DELETE_PLAYER_CMD)},
-  { 108, -1, sizeof(::Protocol::SC_POSITION_SYNC)},
+  { 49, -1, sizeof(::Protocol::CS_MOVE_REQ)},
+  { 56, -1, sizeof(::Protocol::SC_MOVE_RES)},
+  { 64, -1, sizeof(::Protocol::CS_MOVE_CHANNEL_REQ)},
+  { 70, -1, sizeof(::Protocol::SC_MOVE_CHANNEL_RES)},
+  { 77, -1, sizeof(::Protocol::CS_NORMAL_CHAT_REQ)},
+  { 83, -1, sizeof(::Protocol::SC_NORMAL_CHAT_RES)},
+  { 91, -1, sizeof(::Protocol::SC_CREATE_PLAYER_CMD)},
+  { 100, -1, sizeof(::Protocol::SC_DELETE_PLAYER_CMD)},
+  { 107, -1, sizeof(::Protocol::SC_POSITION_SYNC)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -411,28 +409,28 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "\n\014channelIndex\030\002 \001(\r\"\022\n\020CS_CHAR_LIST_REQ"
   "\"F\n\020SC_CHAR_LIST_RES\0222\n\ncharacters\030\001 \003(\013"
   "2\036.Protocol.Packet_CharacterInfo\"\'\n\022CS_C"
-  "HAR_SELECT_REQ\022\021\n\tcharIndex\030\001 \001(\004\"`\n\022SC_"
-  "CHAR_SELECT_RES\022\021\n\tcharIndex\030\001 \001(\004\022\020\n\010ve"
-  "csSize\030\002 \001(\005\022%\n\004vecs\030\003 \003(\0132\027.Protocol.Pa"
-  "cket_Vector\"`\n\013CS_MOVE_REQ\022\'\n\006curPos\030\001 \001"
-  "(\0132\027.Protocol.Packet_Vector\022(\n\007moveDir\030\002"
-  " \001(\0162\027.Protocol.MoveDirection\"q\n\013SC_MOVE"
-  "_RES\022\017\n\007success\030\001 \001(\010\022(\n\007moveDir\030\002 \001(\0162\027"
-  ".Protocol.MoveDirection\022\'\n\006curPos\030\003 \001(\0132"
-  "\027.Protocol.Packet_Vector\"(\n\023CS_MOVE_CHAN"
-  "NEL_REQ\022\021\n\tchannelID\030\001 \001(\004\"9\n\023SC_MOVE_CH"
-  "ANNEL_RES\022\017\n\007success\030\001 \001(\010\022\021\n\tchannelID\030"
-  "\002 \001(\004\"!\n\022CS_NORMAL_CHAT_REQ\022\013\n\003msg\030\020 \003(\005"
-  "\"G\n\022SC_NORMAL_CHAT_RES\022\020\n\010playerId\030\001 \001(\004"
-  "\022\022\n\nplayerName\030\020 \003(\005\022\013\n\003msg\030\021 \003(\005\"\236\001\n\024SC"
-  "_CREATE_PLAYER_CMD\0225\n\rnewPlayerInfo\030\001 \001("
-  "\0132\036.Protocol.Packet_CharacterInfo\022-\n\014cur"
-  "PlayerPos\030\003 \001(\0132\027.Protocol.Packet_Vector"
-  "\022\020\n\010faceLeft\030\002 \001(\010\022\016\n\006isMine\030\004 \001(\010\"8\n\024SC"
-  "_DELETE_PLAYER_CMD\022\020\n\010playerId\030\001 \001(\004\022\016\n\006"
-  "isMine\030\002 \001(\010\"S\n\020SC_POSITION_SYNC\022-\n\014sync"
-  "Position\030\001 \001(\0132\027.Protocol.Packet_Vector\022"
-  "\020\n\010faceLeft\030\002 \001(\010b\006proto3"
+  "HAR_SELECT_REQ\022\021\n\tcharIndex\030\001 \001(\004\"N\n\022SC_"
+  "CHAR_SELECT_RES\022\021\n\tcharIndex\030\001 \001(\004\022%\n\004ve"
+  "cs\030\002 \003(\0132\027.Protocol.Packet_Vector\"`\n\013CS_"
+  "MOVE_REQ\022\'\n\006curPos\030\001 \001(\0132\027.Protocol.Pack"
+  "et_Vector\022(\n\007moveDir\030\002 \001(\0162\027.Protocol.Mo"
+  "veDirection\"q\n\013SC_MOVE_RES\022\017\n\007success\030\001 "
+  "\001(\010\022(\n\007moveDir\030\002 \001(\0162\027.Protocol.MoveDire"
+  "ction\022\'\n\006curPos\030\003 \001(\0132\027.Protocol.Packet_"
+  "Vector\"(\n\023CS_MOVE_CHANNEL_REQ\022\021\n\tchannel"
+  "ID\030\001 \001(\004\"9\n\023SC_MOVE_CHANNEL_RES\022\017\n\007succe"
+  "ss\030\001 \001(\010\022\021\n\tchannelID\030\002 \001(\004\"!\n\022CS_NORMAL"
+  "_CHAT_REQ\022\013\n\003msg\030\020 \003(\005\"G\n\022SC_NORMAL_CHAT"
+  "_RES\022\020\n\010playerId\030\001 \001(\004\022\022\n\nplayerName\030\020 \003"
+  "(\005\022\013\n\003msg\030\021 \003(\005\"\236\001\n\024SC_CREATE_PLAYER_CMD"
+  "\0225\n\rnewPlayerInfo\030\001 \001(\0132\036.Protocol.Packe"
+  "t_CharacterInfo\022-\n\014curPlayerPos\030\003 \001(\0132\027."
+  "Protocol.Packet_Vector\022\020\n\010faceLeft\030\002 \001(\010"
+  "\022\016\n\006isMine\030\004 \001(\010\"8\n\024SC_DELETE_PLAYER_CMD"
+  "\022\020\n\010playerId\030\001 \001(\004\022\016\n\006isMine\030\002 \001(\010\"S\n\020SC"
+  "_POSITION_SYNC\022-\n\014syncPosition\030\001 \001(\0132\027.P"
+  "rotocol.Packet_Vector\022\020\n\010faceLeft\030\002 \001(\010b"
+  "\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -440,7 +438,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Protocol_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Protocol_2eproto = {
-  false, false, 1225, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
+  false, false, 1207, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
   &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 17,
   schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
   file_level_metadata_Protocol_2eproto, file_level_enum_descriptors_Protocol_2eproto, file_level_service_descriptors_Protocol_2eproto,
@@ -1813,17 +1811,12 @@ SC_CHAR_SELECT_RES::SC_CHAR_SELECT_RES(const SC_CHAR_SELECT_RES& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       vecs_(from.vecs_) {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&charindex_, &from.charindex_,
-    static_cast<size_t>(reinterpret_cast<char*>(&vecssize_) -
-    reinterpret_cast<char*>(&charindex_)) + sizeof(vecssize_));
+  charindex_ = from.charindex_;
   // @@protoc_insertion_point(copy_constructor:Protocol.SC_CHAR_SELECT_RES)
 }
 
 void SC_CHAR_SELECT_RES::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&charindex_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&vecssize_) -
-    reinterpret_cast<char*>(&charindex_)) + sizeof(vecssize_));
+charindex_ = uint64_t{0u};
 }
 
 SC_CHAR_SELECT_RES::~SC_CHAR_SELECT_RES() {
@@ -1853,9 +1846,7 @@ void SC_CHAR_SELECT_RES::Clear() {
   (void) cached_has_bits;
 
   vecs_.Clear();
-  ::memset(&charindex_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&vecssize_) -
-      reinterpret_cast<char*>(&charindex_)) + sizeof(vecssize_));
+  charindex_ = uint64_t{0u};
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1872,23 +1863,16 @@ const char* SC_CHAR_SELECT_RES::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int32 vecsSize = 2;
+      // repeated .Protocol.Packet_Vector vecs = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          vecssize_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // repeated .Protocol.Packet_Vector vecs = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           ptr -= 1;
           do {
             ptr += 1;
             ptr = ctx->ParseMessage(_internal_add_vecs(), ptr);
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<26>(ptr));
+          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
         } else goto handle_unusual;
         continue;
       default: {
@@ -1926,18 +1910,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_charindex(), target);
   }
 
-  // int32 vecsSize = 2;
-  if (this->vecssize() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_vecssize(), target);
-  }
-
-  // repeated .Protocol.Packet_Vector vecs = 3;
+  // repeated .Protocol.Packet_Vector vecs = 2;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->_internal_vecs_size()); i < n; i++) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(3, this->_internal_vecs(i), target, stream);
+      InternalWriteMessage(2, this->_internal_vecs(i), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1956,7 +1934,7 @@ size_t SC_CHAR_SELECT_RES::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // repeated .Protocol.Packet_Vector vecs = 3;
+  // repeated .Protocol.Packet_Vector vecs = 2;
   total_size += 1UL * this->_internal_vecs_size();
   for (const auto& msg : this->vecs_) {
     total_size +=
@@ -1968,13 +1946,6 @@ size_t SC_CHAR_SELECT_RES::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->_internal_charindex());
-  }
-
-  // int32 vecsSize = 2;
-  if (this->vecssize() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_vecssize());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2012,9 +1983,6 @@ void SC_CHAR_SELECT_RES::MergeFrom(const SC_CHAR_SELECT_RES& from) {
   if (from.charindex() != 0) {
     _internal_set_charindex(from._internal_charindex());
   }
-  if (from.vecssize() != 0) {
-    _internal_set_vecssize(from._internal_vecssize());
-  }
 }
 
 void SC_CHAR_SELECT_RES::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -2039,12 +2007,7 @@ void SC_CHAR_SELECT_RES::InternalSwap(SC_CHAR_SELECT_RES* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   vecs_.InternalSwap(&other->vecs_);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(SC_CHAR_SELECT_RES, vecssize_)
-      + sizeof(SC_CHAR_SELECT_RES::vecssize_)
-      - PROTOBUF_FIELD_OFFSET(SC_CHAR_SELECT_RES, charindex_)>(
-          reinterpret_cast<char*>(&charindex_),
-          reinterpret_cast<char*>(&other->charindex_));
+  swap(charindex_, other->charindex_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SC_CHAR_SELECT_RES::GetMetadata() const {

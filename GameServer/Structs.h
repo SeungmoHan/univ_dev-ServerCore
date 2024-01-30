@@ -28,6 +28,7 @@ public:
 	bool is_dirty() const { return _dirtyFlag; }
 
 	Vector2D get_curpos() const { return _curPos; }
+	void set_curpos(const Vector2D& pos) { _curPos = pos; }
 	pair<int64, int64> get_cur_sector() const { return make_pair(_sectorX, _sectorY); }
 private:
 	void do_dirty() { _dirtyFlag = true; }
