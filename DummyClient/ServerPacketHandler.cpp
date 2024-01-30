@@ -107,6 +107,11 @@ bool Handle_SC_CHAR_SELECT_RES(PacketSessionPtr& session, Protocol::SC_CHAR_SELE
 {
 	const ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
 	const auto player = DummyStructManager::Instance().GetClient(serverSession->id);
+	if(player == nullptr)
+	{
+		session->Disconnect(L"플레이어가 없으면 안된다...");
+		return false;
+	}
 	player->_selectedClientIndex = pkt.charindex();
 	const auto pos_x = pkt.vecs()[Protocol::idx_for_cur_pos].x();
 	const auto pos_y = pkt.vecs()[Protocol::idx_for_cur_pos].y();
@@ -123,14 +128,43 @@ bool Handle_SC_CHAR_SELECT_RES(PacketSessionPtr& session, Protocol::SC_CHAR_SELE
 }
 bool Handle_SC_MOVE_RES(PacketSessionPtr& session, Protocol::SC_MOVE_RES& pkt)
 {
+	const ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
+	const auto client = DummyStructManager::Instance().GetClient(serverSession->id);
+	if(client == nullptr)
+	{
+		session->Disconnect(L"클라이언트가 없다...");
+		return false;
+	}
+	client->SetCurpos({ pkt.curpos().x(), pkt.curpos().y() });
+	client->SetMoveState(pkt.movedir());
 	return true;
 }
 bool Handle_SC_POSITION_SYNC(PacketSessionPtr& session, Protocol::SC_POSITION_SYNC& pkt)
 {
+	const ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
+	const auto client = DummyStructManager::Instance().GetClient(serverSession->id);=
+	client->SetCurpos({ pkt.syncposition().x(), pkt.syncposition().y() });
 	return true;
 }
 bool Handle_SC_NORMAL_CHAT_RES(PacketSessionPtr& session, Protocol::SC_NORMAL_CHAT_RES& pkt)
 {
+	ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
+	const auto client = DummyStructManager::Instance().GetClient(serverSession->id);
+	if (client == nullptr)
+	{
+		session->Disconnect(L"클라이언트가 없을리가... 없는구간");
+		return false;
+	}
+	// 내가 보낸 채팅이면...
+
+	// 다른 사람이 보낸 채팅이면...
+	wstring message;
+	for (int i = 0; i < pkt.msg_size(); i++)
+		message.push_back(pkt.msg()[i]);
+	wstring name;
+	for (int i = 0; i < pkt.playername_size(); i++)
+		name.push_back(pkt.playername()[i]);
+	client->RecvNormalChat(pkt.playerid(), message, name);
 	return true;
 }
 bool Handle_SC_CREATE_PLAYER_CMD(PacketSessionPtr& session, Protocol::SC_CREATE_PLAYER_CMD& pkt)

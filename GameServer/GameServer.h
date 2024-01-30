@@ -37,14 +37,14 @@ public:
 
 	void IncreaseRunningThreadCounts() {  m_WorkerRunningCounts.fetch_add(1); }
 
-	uint32 RebootChannel(uint32 channelKey);
-	void CloseChennel(uint32 channelKey);
+	static uint32 RebootChannel(uint32 channelKey);
+	static void CloseChennel(uint32 channelKey);
 
 
 private:
 	GameServer() = default;
 
-	uint32 CreateChannel();
+	static uint32 CreateChannel();
 
 	bool InitConfigParser();
 	bool InitScriptParser();
@@ -53,11 +53,9 @@ private:
 	bool Update(uint64 deltaTick);
 
 
-	shared_ptr<GameScriptParser>	m_ScriptParser = nullptr;
 
 
 	// for party system 채널이 달라도 파티는 가능함...
-	shared_ptr<Room> m_LobbyRoom;
 	HashMap<uint32, shared_ptr<Room>> m_RoomMaps;
 
 	//
@@ -70,7 +68,6 @@ private:
 	atomic<uint32> m_WorkerRunningCounts = 0;
 
 	HashSet<uint32> m_ChannelKeySet;
-	priority_queue<uint32> channel_id_queue;
 	ServerServicePtr	m_Service;
 
 	volatile bool m_ServerStartFlag = false;

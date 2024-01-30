@@ -13,3 +13,8 @@ void Character::Init(const uint64 characterKey, const wstring& charName)
 	m_Location.init();
 	m_Location.update(GameServer::Instance()->GetServerOption().m_MaxSectorSize);
 }
+
+void Character::SetMoveDirection(const Protocol::MoveDirection dir)
+{
+	m_Location.set_direction(dir);
+}

@@ -53,8 +53,7 @@ public:
 
 	bool CheckMoveSync(const Vector2D& vec);
 
-	void BeginMove(const Protocol::MoveDirection dir);
-	void EndMove(const Protocol::MoveDirection dir);
+	void ChangeMoveStatus(const Protocol::MoveDirection dir, const Vector2D curPos);
 
 	void ResetPlayer();
 

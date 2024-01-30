@@ -148,6 +148,7 @@ bool Handle_CS_CHAR_SELECT_REQ(PacketSessionPtr& session, Protocol::CS_CHAR_SELE
 	}
 
 	const auto vec = character->GetCurrentPos();
+	const auto charKey = character->GetCharacterKey();
 	auto [x_sector, y_sector] = character->GetCurrnetSector();
 
 	Protocol::SC_CHAR_SELECT_RES resPacket;
@@ -169,8 +170,8 @@ bool Handle_CS_CHAR_SELECT_REQ(PacketSessionPtr& session, Protocol::CS_CHAR_SELE
 bool Handle_CS_MOVE_REQ(PacketSessionPtr& session, Protocol::CS_MOVE_REQ& pkt)
 {
 	GameSessionPtr gameSession = static_pointer_cast<GameSession>(session);
-	auto x =  pkt.curpos().x();
-	auto y =pkt.curpos().y();
+	auto x = pkt.curpos().x();
+	auto y = pkt.curpos().y();
 	auto dir = pkt.movedir();
 
 	auto player = gameSession->GetPlayer();
@@ -179,31 +180,23 @@ bool Handle_CS_MOVE_REQ(PacketSessionPtr& session, Protocol::CS_MOVE_REQ& pkt)
 		gameSession->Disconnect(L"플레이어가 없으면 안되는 구간입니다...");
 		return false;
 	}
-	const auto character = player->GetSelectedCharacter();
-	if(character== nullptr)
+	const ptr<Character> character = player->GetSelectedCharacter();
+	if (character == nullptr)
 	{
 		player->Disconnect(L"캐릭터가 없으면 안되는 구간입니다");
 		return false;
 	}
+	const Vector2D curPos{ pkt.curpos().x() ,pkt.curpos().y() };
 
-	if(player->CheckMoveSync() == false)
-	{
-		
-	}
-	const auto pos = character->GetCurrentPos();
-
-	auto x_diff = abs(x - pos._x);
-	auto y_diff = abs(y - pos._y);
-	if(x_diff > 30 || y_diff >30)
-	{
-		// 여기서 노인정함,,, syncPacket보내야함
-		player->SendSyncPacket();
-	}
-
+	player->DoAsync(&Player::ChangeMoveStatus, pkt.movedir(), curPos);
 	return true;
 }
 bool Handle_CS_NORMAL_CHAT_REQ(PacketSessionPtr& session, Protocol::CS_NORMAL_CHAT_REQ& pkt)
 {
+	GameSessionPtr gameSession = static_pointer_cast<GameSession>(session);
+
+
+
 	return true;
 }
 bool Handle_CS_MOVE_CHANNEL_REQ(PacketSessionPtr& session, Protocol::CS_MOVE_CHANNEL_REQ& pkt)

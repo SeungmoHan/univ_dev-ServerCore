@@ -57,7 +57,7 @@ bool GameServer::Update(uint64 deltaTick)
 
 
 	// 그외 콘텐츠들 있으면 여기 밑에서 업데이트 되도록 
-	//GuildManager::Instance()->UpdatE(deltaTick); // 일단 얘까지는 포폴에 넣고싶다...
+	//GuildManager::Instance()->Update(deltaTick); // 일단 얘까지는 포폴에 넣고싶다...
 	return true;
 }
 
