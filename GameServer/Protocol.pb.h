@@ -2249,8 +2249,6 @@ class SC_CREATE_PLAYER_CMD final :
   enum : int {
     kNewPlayerInfoFieldNumber = 1,
     kCurPlayerPosFieldNumber = 3,
-    kFaceLeftFieldNumber = 2,
-    kIsMineFieldNumber = 4,
   };
   // .Protocol.Packet_CharacterInfo newPlayerInfo = 1;
   bool has_newplayerinfo() const;
@@ -2288,24 +2286,6 @@ class SC_CREATE_PLAYER_CMD final :
       ::Protocol::Packet_Vector* curplayerpos);
   ::Protocol::Packet_Vector* unsafe_arena_release_curplayerpos();
 
-  // bool faceLeft = 2;
-  void clear_faceleft();
-  bool faceleft() const;
-  void set_faceleft(bool value);
-  private:
-  bool _internal_faceleft() const;
-  void _internal_set_faceleft(bool value);
-  public:
-
-  // bool isMine = 4;
-  void clear_ismine();
-  bool ismine() const;
-  void set_ismine(bool value);
-  private:
-  bool _internal_ismine() const;
-  void _internal_set_ismine(bool value);
-  public:
-
   // @@protoc_insertion_point(class_scope:Protocol.SC_CREATE_PLAYER_CMD)
  private:
   class _Internal;
@@ -2315,8 +2295,6 @@ class SC_CREATE_PLAYER_CMD final :
   typedef void DestructorSkippable_;
   ::Protocol::Packet_CharacterInfo* newplayerinfo_;
   ::Protocol::Packet_Vector* curplayerpos_;
-  bool faceleft_;
-  bool ismine_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -3505,46 +3483,6 @@ inline void SC_CREATE_PLAYER_CMD::set_allocated_curplayerpos(::Protocol::Packet_
   }
   curplayerpos_ = curplayerpos;
   // @@protoc_insertion_point(field_set_allocated:Protocol.SC_CREATE_PLAYER_CMD.curPlayerPos)
-}
-
-// bool faceLeft = 2;
-inline void SC_CREATE_PLAYER_CMD::clear_faceleft() {
-  faceleft_ = false;
-}
-inline bool SC_CREATE_PLAYER_CMD::_internal_faceleft() const {
-  return faceleft_;
-}
-inline bool SC_CREATE_PLAYER_CMD::faceleft() const {
-  // @@protoc_insertion_point(field_get:Protocol.SC_CREATE_PLAYER_CMD.faceLeft)
-  return _internal_faceleft();
-}
-inline void SC_CREATE_PLAYER_CMD::_internal_set_faceleft(bool value) {
-  
-  faceleft_ = value;
-}
-inline void SC_CREATE_PLAYER_CMD::set_faceleft(bool value) {
-  _internal_set_faceleft(value);
-  // @@protoc_insertion_point(field_set:Protocol.SC_CREATE_PLAYER_CMD.faceLeft)
-}
-
-// bool isMine = 4;
-inline void SC_CREATE_PLAYER_CMD::clear_ismine() {
-  ismine_ = false;
-}
-inline bool SC_CREATE_PLAYER_CMD::_internal_ismine() const {
-  return ismine_;
-}
-inline bool SC_CREATE_PLAYER_CMD::ismine() const {
-  // @@protoc_insertion_point(field_get:Protocol.SC_CREATE_PLAYER_CMD.isMine)
-  return _internal_ismine();
-}
-inline void SC_CREATE_PLAYER_CMD::_internal_set_ismine(bool value) {
-  
-  ismine_ = value;
-}
-inline void SC_CREATE_PLAYER_CMD::set_ismine(bool value) {
-  _internal_set_ismine(value);
-  // @@protoc_insertion_point(field_set:Protocol.SC_CREATE_PLAYER_CMD.isMine)
 }
 
 // -------------------------------------------------------------------

@@ -24,6 +24,11 @@ public:
 
 	uint64 GetSelectedCharKey() const { return _characterData[_selectedClientIndex]->id; }
 
+	bool IsPlayerNearby(const uint64 key);
+	bool CheckDuplicateCharacterSpawn(const uint64 key);
+	bool InsertNearbyCharacter(ptr<ClientCharacterData> charData);
+	bool RemoveNearbyCharacter(const uint64 key);
+
 	uint64 _key = 0;
 	Atomic<bool> _finished_to_set = false;
 
@@ -37,7 +42,7 @@ public:
 	uint64 _charKey;
 	Vector<ptr<ClientCharacterData>> _characterData;
 
-	Vector2D _curPos;
+	unordered_map<uint64, ptr<ClientCharacterData>> _otherUserData;
 
 	Protocol::MoveDirection _moveState;
 	ChatState _chatState;

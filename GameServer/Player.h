@@ -23,7 +23,7 @@ public:
 
 	void OnDisconnected();
 
-	uint64 GetPlayerGuid() const { return m_PlayerGuid; }
+	uint64 GetPlayerKey() const { return m_PlayerGuid; }
 
 	ptr<Room> SetCurrentRoom(const ptr<Room>& gameRoom);
 	ptr<Room> GetCurrentRoom() const;

@@ -31,8 +31,8 @@ void Player::Disconnect(const wstring& reason)
 void Player::OnDisconnected()
 {
 	// Field::LeavePlayer는 Channel에서 leave시켜주니까 할필요 X
-	if(m_CurrentChannel) m_CurrentChannel->DoAsync<Channel, void>(&Channel::RemovePlayer, GetPlayerGuid());
-	if (m_Room) m_Room->DoAsync<Room, void>(&Room::Leave, GetPlayerGuid());
+	if(m_CurrentChannel) m_CurrentChannel->DoAsync<Channel, void>(&Channel::RemovePlayer, GetPlayerKey());
+	if (m_Room) m_Room->DoAsync<Room, void>(&Room::Leave, GetPlayerKey());
 	Reset();
 }
 
@@ -71,6 +71,13 @@ void Player::Update(uint64 deltaTick)
 {
 	//TODO 플레이어 움직이는거나,,, 이런거 여기서 할예정임
 	// 다만 State 변경 같은건 패킷에서 DoAsync를 이용해서 수정할거
+	const auto character = GetSelectedCharacter();
+	if(character == nullptr)
+	{
+		return;
+	}
+
+	
 }
 
 void Player::SelectCharacter(const uint64 characterIndex)
@@ -121,7 +128,7 @@ bool Player::CheckMoveSync(const Vector2D& vec)
 		Disconnect(L"캐릭터가 여기서 없으면 안되죵~");
 		return false;
 	}
-	const auto charPos = character->GetCurrentPos();
+	const auto charPos = character->GetCurrentPosition();
 	const auto x_diff = abs(vec._x - charPos._x);
 	const auto y_diff = abs(vec._y - charPos._y);
 	if (x_diff > 30 || y_diff > 30)
@@ -144,13 +151,16 @@ void Player::ChangeMoveStatus(const Protocol::MoveDirection dir, const Vector2D 
 		SendSyncPacket();
 	// 적당한 거리 내에있으면 클라가 준 좌표를 믿는다.
 	else
-		character->SetCurrentPos({ curPos._x, curPos._y });
+		character->SetCurrentPosition({ curPos._x, curPos._y });
 
+	
 	character->SetMoveDirection(dir);
 	Protocol::SC_MOVE_RES resPacket;
 	Protocol::Packet_Vector packetVec;
+	// 나중에 되면 어떤 이유에서든 움직일 수 없는 상황이 생기겠지... 스턴이라던가...
+	// 혹은 스킬 시전중이라던가 그런것들처럼 그때를 대비해서...
 	resPacket.set_success(true);
-	const auto& charPos = character->GetCurrentPos();
+	const auto& charPos = character->GetCurrentPosition();
 	packetVec.set_x(charPos._x);
 	packetVec.set_y(charPos._y);
 	resPacket.set_allocated_curpos(&packetVec);
@@ -178,14 +188,14 @@ void Player::SendSyncPacket()
 		Disconnect(L"캐릭터가 없으면 안되지...");
 		return;
 	}
-	auto pos = character->GetCurrentPos();
+	const auto pos = character->GetCurrentPosition();
 
 	Protocol::SC_POSITION_SYNC syncPacket;
 	Protocol::Packet_Vector vec;
 	vec.set_x(pos._x); vec.set_y(pos._y);
 	syncPacket.set_allocated_syncposition(&vec);
 
-	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(syncPacket);
+	const auto sendBuffer = ClientPacketHandler::MakeSendBuffer(syncPacket);
 	SendPacket(sendBuffer);
 }
 
