@@ -107,7 +107,7 @@ bool Handle_CS_CHAR_LIST_REQ(PacketSessionPtr& session, Protocol::CS_CHAR_LIST_R
 		player->AddCharacter(newChar);
 		const auto packetChar = resPacket.add_characters();
 		packetChar->set_id(newChar->GetCharacterKey());
-		for(const wchar_t c : newChar->GetCharName())
+		for(const wchar_t c : newChar->GetCharacterName())
 			packetChar->add_name(c);
 	}
 
@@ -120,7 +120,7 @@ bool Handle_CS_CHAR_LIST_REQ(PacketSessionPtr& session, Protocol::CS_CHAR_LIST_R
 bool Handle_CS_CHAR_SELECT_REQ(PacketSessionPtr& session, Protocol::CS_CHAR_SELECT_REQ& pkt)
 {
 	const GameSessionPtr gameSession = static_pointer_cast<GameSession>(session);
-	auto player = gameSession->GetPlayer();
+	const auto player = gameSession->GetPlayer();
 	if(player == nullptr)
 	{
 		player->Disconnect(L"캐릭터 요구인데,,, 이게 없을리가 없잖아");
@@ -147,9 +147,9 @@ bool Handle_CS_CHAR_SELECT_REQ(PacketSessionPtr& session, Protocol::CS_CHAR_SELE
 		return false;
 	}
 
-	const auto vec = character->GetCurrentPos();
+	const auto vec = character->GetCurrentPosition();
 	const auto charKey = character->GetCharacterKey();
-	auto [x_sector, y_sector] = character->GetCurrnetSector();
+	auto [x_sector, y_sector] = character->GetCurrentSector();
 
 	Protocol::SC_CHAR_SELECT_RES resPacket;
 	resPacket.set_charindex(desiredCharIndex);
@@ -169,18 +169,18 @@ bool Handle_CS_CHAR_SELECT_REQ(PacketSessionPtr& session, Protocol::CS_CHAR_SELE
 }
 bool Handle_CS_MOVE_REQ(PacketSessionPtr& session, Protocol::CS_MOVE_REQ& pkt)
 {
-	GameSessionPtr gameSession = static_pointer_cast<GameSession>(session);
+	const GameSessionPtr gameSession = static_pointer_cast<GameSession>(session);
 	auto x = pkt.curpos().x();
 	auto y = pkt.curpos().y();
 	auto dir = pkt.movedir();
 
-	auto player = gameSession->GetPlayer();
+	const auto player = gameSession->GetPlayer();
 	if (player == nullptr)
 	{
 		gameSession->Disconnect(L"플레이어가 없으면 안되는 구간입니다...");
 		return false;
 	}
-	const ptr<Character> character = player->GetSelectedCharacter();
+	const auto character = player->GetSelectedCharacter();
 	if (character == nullptr)
 	{
 		player->Disconnect(L"캐릭터가 없으면 안되는 구간입니다");

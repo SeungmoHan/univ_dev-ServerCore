@@ -14,10 +14,10 @@ bool Handle_INVALID(PacketSessionPtr& session, BYTE* buffer, const uint32 len)
 
 bool Handle_SC_LOGIN_RES(PacketSessionPtr& session, Protocol::SC_LOGIN_RES& pkt)
 {
-	ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
+	const ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
 	auto channels = pkt.channels();
 	const auto channelCnt = pkt.channels_size();
-	ClientPlayerPtr curPlayer = DummyStructManager::Instance().GetClient(serverSession->id);
+	const auto curPlayer = DummyStructManager::Instance().GetClient(serverSession->id);
 	if(curPlayer== nullptr)
 	{
 		serverSession->Disconnect(L"...");
@@ -49,8 +49,8 @@ bool Handle_SC_LOGIN_RES(PacketSessionPtr& session, Protocol::SC_LOGIN_RES& pkt)
 }
 bool Handle_SC_CHANNEL_SELECT_RES(PacketSessionPtr& session, Protocol::SC_CHANNEL_SELECT_RES& pkt)
 {
-	ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
-	auto player = DummyStructManager::Instance().GetClient(serverSession->id);
+	const ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
+	const auto player = DummyStructManager::Instance().GetClient(serverSession->id);
 	if (player == nullptr)
 	{
 		serverSession->Disconnect(L"...");
@@ -72,8 +72,8 @@ bool Handle_SC_CHANNEL_SELECT_RES(PacketSessionPtr& session, Protocol::SC_CHANNE
 }
 bool Handle_SC_CHAR_LIST_RES(PacketSessionPtr& session, Protocol::SC_CHAR_LIST_RES& pkt)
 {
-	ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
-	auto player = DummyStructManager::Instance().GetClient(serverSession->id);
+	const ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
+	const auto player = DummyStructManager::Instance().GetClient(serverSession->id);
 	if(player == nullptr)
 	{
 		session->Disconnect(L"플레이어가 없을리가 없는 구간인데,,");
@@ -84,7 +84,6 @@ bool Handle_SC_CHAR_LIST_RES(PacketSessionPtr& session, Protocol::SC_CHAR_LIST_R
 	for (int i = 0; i < cnt; i++)
 	{
 		auto data = pkt.characters()[i];
-
 		ptr<ClientCharacterData> _character = MakeShared<ClientCharacterData>();
 		_character->id = data.id();
 		_character->name.reserve(data.name().size());
@@ -142,13 +141,13 @@ bool Handle_SC_MOVE_RES(PacketSessionPtr& session, Protocol::SC_MOVE_RES& pkt)
 bool Handle_SC_POSITION_SYNC(PacketSessionPtr& session, Protocol::SC_POSITION_SYNC& pkt)
 {
 	const ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
-	const auto client = DummyStructManager::Instance().GetClient(serverSession->id);=
+	const auto client = DummyStructManager::Instance().GetClient(serverSession->id);
 	client->SetCurpos({ pkt.syncposition().x(), pkt.syncposition().y() });
 	return true;
 }
 bool Handle_SC_NORMAL_CHAT_RES(PacketSessionPtr& session, Protocol::SC_NORMAL_CHAT_RES& pkt)
 {
-	ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
+	const ServerSessionPtr serverSession = static_pointer_cast<ServerSession>(session);
 	const auto client = DummyStructManager::Instance().GetClient(serverSession->id);
 	if (client == nullptr)
 	{
@@ -158,10 +157,9 @@ bool Handle_SC_NORMAL_CHAT_RES(PacketSessionPtr& session, Protocol::SC_NORMAL_CH
 	// 내가 보낸 채팅이면...
 
 	// 다른 사람이 보낸 채팅이면...
-	wstring message;
+	wstring message, name;
 	for (int i = 0; i < pkt.msg_size(); i++)
 		message.push_back(pkt.msg()[i]);
-	wstring name;
 	for (int i = 0; i < pkt.playername_size(); i++)
 		name.push_back(pkt.playername()[i]);
 	client->RecvNormalChat(pkt.playerid(), message, name);
@@ -169,6 +167,32 @@ bool Handle_SC_NORMAL_CHAT_RES(PacketSessionPtr& session, Protocol::SC_NORMAL_CH
 }
 bool Handle_SC_CREATE_PLAYER_CMD(PacketSessionPtr& session, Protocol::SC_CREATE_PLAYER_CMD& pkt)
 {
+	const auto serverSession = static_pointer_cast<ServerSession>(session);
+	const Protocol::Packet_CharacterInfo& info = pkt.newplayerinfo();
+	const auto client = DummyStructManager::Instance().GetClient(serverSession->id);
+	if(client == nullptr)
+	{
+		session->Disconnect(L"없어서는 안되는 구간");
+		return false;
+	}
+	client->GetSelectedCharKey();
+	const auto charKey = info.id();
+	if (client->IsPlayerNearby(charKey) == true)
+	{
+		// 여기는 문제있는 구간임... 클라의 문제는 아니고 서버의문제
+		cout << "Server Error : Nearby Character Miss " << charKey << endl;
+		session->Disconnect(L"문제 있는데 그냥 내가 나가준다...");
+		return false;
+	}
+	const auto otherClient = MakeShared<ClientCharacterData>();
+	wstring name;
+	const auto nameLen = info.name_size();
+	for(int i=0; i<nameLen; i++)
+		name += static_cast<wchar_t>(info.name()[i]);
+	otherClient->id = charKey;
+	otherClient->name = name;
+	otherClient->type = info.playertype();
+	client->InsertNearbyCharacter(otherClient);
 	return true;
 }
 bool Handle_SC_DELETE_PLAYER_CMD(PacketSessionPtr& session, Protocol::SC_DELETE_PLAYER_CMD& pkt)

@@ -200,9 +200,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT SC_NORMAL_CHAT_RESDefaultTypeIn
 constexpr SC_CREATE_PLAYER_CMD::SC_CREATE_PLAYER_CMD(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : newplayerinfo_(nullptr)
-  , curplayerpos_(nullptr)
-  , faceleft_(false)
-  , ismine_(false){}
+  , curplayerpos_(nullptr){}
 struct SC_CREATE_PLAYER_CMDDefaultTypeInternal {
   constexpr SC_CREATE_PLAYER_CMDDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -342,8 +340,6 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Protocol_2eproto::offsets[] PR
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::SC_CREATE_PLAYER_CMD, newplayerinfo_),
   PROTOBUF_FIELD_OFFSET(::Protocol::SC_CREATE_PLAYER_CMD, curplayerpos_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::SC_CREATE_PLAYER_CMD, faceleft_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::SC_CREATE_PLAYER_CMD, ismine_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::SC_DELETE_PLAYER_CMD, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -375,8 +371,8 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 77, -1, sizeof(::Protocol::CS_NORMAL_CHAT_REQ)},
   { 83, -1, sizeof(::Protocol::SC_NORMAL_CHAT_RES)},
   { 91, -1, sizeof(::Protocol::SC_CREATE_PLAYER_CMD)},
-  { 100, -1, sizeof(::Protocol::SC_DELETE_PLAYER_CMD)},
-  { 107, -1, sizeof(::Protocol::SC_POSITION_SYNC)},
+  { 98, -1, sizeof(::Protocol::SC_DELETE_PLAYER_CMD)},
+  { 105, -1, sizeof(::Protocol::SC_POSITION_SYNC)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -422,15 +418,14 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "ss\030\001 \001(\010\022\021\n\tchannelID\030\002 \001(\004\"!\n\022CS_NORMAL"
   "_CHAT_REQ\022\013\n\003msg\030\020 \003(\005\"G\n\022SC_NORMAL_CHAT"
   "_RES\022\020\n\010playerId\030\001 \001(\004\022\022\n\nplayerName\030\020 \003"
-  "(\005\022\013\n\003msg\030\021 \003(\005\"\236\001\n\024SC_CREATE_PLAYER_CMD"
-  "\0225\n\rnewPlayerInfo\030\001 \001(\0132\036.Protocol.Packe"
-  "t_CharacterInfo\022-\n\014curPlayerPos\030\003 \001(\0132\027."
-  "Protocol.Packet_Vector\022\020\n\010faceLeft\030\002 \001(\010"
-  "\022\016\n\006isMine\030\004 \001(\010\"8\n\024SC_DELETE_PLAYER_CMD"
-  "\022\020\n\010playerId\030\001 \001(\004\022\016\n\006isMine\030\002 \001(\010\"S\n\020SC"
-  "_POSITION_SYNC\022-\n\014syncPosition\030\001 \001(\0132\027.P"
-  "rotocol.Packet_Vector\022\020\n\010faceLeft\030\002 \001(\010b"
-  "\006proto3"
+  "(\005\022\013\n\003msg\030\021 \003(\005\"|\n\024SC_CREATE_PLAYER_CMD\022"
+  "5\n\rnewPlayerInfo\030\001 \001(\0132\036.Protocol.Packet"
+  "_CharacterInfo\022-\n\014curPlayerPos\030\003 \001(\0132\027.P"
+  "rotocol.Packet_Vector\"8\n\024SC_DELETE_PLAYE"
+  "R_CMD\022\020\n\010playerId\030\001 \001(\004\022\016\n\006isMine\030\002 \001(\010\""
+  "S\n\020SC_POSITION_SYNC\022-\n\014syncPosition\030\001 \001("
+  "\0132\027.Protocol.Packet_Vector\022\020\n\010faceLeft\030\002"
+  " \001(\010b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -438,7 +433,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Protocol_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Protocol_2eproto = {
-  false, false, 1207, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
+  false, false, 1172, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
   &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 17,
   schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
   file_level_metadata_Protocol_2eproto, file_level_enum_descriptors_Protocol_2eproto, file_level_service_descriptors_Protocol_2eproto,
@@ -3461,17 +3456,14 @@ SC_CREATE_PLAYER_CMD::SC_CREATE_PLAYER_CMD(const SC_CREATE_PLAYER_CMD& from)
   } else {
     curplayerpos_ = nullptr;
   }
-  ::memcpy(&faceleft_, &from.faceleft_,
-    static_cast<size_t>(reinterpret_cast<char*>(&ismine_) -
-    reinterpret_cast<char*>(&faceleft_)) + sizeof(ismine_));
   // @@protoc_insertion_point(copy_constructor:Protocol.SC_CREATE_PLAYER_CMD)
 }
 
 void SC_CREATE_PLAYER_CMD::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&newplayerinfo_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&ismine_) -
-    reinterpret_cast<char*>(&newplayerinfo_)) + sizeof(ismine_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&curplayerpos_) -
+    reinterpret_cast<char*>(&newplayerinfo_)) + sizeof(curplayerpos_));
 }
 
 SC_CREATE_PLAYER_CMD::~SC_CREATE_PLAYER_CMD() {
@@ -3510,9 +3502,6 @@ void SC_CREATE_PLAYER_CMD::Clear() {
     delete curplayerpos_;
   }
   curplayerpos_ = nullptr;
-  ::memset(&faceleft_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&ismine_) -
-      reinterpret_cast<char*>(&faceleft_)) + sizeof(ismine_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3529,24 +3518,10 @@ const char* SC_CREATE_PLAYER_CMD::_InternalParse(const char* ptr, ::PROTOBUF_NAM
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // bool faceLeft = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          faceleft_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
       // .Protocol.Packet_Vector curPlayerPos = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_curplayerpos(), ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // bool isMine = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          ismine_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3587,24 +3562,12 @@ failure:
         1, _Internal::newplayerinfo(this), target, stream);
   }
 
-  // bool faceLeft = 2;
-  if (this->faceleft() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_faceleft(), target);
-  }
-
   // .Protocol.Packet_Vector curPlayerPos = 3;
   if (this->has_curplayerpos()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
         3, _Internal::curplayerpos(this), target, stream);
-  }
-
-  // bool isMine = 4;
-  if (this->ismine() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(4, this->_internal_ismine(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3635,16 +3598,6 @@ size_t SC_CREATE_PLAYER_CMD::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *curplayerpos_);
-  }
-
-  // bool faceLeft = 2;
-  if (this->faceleft() != 0) {
-    total_size += 1 + 1;
-  }
-
-  // bool isMine = 4;
-  if (this->ismine() != 0) {
-    total_size += 1 + 1;
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3684,12 +3637,6 @@ void SC_CREATE_PLAYER_CMD::MergeFrom(const SC_CREATE_PLAYER_CMD& from) {
   if (from.has_curplayerpos()) {
     _internal_mutable_curplayerpos()->::Protocol::Packet_Vector::MergeFrom(from._internal_curplayerpos());
   }
-  if (from.faceleft() != 0) {
-    _internal_set_faceleft(from._internal_faceleft());
-  }
-  if (from.ismine() != 0) {
-    _internal_set_ismine(from._internal_ismine());
-  }
 }
 
 void SC_CREATE_PLAYER_CMD::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -3714,8 +3661,8 @@ void SC_CREATE_PLAYER_CMD::InternalSwap(SC_CREATE_PLAYER_CMD* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(SC_CREATE_PLAYER_CMD, ismine_)
-      + sizeof(SC_CREATE_PLAYER_CMD::ismine_)
+      PROTOBUF_FIELD_OFFSET(SC_CREATE_PLAYER_CMD, curplayerpos_)
+      + sizeof(SC_CREATE_PLAYER_CMD::curplayerpos_)
       - PROTOBUF_FIELD_OFFSET(SC_CREATE_PLAYER_CMD, newplayerinfo_)>(
           reinterpret_cast<char*>(&newplayerinfo_),
           reinterpret_cast<char*>(&other->newplayerinfo_));

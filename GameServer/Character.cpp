@@ -4,6 +4,8 @@
 #include "GameServer.h"
 
 
+Character::Character(): m_Location(){}
+
 void Character::Init(const uint64 characterKey, const wstring& charName)
 {
 	BaseObject::Init(ObjectType::CHARACTER);

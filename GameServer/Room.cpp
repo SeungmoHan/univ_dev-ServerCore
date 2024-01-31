@@ -9,7 +9,7 @@ void Room::Enter(PlayerPtr player)
 {
 	if(m_PlayerMap.empty())
 		m_RoomLeader = player;
-	m_PlayerMap[player->GetPlayerGuid()] = player;
+	m_PlayerMap[player->GetPlayerKey()] = player;
 }
 
 void Room::Leave(const PlayerPtr player)
@@ -17,7 +17,7 @@ void Room::Leave(const PlayerPtr player)
 	if(m_RoomLeader == player)
 		m_RoomLeader = nullptr;
 
-	m_PlayerMap.erase(player->GetPlayerGuid());
+	m_PlayerMap.erase(player->GetPlayerKey());
 
 	if(m_PlayerMap.empty() && m_RoomKey != 1)
 	{
@@ -53,13 +53,7 @@ void Room::Update(uint64 deltaTick)
 {
 	// Room은 방과 관련된 업데이트만 치도록하자...
 	// 업데이트 == 방에서 나가야할 사람들 정하기... 등등
-	for(auto [playerid, player] : m_PlayerMap)
-	{
-		if(player->GetOwnerSession()->IsConnected() == false)
-		{
-			
-		}
-	}
+	// 룸에서 업데이트 할만한걸 나중에 찾아보자...
 }
 
 void Room::Init(const uint64 roomKey)

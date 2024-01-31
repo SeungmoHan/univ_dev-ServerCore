@@ -16,8 +16,8 @@ void ClientPlayer::ChangeState()
 
 	movePacket.set_movedir(_moveState);
 	Protocol::Packet_Vector vec;
-	vec.set_x(_curPos._x);
-	vec.set_y(_curPos._y);
+	vec.set_x(loc._curPos._x);
+	vec.set_y(loc._curPos._y);
 	movePacket.set_allocated_curpos(&vec);
 
 	const auto sendBuffer= ServerPacketHandler::MakeSendBuffer(movePacket);
@@ -26,7 +26,7 @@ void ClientPlayer::ChangeState()
 
 void ClientPlayer::SetCurpos(const Vector2D& vec)
 {
-	_curPos = vec;
+	loc._curPos = vec;
 }
 
 void ClientPlayer::SendNormalChat()
@@ -77,8 +77,7 @@ void ClientPlayer::Update()
 {
 	if (_finished_to_set.load() == false)
 		return;
-	uint64 curTick = GetTickCount64();
-	if(curTick >= nextUpdateTick)
+	if(const uint64 curTick = GetTickCount64(); curTick >= nextUpdateTick)
 	{
 		nextUpdateTick += 1000;
 		if(const uint32 randVal = rand() % 10; randVal <= 7)
@@ -86,6 +85,34 @@ void ClientPlayer::Update()
 		ChangeState();
 		SendNormalChat();
 	}
+}
 
-	
+bool ClientPlayer::IsPlayerNearby(const uint64 key)
+{
+	const auto itr = _otherUserData.find(key);
+	if (itr == _otherUserData.end())
+		return false;
+	return true;
+}
+
+bool ClientPlayer::CheckDuplicateCharacterSpawn(const uint64 key)
+{
+	return IsPlayerNearby(key) == true;
+}
+
+bool ClientPlayer::InsertNearbyCharacter(ptr<ClientCharacterData> charData)
+{
+	if (CheckDuplicateCharacterSpawn(charData->id) == true)
+		return false;
+
+	_otherUserData.emplace(charData->id, charData);
+}
+
+bool ClientPlayer::RemoveNearbyCharacter(const uint64 key)
+{
+	if (IsPlayerNearby(key) == false)
+		return false;
+
+	_otherUserData.erase(key);
+	return true;
 }

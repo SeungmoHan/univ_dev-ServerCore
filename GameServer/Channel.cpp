@@ -13,7 +13,7 @@ PlayerPtr Channel::GetPlayer(const uint64 playerId)
 	auto itr = m_PlayerMap.find(playerId);
 	if (itr == m_PlayerMap.end())
 		return nullptr;
-	if (itr->second->GetPlayerGuid() != playerId)
+	if (itr->second->GetPlayerKey() != playerId)
 	{
 		return nullptr;
 	}
@@ -64,12 +64,22 @@ bool Channel::Update(uint64 deltaTick)
 	if (this->GetChannelOption()._channelKey == ChannelManager::Instance().DefaultChannelID())
 		return true;
 
+	// 채널에서는 플레이어들 업데이트,,,
+	// 커뮤니티와 관련된 데이터 = 플레이어로 관리
+	for(auto[playerKey, player] : m_PlayerMap)
+	{
+		if (player == nullptr)
+			continue;
+		player->Update(deltaTick);
+	}
 	// 필드들 업데이트
+	// 필드 내에서 캐릭터 업데이트
+	// 전투와 관련된 업데이트는 다 필드에서...
 	for(auto [fieldKey, field] : m_FieldMap)
 	{
 		if(field != nullptr)
 		{
-			// field 안에서 player들 업데이트 처리...
+			// field 안에서 Character들 업데이트 처리...
 			field->Update(deltaTick);
 		}
 	}
@@ -95,7 +105,7 @@ void Channel::MoveChannel(const uint32 toKey, PlayerPtr player)
 	if(nextChannel->CanEnter())
 	{
 		// 지금 있는 채널에서 리무브
-		RemovePlayer(player->GetPlayerGuid());
+		RemovePlayer(player->GetPlayerKey());
 		// 3. 그 채널에 플레이어 add, 잡으로 넣어야 동기화 관련 문제가 안생김
 		nextChannel->DoAsync(&Channel::AddPlayer, player);
 	}
@@ -157,7 +167,7 @@ bool Channel::CanEnter() const
 // 이게 불린거면 무조건 엔터가능한 상황임... 이전에 CanEnter로 체크해야함...
 void Channel::AddPlayer(PlayerPtr player)
 {
-	auto playerKey = player->GetPlayerGuid();
+	auto playerKey = player->GetPlayerKey();
 	if (const auto itr = m_PlayerMap.find(playerKey); itr == m_PlayerMap.end())
 		return;
 	m_PlayerMap.emplace(playerKey, player);

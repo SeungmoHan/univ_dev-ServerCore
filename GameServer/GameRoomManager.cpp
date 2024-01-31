@@ -36,7 +36,7 @@ void GameRoomManager::LeaveRoom(const uint64 roomKey, const PlayerPtr& player)
 		return;
 	const ptr<Room> gameRoom = itr->second;
 
-	gameRoom->DoAsync<Room, void>(&Room::Leave, player->GetPlayerGuid());
+	gameRoom->DoAsync<Room, void>(&Room::Leave, player->GetPlayerKey());
 }
 
 void GameRoomManager::EraseRoom(const uint64 roomKey)
